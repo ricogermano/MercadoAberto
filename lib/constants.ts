@@ -2,7 +2,7 @@ import type { Locale } from '@/i18n/config';
 
 // This fork's name, its own source code and the project it is built on (AGPL-3.0 asks for both links)
 export const APP_NAME = 'MercadoAberto';
-export const SOURCE_URL = 'https://github.com/ricogermano/OpenStock';
+export const SOURCE_URL = 'https://github.com/ricogermano/MercadoAberto';
 export const UPSTREAM_NAME = 'OpenStock (Open Dev Society)';
 export const UPSTREAM_URL = 'https://github.com/Open-Dev-Society/OpenStock';
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dailyQuoteFromChart, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
+import { compareNullable, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
 import { formatSymbolForTradingView, isChartEmbeddable } from '@/lib/utils';
 
 describe('Tadawul symbols', () => {
@@ -94,5 +94,54 @@ describe('dailyQuoteFromChart', () => {
     it('returns null when Yahoo has nothing', () => {
         expect(dailyQuoteFromChart({ chart: { result: null } })).toBeNull();
         expect(dailyQuoteFromChart(chart([null]))).toBeNull();
+    });
+});
+
+const series = (type: string, items: unknown) => ({ meta: { symbol: ['X.SA'], type: [type] }, [type]: items });
+const point = (asOfDate: string, raw: number) => ({ asOfDate, periodType: 'TTM', reportedValue: { raw, fmt: String(raw) } });
+
+describe('fundamentalsFromTimeseries', () => {
+    it('picks the latest asOfDate even when the array is out of order', () => {
+        const json = { timeseries: { result: [
+            series('trailingPbRatio', [point('2026-11-11', 1.08), point('2025-10-03', 1.02), point('2026-05-01', 1.5)]),
+            series('trailingPeRatio', [point('2026-11-11', 3.9)]),
+        ] } };
+        const f = fundamentalsFromTimeseries(json);
+        expect(f?.pb).toBe(1.08);
+        expect(f?.pe).toBe(3.9);
+    });
+
+    it('computes roe as P/B over P/E in percent', () => {
+        const json = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)]), series('trailingPeRatio', [point('2026-01-01', 10)])] } };
+        expect(fundamentalsFromTimeseries(json)?.roe).toBeCloseTo(20);
+    });
+
+    it('leaves roe null for a negative or missing P/E but keeps P/B', () => {
+        const neg = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)]), series('trailingPeRatio', [point('2026-01-01', -5)])] } };
+        expect(fundamentalsFromTimeseries(neg)).toEqual({ pe: -5, pb: 2, roe: null });
+        const missing = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)])] } };
+        expect(fundamentalsFromTimeseries(missing)).toEqual({ pe: null, pb: 2, roe: null });
+    });
+
+    it('returns null without throwing for empty entries, null items and garbage', () => {
+        expect(fundamentalsFromTimeseries({ timeseries: { result: [{ meta: { type: ['trailingPeRatio'] } }] } })).toBeNull();
+        expect(fundamentalsFromTimeseries({ timeseries: { result: [series('trailingPeRatio', [null, { asOfDate: '2026-01-01' }])] } })).toBeNull();
+        expect(fundamentalsFromTimeseries(null)).toBeNull();
+        expect(fundamentalsFromTimeseries('nope')).toBeNull();
+        expect(fundamentalsFromTimeseries({})).toBeNull();
+    });
+});
+
+describe('compareNullable', () => {
+    const sortWith = (vals: (number | string | null)[], dir: 'asc' | 'desc') => [...vals].sort((a, b) => compareNullable(a, b, dir));
+
+    it('sorts numbers and keeps nulls last in both directions', () => {
+        expect(sortWith([2, null, 5, 1], 'desc')).toEqual([5, 2, 1, null]);
+        expect(sortWith([2, null, 5, 1], 'asc')).toEqual([1, 2, 5, null]);
+    });
+
+    it('sorts strings with localeCompare', () => {
+        expect(sortWith(['Vale', 'Ambev', 'Itaú'], 'asc')).toEqual(['Ambev', 'Itaú', 'Vale']);
+        expect(sortWith(['Vale', 'Ambev', 'Itaú'], 'desc')).toEqual(['Vale', 'Itaú', 'Ambev']);
     });
 });

@@ -79,3 +79,46 @@ export function dailyQuoteFromChart(json: unknown, fallbackCurrency = 'USD'): Ya
         name: result.meta?.longName || result.meta?.shortName || '',
     };
 }
+
+export type YahooFundamentals = { pe: number | null; pb: number | null; roe: number | null };
+
+type YahooTimeseriesJson = {
+    timeseries?: {
+        result?: Array<Record<string, unknown> & { meta?: { type?: string[] } }>;
+    };
+};
+
+// The most recent finite value of one ratio (e.g. "trailingPeRatio"); entries come unordered, may be null, or missing entirely
+function latestRatio(json: unknown, type: string): number | null {
+    let best: { date: string; raw: number } | null = null;
+    for (const entry of (json as YahooTimeseriesJson)?.timeseries?.result ?? []) {
+        const items = entry?.[type];
+        if (!Array.isArray(items)) continue;
+        for (const item of items) {
+            const raw = item?.reportedValue?.raw;
+            const date = typeof item?.asOfDate === 'string' ? item.asOfDate : '';
+            if (typeof raw !== 'number' || !Number.isFinite(raw)) continue;
+            if (!best || date > best.date) best = { date, raw };
+        }
+    }
+    return best ? best.raw : null;
+}
+
+// P/E and P/B from /ws/fundamentals-timeseries; null when Yahoo has neither (units such as BPAC11 come back empty)
+export function fundamentalsFromTimeseries(json: unknown): YahooFundamentals | null {
+    const pe = latestRatio(json, 'trailingPeRatio');
+    const pb = latestRatio(json, 'trailingPbRatio');
+    if (pe === null && pb === null) return null;
+    // ROE = P/B / P/E: both ratios are currency-free, while Yahoo mixes USD and BRL in the statement fields
+    const roe = pe !== null && pb !== null && pe > 0 && pb > 0 ? (pb / pe) * 100 : null;
+    return { pe, pb, roe };
+}
+
+// Orders rows for a sortable column: nulls always last in both directions, strings A-Z / Z-A, numbers by value
+export function compareNullable(a: number | string | null | undefined, b: number | string | null | undefined, dir: 'asc' | 'desc'): number {
+    const aNull = a == null || (typeof a === 'number' && !Number.isFinite(a));
+    const bNull = b == null || (typeof b === 'number' && !Number.isFinite(b));
+    if (aNull || bNull) return aNull === bNull ? 0 : aNull ? 1 : -1;
+    const order = typeof a === 'string' && typeof b === 'string' ? a.localeCompare(b) : (a as number) - (b as number);
+    return dir === 'asc' ? order : -order;
+}

@@ -265,7 +265,13 @@
     "changePercent": "Zmiana %",
     "unavailable": "Notowania są obecnie niedostępne.",
     "source": "Ceny w {currency} z Yahoo Finance, opóźnione o około 15 minut.",
-    "sourceNoCurrency": "Ceny z Yahoo Finance, opóźnione o około 15 minut."
+    "sourceNoCurrency": "Ceny z Yahoo Finance, opóźnione o około 15 minut.",
+    "pe": "C/Z",
+    "pb": "C/WK",
+    "roe": "ROE",
+    "clearSort": "Wyczyść sortowanie",
+    "sortBy": "Sortuj według: {column}",
+    "fundamentalsNote": "C/Z i C/WK dotyczą ostatnich dwunastu miesięcy, dane z Yahoo Finance; ROE to C/WK podzielone przez C/Z."
   },
   "TradingViewWidget": {
     "fullScreen": "Pełny ekran",

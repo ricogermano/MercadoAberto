@@ -265,7 +265,13 @@
     "changePercent": "٪ التغير",
     "unavailable": "الأسعار غير متاحة الآن.",
     "source": "الأسعار بعملة {currency} عبر Yahoo Finance، متأخرة نحو ١٥ دقيقة.",
-    "sourceNoCurrency": "الأسعار عبر Yahoo Finance، متأخرة نحو ١٥ دقيقة."
+    "sourceNoCurrency": "الأسعار عبر Yahoo Finance، متأخرة نحو ١٥ دقيقة.",
+    "pe": "P/E",
+    "pb": "P/B",
+    "roe": "ROE",
+    "clearSort": "إلغاء الترتيب",
+    "sortBy": "ترتيب حسب {column}",
+    "fundamentalsNote": "P/E وP/B للاثني عشر شهرًا الأخيرة، من Yahoo Finance؛ ROE هو P/B مقسومًا على P/E."
   },
   "TradingViewWidget": {
     "fullScreen": "ملء الشاشة",

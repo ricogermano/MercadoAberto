@@ -265,7 +265,13 @@
     "changePercent": "Change %",
     "unavailable": "Quotes unavailable right now.",
     "source": "Prices in {currency} via Yahoo Finance, delayed about 15 minutes.",
-    "sourceNoCurrency": "Prices via Yahoo Finance, delayed about 15 minutes."
+    "sourceNoCurrency": "Prices via Yahoo Finance, delayed about 15 minutes.",
+    "pe": "P/E",
+    "pb": "P/B",
+    "roe": "ROE",
+    "clearSort": "Clear sorting",
+    "sortBy": "Sort by {column}",
+    "fundamentalsNote": "P/E and P/B are trailing twelve months, from Yahoo Finance; ROE is P/B divided by P/E."
   },
   "TradingViewWidget": {
     "fullScreen": "Full screen",

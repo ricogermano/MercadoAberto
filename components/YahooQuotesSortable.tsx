@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import { SortBar, SortableTh, useSortCriteria } from '@/components/SortableTable';
 import { INDICATORS, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from '@/components/IndicatorViews';
 import { rankByCriteria, type YahooFundamentals } from '@/lib/yahoo';
+import { FULL_SCREEN_FRAME, FullScreenBackdrop, FullScreenButton, useFullScreen } from '@/components/FullScreen';
 
 export type QuoteRow = {
     tvSymbol: string;
@@ -51,6 +52,8 @@ export default function YahooQuotesSortable({
     const { criteria, onSort, remove, clear, combined } = useSortCriteria<SortKey>();
     const { view, keys, select, toggle, medians, toggleMedians } = useIndicatorView('quotes-indicator-view');
     const indicatorText = useIndicatorText();
+    // Full screen keeps the view, the sort criteria and the stars: the same table is resized in place
+    const { expanded, toggle: toggleFullScreen, close } = useFullScreen();
     // Stars toggled here, so they survive re-sorting (rows remount) until the server data catches up
     const [watch, setWatch] = useState<Record<string, boolean>>({});
     const allRows = groups.flatMap((g) => g.rows);
@@ -115,7 +118,11 @@ export default function YahooQuotesSortable({
     );
 
     return (
-        <div className="overflow-x-auto">
+        <>
+        {expanded && <FullScreenBackdrop onClose={close} />}
+        <div className={expanded ? `${FULL_SCREEN_FRAME} overflow-auto` : 'overflow-x-auto'}>
+            <div className="flex items-start">
+            <div className="min-w-0 flex-1">
             {showFundamentals && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} medians={medians} onToggleMedians={toggleMedians} />}
             <SortBar
                 hint={combined ? labels.combinedHint : null}
@@ -126,8 +133,12 @@ export default function YahooQuotesSortable({
                 onRemove={remove}
                 onClear={clear}
             />
+            </div>
+            <FullScreenButton expanded={expanded} onToggle={toggleFullScreen} className="me-2 mt-1.5" />
+            </div>
             <table className="w-full text-[13px]">
-                <thead>
+                {/* With the whole screen to scroll, the header row stays in view */}
+                <thead className={expanded ? '[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card' : ''}>
                     <tr className="text-start text-faint">
                         <th className="w-8 p-0" aria-label={watchLabel} />
                         {combined && <th className="px-3 py-2 font-medium">#</th>}
@@ -162,5 +173,6 @@ export default function YahooQuotesSortable({
             </table>
             <p className="px-3 py-2 text-[11.5px] text-faint">{note}</p>
         </div>
+        </>
     );
 }

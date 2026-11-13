@@ -306,6 +306,7 @@
     "marketHeatmapTitle": "Mapa cieplna: {market}",
     "heatmapNote": "Kapitalizacja i ceny z Yahoo Finance; dla unitów przyjęto wartość całej spółki. Wybierz blok, aby otworzyć spółkę.",
     "quotesTitle": "Notowania",
+    "quotesIndicatorsTitle": "Notowania i wskaźniki",
     "quotesSub": "Liderzy według grup · {market}",
     "storiesLocalTitle": "Wiadomości z Brazylii",
     "storiesWorldTitle": "Wiadomości międzynarodowe",

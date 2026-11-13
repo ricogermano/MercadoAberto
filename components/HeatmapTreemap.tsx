@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { squarify } from '@/lib/treemap';
+import { FULL_SCREEN_FRAME, FullScreenBackdrop, FullScreenButton, useFullScreen } from '@/components/FullScreen';
 
 export type HeatmapCell = { ticker: string; href: string; name: string; cap: number; changePercent: number; detail: string };
 export type HeatmapSector = { title: string; cells: HeatmapCell[] };
@@ -32,6 +33,8 @@ const signed = (value: number, digits = 2) => `${value > 0 ? '+' : value < 0 ? '
 
 export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSector[]; note: string }) {
     const box = useRef<HTMLDivElement>(null);
+    // Full screen only resizes the box: the size observer below lays the blocks out again
+    const { expanded, toggle, close } = useFullScreen();
     // A typical desktop panel until the real box is measured, so the first paint is already close
     const [size, setSize] = useState({ w: 800, h: 500 });
 
@@ -68,8 +71,11 @@ export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSect
     });
 
     return (
-        <div className="flex flex-col gap-2 p-2">
-            <div ref={box} className="relative w-full overflow-hidden rounded-[8px]" style={{ height: 480 }} dir="ltr">
+        <>
+        {expanded && <FullScreenBackdrop onClose={close} />}
+        <div className={`flex flex-col gap-2 p-2 ${expanded ? FULL_SCREEN_FRAME : 'relative'}`}>
+            <FullScreenButton expanded={expanded} onToggle={toggle} className="absolute end-3 top-3 z-10 size-7 bg-card/85 text-foreground shadow-sm backdrop-blur-sm" />
+            <div ref={box} className={`relative w-full overflow-hidden rounded-[8px] ${expanded ? 'min-h-0 flex-1' : ''}`} style={expanded ? undefined : { height: 480 }} dir="ltr">
                 {layout.map(({ sector, rect, labelled, cells }) => {
                     const top = rect.y + (labelled ? SECTOR_LABEL : 0);
                     return (
@@ -117,5 +123,6 @@ export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSect
                 </ul>
             </div>
         </div>
+        </>
     );
 }

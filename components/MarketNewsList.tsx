@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { Maximize2, Minimize2 } from 'lucide-react';
+import { FULL_SCREEN_FRAME, FullScreenBackdrop, FullScreenButton, useFullScreen } from '@/components/FullScreen';
 import { htmlLang } from '@/i18n/config';
 import type { NewsItem } from '@/lib/rss';
 
@@ -23,19 +23,8 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
     const [selected, setSelected] = useState<string[]>([]);
     const [onlyTable, setOnlyTable] = useState(false);
     // Full screen resizes the list in place, like the TradingView frames: the chosen filters stay
-    const tw = useTranslations('TradingViewWidget');
-    const [expanded, setExpanded] = useState(false);
+    const { expanded, toggle: toggleFullScreen, close } = useFullScreen();
     useEffect(() => setNow(Date.now()), []);
-    useEffect(() => {
-        if (!expanded) return;
-        const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setExpanded(false);
-        document.body.style.overflow = 'hidden';
-        window.addEventListener('keydown', onKey);
-        return () => {
-            document.body.style.overflow = '';
-            window.removeEventListener('keydown', onKey);
-        };
-    }, [expanded]);
 
     if (items.length === 0) return <p className="search-list-indicator">{unavailable}</p>;
 
@@ -50,8 +39,8 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
 
     return (
         <>
-        {expanded && <div className="fixed inset-0 z-50 bg-page/70 backdrop-blur-[3px]" onClick={() => setExpanded(false)} />}
-        <div className={expanded ? 'fixed inset-3 z-50 flex flex-col overflow-hidden rounded-xl bg-card shadow-[0_0_0_4px_var(--frame),0_24px_60px_oklch(0_0_0/0.6)]' : ''}>
+        {expanded && <FullScreenBackdrop onClose={close} />}
+        <div className={expanded ? `${FULL_SCREEN_FRAME} flex flex-col overflow-hidden` : ''}>
             <div className="flex flex-wrap items-center gap-1.5 border-b border-line/60 px-3 py-2" role="group" aria-label={t('sourcesLabel')}>
                 {sources.map((source) => (
                     <button key={source} type="button" className={chip(selected.includes(source))} aria-pressed={selected.includes(source)} onClick={() => toggle(source)}>
@@ -73,15 +62,7 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
                 >
                     {t('clearFilters')}
                 </button>
-                <button
-                    type="button"
-                    onClick={() => setExpanded((v) => !v)}
-                    className="icon-btn"
-                    aria-label={expanded ? tw('exitFullScreen') : tw('fullScreen')}
-                    title={expanded ? tw('exitFullScreenHint') : tw('fullScreen')}
-                >
-                    {expanded ? <Minimize2 /> : <Maximize2 />}
-                </button>
+                <FullScreenButton expanded={expanded} onToggle={toggleFullScreen} />
             </div>
 
             <div className={expanded ? 'min-h-0 flex-1 overflow-y-auto' : 'max-h-[480px] overflow-y-auto'}>

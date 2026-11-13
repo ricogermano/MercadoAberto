@@ -308,6 +308,7 @@
     "marketHeatmapTitle": "Mapa de calor: {market}",
     "heatmapNote": "Valor de mercado e preços do Yahoo Finance; units usam o valor da empresa inteira. Clique em um bloco para abrir a ação.",
     "quotesTitle": "Cotações",
+    "quotesIndicatorsTitle": "Cotações e indicadores",
     "quotesSub": "Líderes de {market} por grupo",
     "storiesLocalTitle": "Notícias do Brasil",
     "storiesWorldTitle": "Notícias internacionais",

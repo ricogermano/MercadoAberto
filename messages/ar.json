@@ -308,6 +308,7 @@
     "marketHeatmapTitle": "خريطة حرارية: {market}",
     "heatmapNote": "القيمة السوقية والأسعار من Yahoo Finance؛ الوحدات تستخدم قيمة الشركة كاملة. اختر مربعًا لفتح السهم.",
     "quotesTitle": "الأسعار",
+    "quotesIndicatorsTitle": "الأسعار والمؤشرات",
     "quotesSub": "{market} · القادة حسب المجموعة",
     "storiesLocalTitle": "أخبار البرازيل",
     "storiesWorldTitle": "أخبار دولية",

@@ -308,6 +308,7 @@
     "marketHeatmapTitle": "{market} heatmap",
     "heatmapNote": "Market value and prices from Yahoo Finance; units use the value of the whole company. Select a block to open the stock.",
     "quotesTitle": "Quotes",
+    "quotesIndicatorsTitle": "Quotes and indicators",
     "quotesSub": "{market} leaders by group",
     "storiesLocalTitle": "Brazilian headlines",
     "storiesWorldTitle": "International headlines",

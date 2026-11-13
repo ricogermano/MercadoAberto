@@ -12,6 +12,15 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Mapa de calor e cotações em tela cheia',
+        items: [
+            'O mapa de calor do Brasil e a tabela de cotações ganharam o botão de tela cheia, no canto superior direito (Esc ou o mesmo botão fecham). A visão escolhida, a ordenação e as estrelas continuam como estavam.',
+            'Em tela cheia, o cabeçalho da tabela fica parado enquanto você rola a lista.',
+            'O quadro “Cotações” passou a se chamar “Cotações e indicadores” nos mercados que mostram os indicadores ao lado dos preços.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Notícias do Brasil e do mundo juntas, e manchetes em tela cheia',
         items: [
             'Na lista de acompanhamento, as notícias do mundo e as manchetes dos portais brasileiros aparecem numa lista só, da mais recente para a mais antiga. Os botões “Brasil”, “Mundo” e “Só da minha lista” filtram; “Limpar filtros” volta ao início.',

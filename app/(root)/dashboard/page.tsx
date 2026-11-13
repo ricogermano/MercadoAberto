@@ -48,6 +48,8 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
             : null;
     // Our own map for Yahoo-priced markets, which TradingView's heatmap widgets don't cover
     const ownHeatmap = market.heatmap === 'yahoo';
+    // Yahoo-priced stock markets show valuation indicators beside the prices; commodities and TradingView tables don't
+    const quotesTitle = market.yahoo && !market.units ? t('quotesIndicatorsTitle') : t('quotesTitle');
 
     return (
         <>
@@ -85,7 +87,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                             <YahooMovers market={market} count={10} />
                         </Panel>
                     </div>
-                    <Panel title={t('quotesTitle')} sub={t('quotesSub', { market: name })}>
+                    <Panel title={quotesTitle} sub={t('quotesSub', { market: name })}>
                         <YahooQuotesTable market={market} />
                     </Panel>
                     <Panel title={t('storiesTitle')} sub={t('storiesSub')}>
@@ -111,7 +113,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                             <TradingViewWidget scriptUrl={`${scriptUrl}${heatmap.script}`} config={heatmap.config} height={560} allowExpand labels={expandLabels} />
                         </Panel>
                     ) : (
-                        <Panel title={t('quotesTitle')} sub={t('quotesSub', { market: name })}>
+                        <Panel title={quotesTitle} sub={t('quotesSub', { market: name })}>
                             {market.yahoo
                                 ? <YahooQuotesTable market={market} />
                                 : <TradingViewWidget scriptUrl={`${scriptUrl}market-quotes.js`} config={marketQuotesConfig(groups, locale)} height={560} />}

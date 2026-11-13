@@ -1,0 +1,612 @@
+{
+  "Common": {
+    "notAvailable": "N/D",
+    "close": "Fechar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "loading": "Carregando"
+  },
+  "Language": {
+    "label": "Idioma"
+  },
+  "Options": {
+    "investmentGoals": {
+      "growth": "Crescimento",
+      "income": "Renda",
+      "balanced": "Equilibrado",
+      "conservative": "Conservador"
+    },
+    "riskTolerance": {
+      "low": "Baixa",
+      "medium": "Média",
+      "high": "Alta"
+    },
+    "industries": {
+      "technology": "Tecnologia",
+      "healthcare": "Saúde",
+      "finance": "Finanças",
+      "energy": "Energia",
+      "consumerGoods": "Bens de consumo"
+    },
+    "alertType": {
+      "upper": "Superior",
+      "lower": "Inferior"
+    },
+    "condition": {
+      "greater": "Maior que (>)",
+      "less": "Menor que (<)"
+    }
+  },
+  "Password": {
+    "rules": {
+      "min8": "Pelo menos 8 caracteres",
+      "upper": "Pelo menos 1 letra maiúscula",
+      "lower": "Pelo menos 1 letra minúscula",
+      "number": "Pelo menos 1 número"
+    },
+    "required": "A senha é obrigatória",
+    "minLength": "A senha deve ter pelo menos 8 caracteres",
+    "pattern": "A senha deve ter letra maiúscula, letra minúscula e número"
+  },
+  "Markets": {
+    "names": {
+      "us": "Estados Unidos",
+      "in": "Índia",
+      "de": "Alemanha",
+      "ca": "Canadá",
+      "au": "Austrália",
+      "sa": "Arábia Saudita",
+      "crypto": "Cripto",
+      "fx": "Câmbio",
+      "pl": "Polônia",
+      "br": "Brasil"
+    },
+    "feed": {
+      "live": "Ao vivo",
+      "delayed": "Com atraso",
+      "endOfDay": "Fechamento"
+    },
+    "groups": {
+      "financial": "Financeiro",
+      "technology": "Tecnologia",
+      "consumer": "Consumo",
+      "banks": "Bancos",
+      "industry": "Indústria",
+      "finance": "Finanças",
+      "energy": "Energia",
+      "growth": "Crescimento",
+      "resources": "Recursos",
+      "consumerHealth": "Consumo e saúde",
+      "energyMaterials": "Energia e materiais",
+      "telecomConsumer": "Telecom e consumo",
+      "majors": "Principais",
+      "more": "Mais",
+      "commodityFX": "Moedas de commodities",
+      "banksInsurance": "Bancos e seguros",
+      "energyIndustry": "Energia e indústria",
+      "consumerTech": "Consumo e tecnologia",
+      "utilitiesIndustry": "Utilidades e indústria"
+    }
+  },
+  "WatchlistTable": {
+    "headers": {
+      "company": "Empresa",
+      "price": "Preço",
+      "change": "Variação",
+      "marketCap": "Valor de mercado",
+      "action": "Ações"
+    }
+  },
+  "AuthLayout": {
+    "testimonialQuote": "“Para mim, o OpenStock não é só mais um app de ações. Ele dá clareza e controle às pessoas no mercado, sem barreiras nem assinaturas.”",
+    "founderRole": "Fundador {org}",
+    "starAlt": "estrela"
+  },
+  "AuthFields": {
+    "email": "E-mail",
+    "emailRequired": "O e-mail é obrigatório",
+    "emailInvalid": "Informe um e-mail válido"
+  },
+  "PreferenceFields": {
+    "country": "País",
+    "investmentGoal": "Objetivo de investimento",
+    "riskTolerance": "Tolerância a risco",
+    "preferredIndustry": "Setor preferido"
+  },
+  "SignIn": {
+    "title": "Bem-vindo de volta",
+    "subtitle": "Entre para ver sua lista de acompanhamento e seus alertas.",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "forgotPassword": "Esqueceu a senha?",
+    "submit": "Entrar",
+    "submitting": "Entrando",
+    "noAccount": "Não tem uma conta?",
+    "createAccount": "Criar uma conta",
+    "failed": "Falha ao entrar",
+    "invalidCredentials": "E-mail ou senha inválidos.",
+    "failedGeneric": "Não foi possível entrar."
+  },
+  "SignUp": {
+    "title": "Crie sua conta",
+    "subtitle": "Gratuito e de código aberto. Sem cartão.",
+    "accountSection": "Conta",
+    "fullNameLabel": "Nome completo",
+    "fullNamePlaceholder": "Seu nome",
+    "fullNameRequired": "O nome completo é obrigatório",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "Pelo menos 8 caracteres",
+    "personalize": "Personalizar",
+    "personalizeHint": "Usado para adaptar seu e-mail de boas-vindas.",
+    "submit": "Criar conta",
+    "submitting": "Criando conta",
+    "haveAccount": "Já tem uma conta?",
+    "signIn": "Entrar",
+    "failed": "Falha ao criar a conta",
+    "couldNotCreate": "Não foi possível criar sua conta.",
+    "failedGeneric": "Não foi possível criar a conta."
+  },
+  "ForgotPassword": {
+    "title": "Esqueceu sua senha?",
+    "subtitle": "Informe seu e-mail e enviaremos um link para redefinir a senha.",
+    "submit": "Enviar link",
+    "submitting": "Enviando link",
+    "remembered": "Lembrou?",
+    "signIn": "Entrar",
+    "sent": "Se existir uma conta com esse e-mail, um link de redefinição foi enviado.",
+    "unavailable": "Redefinição de senha indisponível",
+    "unableToStart": "Não foi possível iniciar a redefinição de senha."
+  },
+  "ResetPassword": {
+    "loading": "Carregando o formulário...",
+    "title": "Escolha uma nova senha",
+    "subtitle": "Digite uma nova senha para sua conta.",
+    "newPasswordLabel": "Nova senha",
+    "newPasswordPlaceholder": "Digite uma nova senha",
+    "confirmPasswordLabel": "Confirmar senha",
+    "confirmPasswordPlaceholder": "Confirme sua nova senha",
+    "confirmRequired": "Confirme sua nova senha",
+    "mismatch": "As senhas não coincidem",
+    "submit": "Redefinir senha",
+    "submitting": "Redefinindo senha",
+    "needFreshLink": "Precisa de um link novo?",
+    "requestAnother": "Solicitar outro",
+    "invalidLink": "O link de redefinição é inválido ou expirou.",
+    "updated": "Senha atualizada. Agora você já pode entrar.",
+    "failed": "Falha ao redefinir a senha",
+    "unableToReset": "Não foi possível redefinir sua senha."
+  },
+  "SocialAuth": {
+    "signInFailed": "Falha ao entrar",
+    "connectionError": "Verifique sua conexão e tente de novo.",
+    "redirecting": "Redirecionando",
+    "or": "ou"
+  },
+  "CountrySelect": {
+    "placeholder": "Selecione seu país...",
+    "searchPlaceholder": "Buscar países...",
+    "empty": "Nenhum país encontrado.",
+    "required": "Selecione {field}",
+    "hint": "Ajuda a mostrar dados de mercado e notícias relevantes para você."
+  },
+  "ProfilePage": {
+    "metaTitle": "Perfil",
+    "memberSince": "membro desde {date}",
+    "statWatching": "Acompanhando",
+    "statActiveAlerts": "Alertas ativos",
+    "statPausedAlerts": "Alertas pausados",
+    "statSignInMethods": "Formas de entrar",
+    "detailsTitle": "Detalhes",
+    "detailsSub": "Seu nome e como seu e-mail de boas-vindas é adaptado",
+    "signInMethodsTitle": "Formas de entrar",
+    "signInMethodsSub": "Maneiras de acessar esta conta",
+    "methodCredential": "E-mail e senha",
+    "connected": "Conectado",
+    "passwordTitle": "Senha",
+    "passwordSub": "Ao trocar, seus outros dispositivos são desconectados"
+  },
+  "ProfileForm": {
+    "nameLabel": "Nome",
+    "namePlaceholder": "Seu nome",
+    "nameRequired": "O nome é obrigatório",
+    "nameMinLength": "Pelo menos 2 caracteres",
+    "saveFailed": "Não foi possível salvar",
+    "saved": "Perfil salvo",
+    "submit": "Salvar alterações",
+    "submitting": "Salvando",
+    "upToDate": "Atualizado"
+  },
+  "PasswordForm": {
+    "currentLabel": "Senha atual",
+    "currentPlaceholder": "Sua senha atual",
+    "currentRequired": "Digite sua senha atual",
+    "newLabel": "Nova senha",
+    "newPlaceholder": "Pelo menos 8 caracteres",
+    "notChanged": "Senha não alterada",
+    "changed": "Senha alterada",
+    "otherDevicesSignedOut": "Os outros dispositivos foram desconectados.",
+    "submit": "Alterar senha",
+    "submitting": "Alterando"
+  },
+  "Dashboard": {
+    "title": "Mercados",
+    "sub": "{market} · {status, select, open {aberto agora} other {fechado agora}} · {feed, select, live {dados ao vivo} delayed {dados com atraso} other {dados de fechamento}}",
+    "pulseTitle": "Pulso",
+    "pulseSubFinnhub": "Nossas cotações compartilhadas via Finnhub",
+    "pulseSubYahoo": "Cotações com atraso via Yahoo Finance",
+    "pulseSubTradingView": "{feed, select, live {Cotações ao vivo via TradingView} delayed {Cotações com atraso via TradingView} other {Cotações de fechamento via TradingView}}",
+    "moversTitle": "Maiores variações",
+    "moversSub": "Maiores movimentos de hoje",
+    "leadersTitle": "Líderes",
+    "leadersSub": "Tendência de 12 meses por grupo",
+    "stockHeatmapTitle": "Mapa de calor do S&P 500",
+    "cryptoHeatmapTitle": "Mapa de calor de cripto",
+    "heatmapSub": "Tamanho pelo valor de mercado, cor pela variação de hoje",
+    "quotesTitle": "Cotações",
+    "quotesSub": "Líderes de {market} por grupo",
+    "storiesTitle": "Principais notícias",
+    "storiesSub": "Mais recentes primeiro"
+  },
+  "MarketSwitcher": {
+    "label": "Mercados",
+    "openNow": "Aberto agora",
+    "closedNow": "Fechado agora"
+  },
+  "PulseTile": {
+    "vsPrevClose": "{change} vs fechamento anterior",
+    "unavailable": "Cotação indisponível"
+  },
+  "DataFreshness": {
+    "live": "Ao vivo · 15s",
+    "asOf": "Em {time} · atualizado a cada hora",
+    "delayed": "Com atraso · atualizado a cada hora"
+  },
+  "YahooQuotes": {
+    "changePercent": "Var. %",
+    "unavailable": "Cotações indisponíveis no momento.",
+    "source": "Preços em {currency} via Yahoo Finance, com atraso de cerca de 15 minutos.",
+    "sourceNoCurrency": "Preços via Yahoo Finance, com atraso de cerca de 15 minutos.",
+    "pe": "P/L",
+    "pb": "P/VP",
+    "roe": "ROE",
+    "roce": "ROCE",
+    "dy": "DY",
+    "clearSort": "Limpar ordenação",
+    "combinedHint": "Ranking combinado: as posições de cada empresa nas colunas escolhidas são somadas, com o menor total primeiro. Empresas sem algum valor ficam por último.",
+    "sortBy": "Ordenar por {column}",
+    "fundamentalsNote": "P/L (preço sobre lucro) e P/VP (preço sobre valor patrimonial) são dos últimos doze meses, do Yahoo Finance; ROE é P/VP dividido por P/L. ROCE é o lucro operacional (EBIT) sobre o ativo total menos o passivo circulante; não disponível para bancos e seguradoras. DY são os dividendos pagos nos últimos doze meses divididos pelo preço atual."
+  },
+  "TradingViewWidget": {
+    "fullScreen": "Tela cheia",
+    "exitFullScreen": "Sair da tela cheia",
+    "exitFullScreenHint": "Sair da tela cheia (Esc)"
+  },
+  "Errors": {
+    "signUpFailed": "Falha ao criar a conta",
+    "signInFailed": "Falha ao entrar",
+    "signOutFailed": "Falha ao sair",
+    "tooManyAttempts": "Muitas tentativas. Aguarde alguns minutos e tente de novo.",
+    "socialSignInUnavailable": "O login com {provider} não está disponível no momento.",
+    "resetEmailNotConfigured": "O e-mail de redefinição de senha não está configurado.",
+    "resetBaseUrlMissing": "BETTER_AUTH_URL precisa estar configurada antes de enviar e-mails de redefinição de senha.",
+    "resetEmailFailed": "Não foi possível enviar o e-mail de redefinição de senha.",
+    "resetLinkInvalid": "O link de redefinição é inválido ou expirou.",
+    "nameLength": "O nome deve ter de 2 a 80 caracteres.",
+    "pickCountry": "Escolha um país.",
+    "pickEachOption": "Escolha uma opção em cada grupo.",
+    "profileSaveFailed": "Não foi possível salvar seu perfil.",
+    "passwordChangeFailed": "A senha atual está incorreta ou a nova é muito curta.",
+    "watchlistFull": "Sua lista de acompanhamento está cheia ({max} ações). Remova uma para adicionar outra.",
+    "listNotFound": "Essa lista não existe mais.",
+    "listNameInvalid": "Dê à lista um nome de até 60 caracteres.",
+    "listLimit": "Você pode ter {max} listas. Exclua uma para abrir espaço.",
+    "listExists": "Você já tem uma lista chamada “{name}”.",
+    "symbolInvalid": "Esse não é um símbolo que possamos consultar.",
+    "listFull": "Uma lista comporta até {max} símbolos."
+  },
+  "NewsSources": {
+    "companyNews": "Notícias da empresa",
+    "marketNews": "Notícias do mercado"
+  },
+  "Emails": {
+    "common": {
+      "logoAlt": "Logo do OpenStock",
+      "unsubscribe": "Cancelar inscrição",
+      "visitOpenstock": "Visitar o OpenStock"
+    },
+    "welcome": {
+      "subject": "Bem-vindo ao Openstock - sua caixa de ferramentas de código aberto para o mercado de ações!",
+      "text": "Obrigado por entrar no Openstock, uma iniciativa da Open Dev Society",
+      "title": "Bem-vindo ao OpenStock",
+      "dashboardAlt": "Prévia do painel do OpenStock",
+      "heading": "Bem-vindo a bordo, {name}",
+      "fallbackIntro": "Obrigado por entrar no Openstock. Agora você tem as ferramentas para acompanhar os mercados.",
+      "featuresLabel": "Veja o que você pode fazer agora:",
+      "featureWatchlist": "Monte sua lista de acompanhamento para seguir suas ações favoritas",
+      "featureSearch": "Busque qualquer ação com ⌘K e abra como uma aba",
+      "featureDashboard": "Explore o painel com tendências e as últimas notícias do mercado",
+      "closing": "Vamos manter você informado com atualizações, dados e alertas no momento certo.",
+      "cta": "Ir para o painel",
+      "initiative": "Iniciativa da Open Dev Society"
+    },
+    "resetPassword": {
+      "subject": "Redefina sua senha do Openstock",
+      "heading": "Redefina sua senha",
+      "greeting": "Olá, {name},",
+      "greetingNoName": "Olá,",
+      "body": "Recebemos um pedido para redefinir sua senha do Openstock. Use o botão abaixo para escolher uma nova.",
+      "cta": "Redefinir senha",
+      "ignore": "Se você não fez esse pedido, pode ignorar este e-mail com segurança.",
+      "text": "Redefina sua senha: {url}"
+    },
+    "stockAlert": {
+      "subjectAbove": "🔔 Alerta de preço: {symbol} está acima de {target}",
+      "subjectBelow": "🔔 Alerta de preço: {symbol} está abaixo de {target}",
+      "textAbove": "{symbol} está agora em {price}, acima do seu alvo de {target}.",
+      "textBelow": "{symbol} está agora em {price}, abaixo do seu alvo de {target}.",
+      "titleAbove": "Alerta de preço: {symbol} atingiu o alvo superior",
+      "titleBelow": "Alerta de preço: {symbol} atingiu o alvo inferior",
+      "headingAbove": "📈 Preço acima do alvo",
+      "headingBelow": "📉 Preço abaixo do alvo",
+      "currentPrice": "Preço atual",
+      "details": "Detalhes do alerta",
+      "targetPriceLabel": "Preço-alvo:",
+      "triggerLabel": "Gatilho:",
+      "triggerAbove": "O preço passou do seu limite superior de {target}",
+      "triggerBelow": "O preço caiu abaixo do seu limite inferior de {target}",
+      "calloutTitleAbove": "Alerta disparado",
+      "calloutBodyAbove": "{symbol} atingiu o seu preço-alvo.",
+      "calloutTitleBelow": "Preço em queda",
+      "calloutBodyBelow": "{symbol} caiu abaixo do seu preço-alvo.",
+      "cta": "Ver painel",
+      "footer": "Você está recebendo este e-mail porque se inscreveu nas atualizações do Openstock."
+    }
+  },
+  "Sidebar": {
+    "homeAria": "Painel do OpenStock",
+    "searchStocks": "Buscar ações",
+    "overview": "Visão geral",
+    "watchlist": "Lista de acompanhamento",
+    "watching": "Acompanhando",
+    "watchingEmpty": "Marque uma ação com estrela para fixá-la aqui.",
+    "resources": {
+      "help": "Ajuda",
+      "apiDocs": "Documentação da API",
+      "about": "Sobre",
+      "terms": "Termos"
+    },
+    "support": "Apoie o OpenStock",
+    "sponsor": "Patrocinar",
+    "sponsorSlotsOpen": "Vagas de patrocínio abertas",
+    "sponsorSlotsLeft": "{count, plural, one {# vaga de patrocínio restante} other {# vagas de patrocínio restantes}}",
+    "sponsorPitch": "Coloque sua empresa na frente de todos os usuários do OpenStock.",
+    "signOut": "Sair"
+  },
+  "TabBar": {
+    "pages": {
+      "overview": "Visão geral",
+      "watchlist": "Lista de acompanhamento",
+      "profile": "Perfil"
+    },
+    "openMenu": "Abrir menu",
+    "closeTab": "Fechar {label}",
+    "openStock": "Abrir uma ação",
+    "openStockHint": "Abrir uma ação (⌘K)"
+  },
+  "SearchCommand": {
+    "dialogTitle": "Paleta de comandos",
+    "dialogDescription": "Busque um comando para executar...",
+    "placeholder": "Buscar por empresa ou símbolo",
+    "searching": "Buscando",
+    "noMatch": "Nada corresponde a “{query}”",
+    "noStocks": "Nenhuma ação disponível",
+    "results": "Resultados",
+    "popular": "Populares",
+    "listPlaceholder": "Adicionar uma ação a “{list}”",
+    "addingTo": "Adicionando a <name>{list}</name>",
+    "addedToList": "{symbol} adicionada a “{list}”",
+    "addFailed": "Não foi possível adicionar o símbolo",
+    "addTitle": "Adicionar {symbol} a {list}",
+    "add": "Adicionar",
+    "adding": "Adicionando"
+  },
+  "UpdateBanner": {
+    "new": "Novo",
+    "seeWhatsNew": "Veja as novidades",
+    "fullChangelog": "Ler o histórico completo de mudanças"
+  },
+  "DonatePopup": {
+    "kicker": "Aberto a patrocinadores",
+    "title": "Mantenha o OpenStock gratuito",
+    "description": "O carinho de vocês pelo OpenStock e pela Open Dev Society nos ajudou a crescer, e agora estamos chegando aos limites do plano gratuito da Vercel. Patrocine a partir de US$ 5 por mês, contribua uma vez ou fale conosco sobre uma parceria.",
+    "becomeSponsor": "Seja um patrocinador",
+    "maybeLater": "Talvez depois"
+  },
+  "OpenDevSocietyBranding": {
+    "initiativeBy": "Iniciativa da"
+  },
+  "StockPage": {
+    "sentimentTitle": "Sentimento",
+    "sentimentSub": "Reddit, X.com, notícias e Polymarket",
+    "dividendYieldTitle": "Dividend Yield",
+    "chartTitle": "Gráfico",
+    "chartUnavailableSub": "Somente no TradingView para esta bolsa",
+    "chartUnavailableTitle": "Gráfico indisponível aqui",
+    "chartUnavailableBody": "O TradingView não licencia os gráficos de {exchange} para outros sites. Demonstrações financeiras, indicadores técnicos e o perfil abaixo continuam funcionando.",
+    "openOnTradingView": "Abrir gráfico no TradingView",
+    "financialsTitle": "Demonstrações financeiras",
+    "financialsSub": "DRE, balanço patrimonial e indicadores",
+    "technicalsTitle": "Análise técnica",
+    "technicalsSub": "Osciladores e médias móveis, 1h",
+    "profileTitle": "Perfil",
+    "profileSub": "O que a empresa faz"
+  },
+  "StockHeader": {
+    "quoteViaYahoo": "cotação com atraso via Yahoo Finance",
+    "quoteViaTradingView": "cotação via TradingView",
+    "alertsHint": "Os alertas de preço precisam de uma fonte de cotação que possamos consultar a cada 5 minutos",
+    "alertsScope": "Alertas: ações dos EUA e cripto",
+    "setAlert": "Criar alerta",
+    "open": "Abertura",
+    "openHint": "Primeiro negócio do pregão",
+    "dayRange": "Faixa do dia",
+    "dayRangeHint": "Da mínima à máxima",
+    "prevClose": "Fech. anterior",
+    "prevCloseHint": "Último pregão",
+    "marketCap": "Valor de mercado"
+  },
+  "StockChart": {
+    "title": "Gráfico",
+    "sub": "Ao vivo do TradingView · troque o intervalo e o estilo no gráfico",
+    "indicatorsButton": "Indicadores",
+    "keptNote": "Mantidos em todos os gráficos neste navegador",
+    "indicators": {
+      "sma": "Média móvel (SMA)",
+      "ema": "Média móvel exponencial (EMA)",
+      "bollingerBands": "Bandas de Bollinger",
+      "vwap": "VWAP",
+      "rsi": "IFR (RSI)",
+      "macd": "MACD",
+      "stochastic": "Estocástico",
+      "atr": "ATR"
+    }
+  },
+  "StockSentiment": {
+    "avgBuzz": "Buzz médio",
+    "bullishAvg": "Média otimista",
+    "coverage": "Cobertura",
+    "coverageValue": "{count}/{total} fontes",
+    "sourceAlignment": "Alinhamento das fontes: <value>{alignment}</value>",
+    "alignment": {
+      "noSentimentMix": "Sem mistura de sentimento",
+      "singleSourceView": "Visão de uma única fonte",
+      "bullishAlignment": "Alinhamento otimista",
+      "bearishAlignment": "Alinhamento pessimista",
+      "tightAlignment": "Alinhamento forte",
+      "wideDivergence": "Grande divergência",
+      "mixed": "Misto"
+    },
+    "metric": {
+      "mentions": "{value} menções",
+      "trades": "{value} negociações"
+    },
+    "newsSource": "Notícias",
+    "buzz": "buzz",
+    "bullPct": "{pct}% otimista",
+    "trend": {
+      "rising": "Em alta",
+      "falling": "Em queda",
+      "stable": "Estável"
+    },
+    "noTrend": "Sem tendência"
+  },
+  "WatchlistButton": {
+    "added": "{symbol} adicionada à lista de acompanhamento",
+    "removed": "{symbol} removida da lista de acompanhamento",
+    "updateFailed": "Não foi possível atualizar sua lista de acompanhamento",
+    "addLabel": "Adicionar {symbol} à lista de acompanhamento",
+    "removeLabel": "Remover {symbol} da lista de acompanhamento",
+    "watch": "Acompanhar",
+    "watching": "Acompanhando"
+  },
+  "WatchlistPage": {
+    "title": "Lista de acompanhamento",
+    "symbolCount": "{count, plural, one {# símbolo} other {# símbolos}}",
+    "addSymbol": "Adicionar símbolo",
+    "symbolsTitle": "Símbolos",
+    "symbolsSub": "Clique em uma linha para ver gráficos, análise técnica e demonstrações",
+    "newsTitle": "Notícias",
+    "newsSubWatched": "Últimas notícias dos símbolos que você acompanha",
+    "newsSubGeneral": "Notícias gerais do mercado",
+    "alertsTitle": "Alertas",
+    "alertsSubActive": "{count} ativos · verificados a cada 5 minutos",
+    "alertsSubCloud": "Um recurso do OpenStock Cloud",
+    "listsTitle": "Minhas listas",
+    "listsSub": "Agrupe as ações que você acompanha em listas com nome"
+  },
+  "WatchlistTableRow": {
+    "today": "Hoje",
+    "emptyTitle": "Sua lista de acompanhamento ainda está vazia",
+    "emptyBody": "Busque uma empresa e marque com estrela para ver o preço aqui e criar alertas.",
+    "searchStocks": "Buscar ações",
+    "setAlertLabel": "Criar um alerta de preço para {symbol}",
+    "alertsUnavailable": "Alertas disponíveis para ações dos EUA e cripto"
+  },
+  "AlertsPanel": {
+    "status": {
+      "triggered": "Disparado",
+      "paused": "Pausado",
+      "expired": "Expirado",
+      "watching": "Acompanhando"
+    },
+    "removed": "Alerta de {symbol} removido",
+    "removeFailed": "Não foi possível remover o alerta",
+    "cloudTitle": "Os alertas vêm com o Cloud",
+    "cloudBody": "Os alertas de preço por e-mail fazem parte do OpenStock Cloud, US$ 5 por mês, em breve.",
+    "seeCloud": "Conhecer o OpenStock Cloud",
+    "emptyTitle": "Nenhum alerta ainda",
+    "emptyBody": "Use o sino em qualquer linha ou “Criar alerta” na página de uma ação. Avisamos por e-mail quando disparar.",
+    "movedNotice": "Os alertas passaram para o <link>OpenStock Cloud</link>, por isso estes estão pausados.",
+    "above": "Acima de {price}",
+    "below": "Abaixo de {price}",
+    "until": "até {date}",
+    "removeTitle": "Remover alerta",
+    "removeLabel": "Remover alerta de {symbol}"
+  },
+  "CreateAlertModal": {
+    "risesAbove": "Sobe acima de",
+    "fallsBelow": "Cai abaixo de",
+    "created": "Alerta criado: {symbol} {condition, select, ABOVE {acima de} other {abaixo de}} {price}",
+    "createFailed": "Não foi possível criar o alerta",
+    "kicker": "Alerta de preço",
+    "description": "Avisamos por e-mail quando o preço cruzar o seu alvo. Verificado a cada 5 minutos, expira após 90 dias.",
+    "conditionLabel": "Condição",
+    "targetPrice": "Preço-alvo",
+    "priceUnavailable": "Preço atual indisponível",
+    "alreadyMet": "Já está {condition, select, ABOVE {acima} other {abaixo}} disso — vai disparar na próxima verificação",
+    "now": "Agora {price}",
+    "nowWithDistance": "Agora {price} · {distance}% de distância",
+    "setting": "Criando alerta",
+    "setAlert": "Criar alerta",
+    "cloudTitle": "Os alertas de preço vêm com o Cloud",
+    "cloudBody": "O Cloud inclui alertas de preço por e-mail e cotações ao vivo por US$ 5 por mês. Em breve. Quem hospeda por conta própria já tem os dois hoje.",
+    "seeCloud": "Conhecer o OpenStock Cloud",
+    "selfHost": "Hospedar por conta própria"
+  },
+  "NewsList": {
+    "emptyTitle": "Sem notícias recentes",
+    "emptyBody": "Nada publicado nos últimos dias para estes símbolos."
+  },
+  "NamedLists": {
+    "starred": "Com estrela",
+    "addStock": "Adicionar uma ação",
+    "addStockTo": "Adicionar uma ação a {list}",
+    "newListName": "Nome da nova lista",
+    "create": "Criar",
+    "createTitle": "Criar a lista",
+    "createFailed": "Não foi possível criar a lista",
+    "delete": "Excluir",
+    "deleteTitle": "Excluir {list}",
+    "deleteConfirm": "Excluir a lista “{list}”? As ações que você marcou com estrela não são afetadas.",
+    "deleteFailed": "Não foi possível excluir a lista",
+    "emptyTitle": "“{list}” está vazia",
+    "emptyBody": "Use “Adicionar uma ação” acima ou o botão de lista em qualquer linha da sua lista de acompanhamento.",
+    "removeFrom": "Remover {symbol} de {list}",
+    "removedFrom": "{symbol} removida de “{list}”",
+    "removeFailed": "Não foi possível remover o símbolo",
+    "menuTitle": "Adicionar {symbol} a uma lista",
+    "menuLabel": "Adicionar {symbol} a uma lista com nome",
+    "menuHeading": "Adicionar a uma lista",
+    "menuEmpty": "Nenhuma lista ainda — comece uma abaixo.",
+    "newListItem": "Nova lista…",
+    "newListTitle": "Nova lista",
+    "listName": "Nome da lista",
+    "addedTo": "{symbol} adicionada a “{list}”",
+    "addFailed": "Não foi possível adicionar o símbolo",
+    "addToFailed": "Não foi possível adicionar {symbol} a “{list}”",
+    "createdAndAdded": "“{list}” criada e {symbol} adicionada",
+    "retryHint": "“{list}” foi criada — toque no botão de novo para tentar adicionar {symbol}.",
+    "retryAdd": "Tentar adicionar de novo",
+    "createAndAdd": "Criar e adicionar"
+  }
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useLayoutEffect } from 'react';
-import { localeDir } from '@/i18n/config';
+import { htmlLang, localeDir } from '@/i18n/config';
 
 // The root layout stays static (marketing pages are prerendered in English), so the
 // per-request layouts set <html lang dir> once the locale is known. For a right-to-left
@@ -11,7 +11,7 @@ export default function HtmlLang({ locale }: { locale: string }) {
     const dir = localeDir(locale);
     useLayoutEffect(() => {
         const html = document.documentElement;
-        html.lang = locale;
+        html.lang = htmlLang(locale);
         if (dir === 'rtl') html.dir = dir;
         else html.removeAttribute('dir');
         // Leaving for the English-only public pages puts <html> back the way they render it
@@ -24,7 +24,7 @@ export default function HtmlLang({ locale }: { locale: string }) {
     return (
         <script
             dangerouslySetInnerHTML={{
-                __html: `document.documentElement.lang=${JSON.stringify(locale)};document.documentElement.dir=${JSON.stringify(dir)};`,
+                __html: `document.documentElement.lang=${JSON.stringify(htmlLang(locale))};document.documentElement.dir=${JSON.stringify(dir)};`,
             }}
         />
     );

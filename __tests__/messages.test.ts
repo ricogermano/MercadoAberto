@@ -4,6 +4,7 @@ import { parse, type MessageFormatElement } from '@formatjs/icu-messageformat-pa
 import en from '@/messages/en.json';
 import pl from '@/messages/pl.json';
 import ar from '@/messages/ar.json';
+import pt from '@/messages/pt.json';
 import { LOCALES, localeDir } from '@/i18n/config';
 
 type Tree = { [key: string]: string | Tree };
@@ -23,7 +24,7 @@ const args = (msg: string) => collect(parse(msg), new Set());
 
 describe('message files', () => {
     const base = flat(en as Tree);
-    for (const [locale, messages] of Object.entries({ pl, ar })) {
+    for (const [locale, messages] of Object.entries({ pl, ar, pt })) {
         const other = flat(messages as Tree);
         it(`${locale} has exactly the English keys`, () => {
             expect(Object.keys(other).sort()).toEqual(Object.keys(base).sort());
@@ -38,7 +39,7 @@ describe('message files', () => {
     }
 
     it('ships every locale it lists, and only Arabic is right to left', () => {
-        expect([...LOCALES].sort()).toEqual(['ar', 'en', 'pl']);
+        expect([...LOCALES].sort()).toEqual(['ar', 'en', 'pl', 'pt']);
         expect(LOCALES.filter((l) => localeDir(l) === 'rtl')).toEqual(['ar']);
     });
 });

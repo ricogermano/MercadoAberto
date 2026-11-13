@@ -12,6 +12,14 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Painel do Brasil começa pelo mapa de calor',
+        items: [
+            'Na aba Brasil, o mapa de calor vem primeiro, com as maiores variações do dia ao lado.',
+            'A tabela de cotações passa a ocupar a largura toda da tela, e as notícias ficam logo abaixo.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Melhor no celular e no tema escuro',
         items: [
             'No iPhone, a tela não fica mais ampliada e cortada à direita depois de entrar.',

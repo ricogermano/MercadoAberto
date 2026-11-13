@@ -74,6 +74,27 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                 </Suspense>
             </section>
 
+            {ownHeatmap ? (
+                // Map first with the movers beside it, then the full-width quotes table and the news
+                <div key={market.id} className="flex flex-col gap-3">
+                    <div className="grid gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                        <Panel title={t('marketHeatmapTitle', { market: name })} sub={t('heatmapSub')}>
+                            <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><YahooHeatmap market={market} locale={locale} /></Suspense>
+                        </Panel>
+                        <Panel title={t('moversTitle')} sub={t('moversSub')}>
+                            <YahooMovers market={market} count={10} />
+                        </Panel>
+                    </div>
+                    <Panel title={t('quotesTitle')} sub={t('quotesSub', { market: name })}>
+                        <YahooQuotesTable market={market} />
+                    </Panel>
+                    <Panel title={t('storiesTitle')} sub={t('storiesSub')}>
+                        {market.newsFeeds
+                            ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
+                            : <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />}
+                    </Panel>
+                </div>
+            ) : (
             <div key={market.id} className="flex flex-col gap-3">
                 <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
                     {market.yahoo ? (
@@ -104,23 +125,19 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                             <TradingViewWidget scriptUrl={`${scriptUrl}market-quotes.js`} config={marketQuotesConfig(groups, locale)} height={560} />
                         </Panel>
                     )}
-                    {ownHeatmap && (
-                        <Panel title={t('marketHeatmapTitle', { market: name })} sub={t('heatmapSub')}>
-                            <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><YahooHeatmap market={market} locale={locale} /></Suspense>
-                        </Panel>
-                    )}
                     {market.newsFeeds && market.newsKeywords && (
                         <Panel title={t('storiesLocalTitle')} sub={t('storiesSub')}>
                             <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
                         </Panel>
                     )}
-                    <Panel title={t(market.newsKeywords ? 'storiesWorldTitle' : 'storiesTitle')} sub={t('storiesSub')} className={heatmap || ownHeatmap || market.newsKeywords ? '' : 'xl:col-span-2'}>
+                    <Panel title={t(market.newsKeywords ? 'storiesWorldTitle' : 'storiesTitle')} sub={t('storiesSub')} className={heatmap || market.newsKeywords ? '' : 'xl:col-span-2'}>
                         {market.newsFeeds && !market.newsKeywords
                             ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
                             : <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />}
                     </Panel>
                 </div>
             </div>
+            )}
         </>
     );
 }

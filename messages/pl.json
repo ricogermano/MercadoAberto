@@ -168,6 +168,10 @@
     "failedGeneric": "Nie udało się zalogować."
   },
   "SignUp": {
+    "agreePrefix": "Zakładając konto, akceptujesz",
+    "agreeTerms": "Regulamin",
+    "agreeAnd": "oraz",
+    "agreePrivacy": "Politykę prywatności",
     "title": "Załóż konto",
     "subtitle": "Darmowe i open source. Nie potrzebujesz karty.",
     "accountSection": "Konto",
@@ -510,7 +514,8 @@
     "resources": {
       "guide": "Jak korzystać",
       "updates": "Nowości",
-      "terms": "Regulamin"
+      "terms": "Regulamin",
+      "privacy": "Prywatność"
     },
     "signOut": "Wyloguj się"
   },

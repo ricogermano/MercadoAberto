@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { BookOpen, GraduationCap, Heart, LayoutDashboard, LogOut, Search, Sparkles, Star } from "lucide-react";
+import { BookOpen, GraduationCap, Heart, LayoutDashboard, LogOut, Search, ShieldCheck, Sparkles, Star } from "lucide-react";
 import { openSearch } from "@/components/SearchCommand";
 import BrandLogo from "@/components/BrandLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -22,6 +22,7 @@ const RESOURCES = [
     { href: '/guide', label: 'guide', icon: GraduationCap },
     { href: '/updates', label: 'updates', icon: Sparkles },
     { href: '/terms', label: 'terms', icon: BookOpen },
+    { href: '/privacy', label: 'privacy', icon: ShieldCheck },
 ] as const;
 
 const Sidebar = ({ user, watchlist }: SidebarProps) => {

@@ -8,6 +8,7 @@ import {
 import { formatPrice, sanitizeEmailIntro } from "@/lib/utils";
 import { escapeAll, fillTemplate, getEmailTranslator } from "@/lib/nodemailer/i18n";
 import { isWorkersRuntime } from "@/database/mongoose";
+import { siteUrl } from "@/lib/seo/site";
 
 type EmailSendResult =
     | { status: 'skipped' }
@@ -93,6 +94,7 @@ export const sendWelcomeEmail = async ({ email, name, intro, locale }: WelcomeEm
                 visitOpenstock: t('common.visitOpenstock'),
             }),
             lang,
+            appUrl: siteUrl(),
             intro: sanitizeEmailIntro(intro),
         });
 
@@ -122,15 +124,13 @@ export const sendNewsSummaryEmail = async (
             return { status: 'skipped' } satisfies EmailSendResult;
         }
 
-        const htmlTemplate = NEWS_SUMMARY_EMAIL_TEMPLATE
-            .replace('{{date}}', date)
-            .replace('{{newsContent}}', newsContent);
+        const htmlTemplate = fillTemplate(NEWS_SUMMARY_EMAIL_TEMPLATE, { date, newsContent, appUrl: siteUrl() });
 
         const mailOptions = {
             from: `"MercadoAberto" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
-            subject: `📈 Market News Summary Today - ${date}`,
-            text: `Today's market news summary from MercadoAberto`,
+            subject: `📈 Resumo das notícias do mercado - ${date}`,
+            text: `Resumo das notícias do mercado de hoje, pelo MercadoAberto`,
             html: htmlTemplate,
         };
 
@@ -184,6 +184,7 @@ export const sendStockAlertEmail = async (
             }),
             company: '', // Alerts don't store the company name
             lang,
+            appUrl: siteUrl(),
         });
 
         const mailOptions = {

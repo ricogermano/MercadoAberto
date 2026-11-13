@@ -168,6 +168,10 @@
     "failedGeneric": "تعذّر تسجيل الدخول."
   },
   "SignUp": {
+    "agreePrefix": "بإنشاء الحساب فإنك توافق على",
+    "agreeTerms": "شروط الاستخدام",
+    "agreeAnd": "و",
+    "agreePrivacy": "سياسة الخصوصية",
     "title": "أنشئ حسابك",
     "subtitle": "مجاني ومفتوح المصدر. بدون بطاقة.",
     "accountSection": "الحساب",
@@ -510,7 +514,8 @@
     "resources": {
       "guide": "طريقة الاستخدام",
       "updates": "المستجدات",
-      "terms": "الشروط"
+      "terms": "الشروط",
+      "privacy": "الخصوصية"
     },
     "signOut": "تسجيل الخروج"
   },

@@ -25,4 +25,15 @@ describe('sendWelcomeEmail', () => {
         expect(html).toContain('&lt;a href=&quot;https://evil.example&quot;&gt;Click&lt;/a&gt; $&#39; $&amp;');
         expect(html).toContain('Hi <strong>growth</strong> fan. Verify your account<strong>bold</strong> R&amp;D</p>');
     });
+
+    it('links to this deployment, never to the upstream project', async () => {
+        process.env.BETTER_AUTH_URL = 'https://painel.example/';
+        await sendWelcomeEmail({ email: 'user@example.com', name: 'Ana', intro: 'Oi', locale: 'pt' });
+
+        const { html } = sendMail.mock.calls.at(-1)![0];
+        expect(html).toContain('href="https://painel.example"');
+        expect(html).not.toMatch(/{{\w+}}/);
+        expect(html).not.toMatch(/vercel\.app|openstock\.app|ibb\.co|href="#"/i);
+        delete process.env.BETTER_AUTH_URL;
+    });
 });

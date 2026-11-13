@@ -12,6 +12,14 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Política de privacidade',
+        items: [
+            'Nova página “Privacidade”: quais dados o painel guarda, para que servem, com quem são compartilhados e como pedir a exclusão da conta.',
+            'O link fica na barra lateral, no rodapé do site e na tela de cadastro.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Real na aba Câmbio',
         items: [
             'A aba Câmbio agora mostra o real contra dólar, euro, libra, iene, franco suíço, yuan e peso argentino.',

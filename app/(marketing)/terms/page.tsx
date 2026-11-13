@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { AlertTriangle } from 'lucide-react';
 import PageHero from '@/components/marketing/PageHero';
 import { APP_NAME, SOURCE_URL, UPSTREAM_NAME, UPSTREAM_URL } from '@/lib/constants';
@@ -25,7 +26,12 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
     },
     {
         title: 'Sua conta',
-        body: 'Para criar a conta pedimos nome, e-mail e senha. Guardamos também a sua lista de acompanhamento e as preferências que você informar. Esses dados servem só para o funcionamento do painel.',
+        body: (
+            <>
+                Para criar a conta pedimos nome, e-mail e senha. Guardamos também a sua lista de acompanhamento e as preferências que você informar. Esses dados servem só para o funcionamento do painel. Os detalhes, e como pedir a exclusão, estão na{' '}
+                <Link href="/privacy" className={linkClass}>Política de privacidade</Link>.
+            </>
+        ),
     },
     {
         title: 'Uso aceitável',

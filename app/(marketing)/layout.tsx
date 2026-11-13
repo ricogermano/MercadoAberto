@@ -24,7 +24,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                         <BrandLogo />
                     </Link>
                     <nav className="hidden items-center gap-1 md:flex">
-                        {[['/#recursos', 'Recursos'], ['/#dados', 'Dados'], ['/#codigo-aberto', 'Código aberto'], ['/terms', 'Termos']].map(([href, label]) => (
+                        {[['/#recursos', 'Recursos'], ['/#dados', 'Dados'], ['/#codigo-aberto', 'Código aberto'], ['/terms', 'Termos'], ['/privacy', 'Privacidade']].map(([href, label]) => (
                             <Link key={href} href={href} className="side-item h-8 font-semibold">{label}</Link>
                         ))}
                     </nav>
@@ -44,6 +44,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                     <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-muted-foreground">
                         <Link href="/" className="transition-colors hover:text-foreground">Início</Link>
                         <Link href="/terms" className="transition-colors hover:text-foreground">Termos</Link>
+                        <Link href="/privacy" className="transition-colors hover:text-foreground">Privacidade</Link>
                         <Link href="/sign-in" className="transition-colors hover:text-foreground">Entrar</Link>
                     </nav>
                 </div>

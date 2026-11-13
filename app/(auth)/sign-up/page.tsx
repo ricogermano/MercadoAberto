@@ -126,6 +126,12 @@ const SignUp = () => {
                     <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full">
                         {isSubmitting ? t('submitting') : t('submit')}
                     </Button>
+                    <p className="text-center text-xs leading-relaxed text-gray-500">
+                        {t('agreePrefix')}{' '}
+                        <a href="/terms" target="_blank" rel="noreferrer" className="footer-link">{t('agreeTerms')}</a>{' '}
+                        {t('agreeAnd')}{' '}
+                        <a href="/privacy" target="_blank" rel="noreferrer" className="footer-link">{t('agreePrivacy')}</a>.
+                    </p>
                     <FooterLink text={t('haveAccount')} linkText={t('signIn')} href="/sign-in" />
                 </div>
 

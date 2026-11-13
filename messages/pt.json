@@ -168,6 +168,10 @@
     "failedGeneric": "Não foi possível entrar."
   },
   "SignUp": {
+    "agreePrefix": "Ao criar a conta, você concorda com os",
+    "agreeTerms": "Termos de uso",
+    "agreeAnd": "e a",
+    "agreePrivacy": "Política de privacidade",
     "title": "Crie sua conta",
     "subtitle": "Gratuito e de código aberto. Sem cartão.",
     "accountSection": "Conta",
@@ -510,7 +514,8 @@
     "resources": {
       "guide": "Como usar",
       "updates": "Novidades",
-      "terms": "Termos"
+      "terms": "Termos",
+      "privacy": "Privacidade"
     },
     "signOut": "Sair"
   },

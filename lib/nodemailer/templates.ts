@@ -97,16 +97,10 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://i.ibb.co/r28VWPjS/Screenshot-2025-10-04-123317-Picsart-Ai-Image-Enhancer-removebg-preview.png" alt="{{logoAlt}}" width="150" style="max-width: 100%; height: auto;">
+                            <span style="font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #FDD458;">MercadoAberto</span>
                         </td>
                     </tr>
 
-                    <!-- Dashboard Preview Image -->
-                    <tr>
-                        <td align="center" class="dashboard-preview" style="padding: 40px 40px 0px 40px;">
-                            <img src="https://i.ibb.co/BKC2HBBQ/dashboard.png" alt="{{dashboardAlt}}" width="100%" style="max-width: 520px; width: 100%; height: auto; border-radius: 12px; border: 1px solid #30333A;">
-                        </td>
-                    </tr>
 
                     <!-- Main Content -->
                     <tr>
@@ -141,7 +135,7 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 40px 0; width: 100%;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://openstock-ods.vercel.app/" style="display: block; width: 100%; background: linear-gradient(135deg, #FDD458 0%, #E8BA40 100%); color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center; box-sizing: border-box;">
+                                        <a href="{{appUrl}}" style="display: block; width: 100%; background: linear-gradient(135deg, #FDD458 0%, #E8BA40 100%); color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center; box-sizing: border-box;">
                                             {{cta}}
                                         </a>
                                     </td>
@@ -151,9 +145,8 @@ export const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <!-- Footer Text -->
                             <p class="mobile-text dark-text-muted" style="margin: 40px 0 0 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important; text-align: center;">
                                {{initiative}}<br>
-                                <a href="#" style="color: #CCDADC !important; text-decoration: underline;">{{unsubscribe}}</a> |
-                                <a href="https://stock-market-dev.vercel.app/" style="color: #CCDADC !important; text-decoration: underline;">{{visitOpenstock}}</a><br>
-                                © 2025 Open Dev Society
+                                <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">{{visitOpenstock}}</a><br>
+                                MercadoAberto
                             </p>
                         </td>
                     </tr>
@@ -172,7 +165,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="x-apple-disable-message-reformatting">
-    <title>Market News Summary Today</title>
+    <title>Resumo das notícias do mercado</title>
     <!--[if mso]>
     <noscript>
         <xml>
@@ -260,7 +253,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://i.ibb.co/r28VWPjS/Screenshot-2025-10-04-123317-Picsart-Ai-Image-Enhancer-removebg-preview.png" alt="MercadoAberto Logo" width="150" style="max-width: 100%; height: auto;">
+                            <span style="font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #FDD458;">MercadoAberto</span>
                         </td>
                     </tr>
 
@@ -270,7 +263,7 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
 
                             <!-- Header -->
                             <h1 class="mobile-title dark-text" style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #FDD458; line-height: 1.2;">
-                                Market News Summary Today
+                                Resumo das notícias do mercado
                             </h1>
 
                             <!-- Date -->
@@ -284,14 +277,13 @@ export const NEWS_SUMMARY_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <!-- Footer Text -->
                             <div style="text-align: center; margin: 40px 0 0 0;">
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    You're receiving this because you subscribed to MercadoAberto news updates.
+                                    Você recebe este e-mail porque se inscreveu nas notícias do MercadoAberto.
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> |
-                                    <a href="https://openstock.vercel.app" style="color: #CCDADC !important; text-decoration: underline;">Visit MercadoAberto</a>
+                                    <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visitar o MercadoAberto</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Open Dev Society
+                                    MercadoAberto
                                 </p>
                             </div>
                         </td>
@@ -410,7 +402,7 @@ export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://i.ibb.co/r28VWPjS/Screenshot-2025-10-04-123317-Picsart-Ai-Image-Enhancer-removebg-preview.png" alt="{{logoAlt}}" width="150" style="max-width: 100%; height: auto;">
+                            <span style="font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #FDD458;">MercadoAberto</span>
                         </td>
                     </tr>
 
@@ -483,7 +475,7 @@ export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://openstock-ods.vercel.app/" style="display: block; width: 100%; max-width: 100%; box-sizing: border-box; color: #000000; background-color: #E8BA40; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center;">
+                                        <a href="{{appUrl}}" style="display: block; width: 100%; max-width: 100%; box-sizing: border-box; color: #000000; background-color: #E8BA40; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center;">
                                             {{cta}}
                                         </a>
                                     </td>
@@ -496,11 +488,10 @@ export const STOCK_ALERT_UPPER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                                     {{footer}}
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    <a href="#" style="color: #CCDADC !important; text-decoration: underline;">{{unsubscribe}}</a> |
-                                    <a href="https://openstock-ods.vercel.app/" style="color: #CCDADC !important; text-decoration: underline;">{{visitOpenstock}}</a>
+                                    <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">{{visitOpenstock}}</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Open Dev Society
+                                    MercadoAberto
                             </div>
                         </td>
                     </tr>
@@ -618,7 +609,7 @@ export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://i.ibb.co/r28VWPjS/Screenshot-2025-10-04-123317-Picsart-Ai-Image-Enhancer-removebg-preview.png" alt="{{logoAlt}}" width="150" style="max-width: 100%; height: auto;">
+                            <span style="font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #FDD458;">MercadoAberto</span>
                         </td>
                     </tr>
 
@@ -691,7 +682,7 @@ export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://openstock-ods.vercel.app/" style="display: block; width: 100%; max-width: 100%; box-sizing: border-box; background-color: #E8BA40; color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center;">
+                                        <a href="{{appUrl}}" style="display: block; width: 100%; max-width: 100%; box-sizing: border-box; background-color: #E8BA40; color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center;">
                                             {{cta}}
                                         </a>
                                     </td>
@@ -704,11 +695,10 @@ export const STOCK_ALERT_LOWER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                                     {{footer}}
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    <a href="#" style="color: #CCDADC !important; text-decoration: underline;">{{unsubscribe}}</a> |
-                                    <a href="https://openstock-ods.vercel.app/" style="color: #CCDADC !important; text-decoration: underline;">{{visitOpenstock}}</a>
+                                    <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">{{visitOpenstock}}</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Open Dev Society
+                                    MercadoAberto
                                 </p>
                             </div>
                         </td>
@@ -818,7 +808,7 @@ export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://i.ibb.co/r28VWPjS/Screenshot-2025-10-04-123317-Picsart-Ai-Image-Enhancer-removebg-preview.png" alt="MercadoAberto Logo" width="150" style="max-width: 100%; height: auto;">
+                            <span style="font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #FDD458;">MercadoAberto</span>
                         </td>
                     </tr>
 
@@ -904,7 +894,7 @@ export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://openstock-ods.vercel.app" style="display: inline-block; background-color: #E8BA40; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1;">
+                                        <a href="{{appUrl}}" style="display: inline-block; background-color: #E8BA40; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1;">
                                             View Dashboard
                                         </a>
                                     </td>
@@ -921,14 +911,13 @@ export const VOLUME_ALERT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                              <!-- Footer Text -->
                             <div style="text-align: center; margin: 40px 0 0 0;">
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    You're receiving this because you subscribed to MercadoAberto news updates.
+                                    Você recebe este e-mail porque se inscreveu nas notícias do MercadoAberto.
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> |
-                                    <a href="https://openstock-ods.vercel.app" style="color: #CCDADC !important; text-decoration: underline;">Visit MercadoAberto</a>
+                                    <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visitar o MercadoAberto</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    © 2025 Open Dev Society
+                                    MercadoAberto
                                 </p>
                             </div>
                         </td>
@@ -1041,7 +1030,7 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                     <!-- Header with Logo -->
                     <tr>
                         <td align="left" class="mobile-header-padding" style="padding: 40px 40px 20px 40px;">
-                            <img src="https://i.ibb.co/r28VWPjS/Screenshot-2025-10-04-123317-Picsart-Ai-Image-Enhancer-removebg-preview.png" alt="MercadoAberto Logo" width="150" style="max-width: 100%; height: auto;">
+                            <span style="font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #FDD458;">MercadoAberto</span>
                         </td>
                     </tr>
 
@@ -1078,7 +1067,7 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 0 20px 0; width: 100%;">
                                 <tr>
                                     <td align="center" class="mobile-button">
-                                        <a href="https://openstock-ods.vercel.app" style="display: inline-block; background: #E8BA40; color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center;  width: 100%;">
+                                        <a href="{{appUrl}}" style="display: inline-block; background: #E8BA40; color: #000000; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-size: 16px; font-weight: 500; line-height: 1; text-align: center;  width: 100%;">
                                             Return to Dashboard
                                         </a>
                                     </td>
@@ -1091,8 +1080,7 @@ export const INACTIVE_USER_REMINDER_EMAIL_TEMPLATE = `<!DOCTYPE html>
                                     Questions? Reply to this email or contact our support team.
                                 </p>
                                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
-                                    <a href="#" style="color: #CCDADC !important; text-decoration: underline;">Unsubscribe</a> |
-                                    <a href="https://openstock-ods.vercel.app" style="color: #CCDADC !important; text-decoration: underline;">Visit MercadoAberto</a>
+                                    <a href="{{appUrl}}" style="color: #CCDADC !important; text-decoration: underline;">Visitar o MercadoAberto</a>
                                 </p>
                                 <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #CCDADC !important;">
                                     © 2025 MercadoAberto

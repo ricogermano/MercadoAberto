@@ -168,6 +168,10 @@
     "failedGeneric": "Failed to sign in."
   },
   "SignUp": {
+    "agreePrefix": "By creating an account you agree to the",
+    "agreeTerms": "Terms of use",
+    "agreeAnd": "and the",
+    "agreePrivacy": "Privacy policy",
     "title": "Create your account",
     "subtitle": "Free and open source. No card needed.",
     "accountSection": "Account",
@@ -510,7 +514,8 @@
     "resources": {
       "guide": "How to use",
       "updates": "What's new",
-      "terms": "Terms"
+      "terms": "Terms",
+      "privacy": "Privacy"
     },
     "signOut": "Sign out"
   },

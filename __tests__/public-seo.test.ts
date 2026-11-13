@@ -10,7 +10,7 @@ import { adjacentTickers, findTicker, relatedTickers, tickerIntro, tickerPath, U
 
 describe('isPublicPath', () => {
     it('lets crawlers and the new public sections through', () => {
-        for (const path of ['/', '/terms', '/robots.txt', '/sitemap.xml']) {
+        for (const path of ['/', '/terms', '/privacy', '/robots.txt', '/sitemap.xml']) {
             expect(isPublicPath(path), path).toBe(true);
         }
     });
@@ -24,7 +24,7 @@ describe('isPublicPath', () => {
 
 describe('middleware', () => {
     it('does not redirect public pages or crawler files', async () => {
-        for (const path of ['/', '/robots.txt', '/sitemap.xml', '/terms']) {
+        for (const path of ['/', '/robots.txt', '/sitemap.xml', '/terms', '/privacy']) {
             const response = await middleware(new NextRequest(`http://localhost${path}`));
             expect(response.headers.get('location'), path).toBeNull();
         }
@@ -123,7 +123,7 @@ describe('edgar helpers', () => {
 });
 
 describe('sitemap', () => {
-    it('lists only the landing page and the terms', () => {
+    it('lists only the landing page, the terms and the privacy policy', () => {
         const entries = sitemapEntries('https://openstock.example/');
         const urls = entries.map((entry) => entry.url);
         expect(urls).toEqual(PUBLIC_EXACT_PATHS.map((path) => `https://openstock.example${path}`));

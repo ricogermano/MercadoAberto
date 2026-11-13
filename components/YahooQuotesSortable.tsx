@@ -5,10 +5,12 @@ import Link from 'next/link';
 import { ArrowDown, ArrowUp, ChevronsUpDown, CircleHelp } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import ChangePill from '@/components/ChangePill';
+import WatchlistButton from '@/components/WatchlistButton';
 import { rankByCriteria, type SortCriterion } from '@/lib/yahoo';
 
 export type QuoteRow = {
     tvSymbol: string;
+    watching: boolean;
     appSymbol: string | null;
     name: string;
     price: number | null;
@@ -50,14 +52,18 @@ export default function YahooQuotesSortable({
     sortByTemplate,
     help,
     note,
+    watchLabel,
 }: {
     groups: { title: string; rows: QuoteRow[] }[];
     labels: QuoteLabels;
     sortByTemplate: Record<SortKey, string>;
     help: Partial<Record<SortKey, { label: string; title: string; body: string }>>;
     note: string;
+    watchLabel: string;
 }) {
     const [criteria, setCriteria] = useState<Criterion[]>([]);
+    // Stars toggled here, so they survive re-sorting (rows remount) until the server data catches up
+    const [watch, setWatch] = useState<Record<string, boolean>>({});
     const allRows = groups.flatMap((g) => g.rows);
     const showFundamentals = allRows.some((r) => r.pe != null || r.pb != null || r.roce != null || r.dy != null);
 
@@ -88,10 +94,21 @@ export default function YahooQuotesSortable({
 
     const combined = criteria.length > 1;
     const sorted = criteria.length > 0 ? rankByCriteria(allRows, criteria) : null;
-    const colCount = columns.length + (combined ? 1 : 0);
+    const colCount = columns.length + 1 + (combined ? 1 : 0); // + the watchlist star
 
     const renderRow = (r: QuoteRow, position?: number | null) => (
         <tr key={r.tvSymbol} className="border-t border-line/60 transition-colors hover:bg-hover/40">
+            <td className="py-1 ps-2 pe-0">
+                {r.appSymbol && (
+                    <WatchlistButton
+                        symbol={r.appSymbol}
+                        company={r.name}
+                        isInWatchlist={watch[r.appSymbol] ?? r.watching}
+                        variant="icon"
+                        onWatchlistChange={(symbol, added) => setWatch((cur) => ({ ...cur, [symbol]: added }))}
+                    />
+                )}
+            </td>
             {combined && <td className="num px-3 py-2 text-faint">{position ?? '—'}</td>}
             <td className="px-3 py-2">
                 <Link href={`/stocks/${r.appSymbol}`} className="font-semibold hover:text-brand-ink">
@@ -133,6 +150,7 @@ export default function YahooQuotesSortable({
             <table className="w-full text-[13px]">
                 <thead>
                     <tr className="text-start text-faint">
+                        <th className="w-8 p-0" aria-label={watchLabel} />
                         {combined && <th className="px-3 py-2 font-medium">#</th>}
                         {columns.map((c) => {
                             const index = criteria.findIndex((x) => x.key === c.key);

@@ -5,6 +5,7 @@ import type { Messages } from 'next-intl';
 import ChangePill from '@/components/ChangePill';
 import YahooQuotesSortable from '@/components/YahooQuotesSortable';
 import { getYahooDailyQuotes, getYahooFundamentals } from '@/lib/actions/yahoo.actions';
+import { getUserWatchlist } from '@/lib/actions/watchlist.actions';
 import { yahooAppSymbol } from '@/lib/yahoo';
 import type { Market } from '@/lib/markets';
 import { toMessageKey } from '@/i18n/config';
@@ -17,14 +18,18 @@ const symbolsOf = (market: Market) => [...new Set(market.groups.flatMap((g) => g
 // and only end-of-day GPW values. Sorting needs client state, so this server part only fetches and builds plain rows.
 export default async function YahooQuotesTable({ market }: { market: Market }) {
     const symbols = symbolsOf(market);
-    const [quotes, fundamentals, t, th, tm] = await Promise.all([
+    const [quotes, fundamentals, watchlist, t, th, tm, tw] = await Promise.all([
         getYahooDailyQuotes(symbols),
         getYahooFundamentals(symbols),
+        // The star column still works without it: a failed read only shows every star empty
+        getUserWatchlist().catch(() => []) as Promise<{ symbol: string }[]>,
         getTranslations('YahooQuotes'),
         getTranslations('WatchlistTable.headers'),
         getTranslations('Markets'),
+        getTranslations('WatchlistPage'),
     ]);
     const currency = Object.values(quotes)[0]?.currency;
+    const watched = new Set(watchlist.map((w) => w.symbol));
 
     const groups = market.groups.map((group) => ({
         title: tm(`groups.${toMessageKey(group.title) as GroupKey}`),
@@ -33,6 +38,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
             const f = fundamentals[tvSymbol];
             return {
                 tvSymbol,
+                watching: watched.has(yahooAppSymbol(tvSymbol) ?? ''),
                 appSymbol: yahooAppSymbol(tvSymbol),
                 name,
                 price: q?.price ?? null,
@@ -79,7 +85,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
         (['dy', 'pe', 'pb', 'roe', 'roce'] as const).map((k) => [k, { label: t('helpAbout', { column: labels[k] }), title: t(`help.${k}.title`), body: t(`help.${k}.body`) }]),
     ) as Record<'dy' | 'pe' | 'pb' | 'roe' | 'roce', { label: string; title: string; body: string }>;
 
-    return <YahooQuotesSortable groups={groups} labels={labels} sortByTemplate={sortByTemplate} help={help} note={note} />;
+    return <YahooQuotesSortable groups={groups} labels={labels} sortByTemplate={sortByTemplate} help={help} note={note} watchLabel={tw('title')} />;
 }
 
 // Today's biggest movers across the same groups, ranked by day change %

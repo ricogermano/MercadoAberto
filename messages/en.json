@@ -258,6 +258,27 @@
     "vsPrevClose": "{change} vs prev close",
     "unavailable": "Quote unavailable"
   },
+  "IndexHelp": {
+    "about": "What is {name}?",
+    "items": {
+      "IBOV": {
+        "title": "Ibovespa",
+        "body": "The main index of B3, the Brazilian exchange. It tracks the most traded shares, weighted by the market value of the shares available for trading. Its portfolio is reviewed every four months."
+      },
+      "IFIX": {
+        "title": "IFIX (real estate funds index)",
+        "body": "Tracks the most traded real estate funds listed on B3, counting both the change in unit prices and the income they distribute."
+      },
+      "SMLL": {
+        "title": "Small Cap index (SMLL)",
+        "body": "Tracks B3's smaller companies: those outside the group of largest companies that together make up 85% of the exchange's market value."
+      },
+      "IDIV": {
+        "title": "Dividend index (IDIV)",
+        "body": "Tracks the B3 shares with the highest dividend yields, by B3's criteria, counting dividends and interest on equity. Past distributions do not indicate future ones."
+      }
+    }
+  },
   "DataFreshness": {
     "live": "Live · 15s",
     "asOf": "As of {time} · refreshed hourly",

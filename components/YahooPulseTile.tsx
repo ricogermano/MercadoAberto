@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { LineChart } from 'lucide-react';
 import ChangePill from '@/components/ChangePill';
+import HelpPopover from '@/components/HelpPopover';
 import { yahooAppSymbol, type YahooDailyQuote } from '@/lib/yahoo';
 
 const formatAmount = (value: number) =>
     value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+export type PulseTileHelp = { label: string; title: string; body: string };
 
 type PulseTileLabels = { vsPrevClose: (change: string) => string; unavailable: string };
 
@@ -12,7 +15,7 @@ const ENGLISH: PulseTileLabels = { vsPrevClose: (change) => `${change} vs prev c
 
 // Pulse tile priced from Yahoo daily quotes. Used for Tadawul, whose TradingView quote widgets are blocked in free embeds,
 // and Warsaw, whose embeds are end of day only.
-export default function YahooPulseTile({ tvSymbol, label, quote, labels = ENGLISH }: { tvSymbol: string; label: string; quote: YahooDailyQuote | null; labels?: PulseTileLabels }) {
+export default function YahooPulseTile({ tvSymbol, label, quote, labels = ENGLISH, help }: { tvSymbol: string; label: string; quote: YahooDailyQuote | null; labels?: PulseTileLabels; help?: PulseTileHelp }) {
     const appSymbol = yahooAppSymbol(tvSymbol);
     const body = (
         <>
@@ -20,6 +23,8 @@ export default function YahooPulseTile({ tvSymbol, label, quote, labels = ENGLIS
                 <span className="bento-ico"><LineChart /></span>
                 <span className="truncate">{label}</span>
                 <span className="mono ms-auto text-xs text-faint">{tvSymbol.split(':').pop()}</span>
+                {/* Only on index tiles, which are not links */}
+                {help && !appSymbol && <HelpPopover {...help} />}
             </div>
             <p className="bento-value self-start num">
                 {/* Indices are in points, not a currency */}

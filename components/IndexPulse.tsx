@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import type { Messages } from "next-intl";
 import PulseTile, { LocalizedPulseTile } from "@/components/PulseTile";
 import YahooPulseTile from "@/components/YahooPulseTile";
 import TradingViewWidget from "@/components/TradingViewWidget";
@@ -18,9 +19,16 @@ export default async function IndexPulse({ market = getMarket('us'), locale }: {
     if (market.yahoo) {
         const yahoo = await getYahooDailyQuotes(market.pulse.map((p) => p.symbol));
         const labels = t ? { vsPrevClose: (change: string) => t('vsPrevClose', { change }), unavailable: t('unavailable') } : undefined;
+        // What each index tracks, for the tickers that have a description in the messages (the B3 ones)
+        const th = locale ? await getTranslations({ locale, namespace: 'IndexHelp' }) : null;
+        const helpFor = (symbol: string, label: string) => {
+            const key = symbol.split(':').pop() as keyof Messages['IndexHelp']['items'];
+            if (!th || !th.has(`items.${key}.title`)) return undefined;
+            return { label: th('about', { name: label }), title: th(`items.${key}.title`), body: th(`items.${key}.body`) };
+        };
         return (
             <div className="bento">
-                {market.pulse.map((tile) => <YahooPulseTile key={tile.symbol} tvSymbol={tile.symbol} label={tile.label} quote={yahoo[tile.symbol] ?? null} labels={labels} />)}
+                {market.pulse.map((tile) => <YahooPulseTile key={tile.symbol} tvSymbol={tile.symbol} label={tile.label} quote={yahoo[tile.symbol] ?? null} labels={labels} help={helpFor(tile.symbol, tile.label)} />)}
             </div>
         );
     }

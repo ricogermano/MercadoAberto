@@ -258,6 +258,27 @@
     "vsPrevClose": "{change} vs fechamento anterior",
     "unavailable": "Cotação indisponível"
   },
+  "IndexHelp": {
+    "about": "O que é {name}?",
+    "items": {
+      "IBOV": {
+        "title": "Ibovespa",
+        "body": "Principal índice da B3. Acompanha as ações mais negociadas da bolsa, ponderadas pelo valor de mercado das ações em circulação. A carteira é revista a cada quatro meses."
+      },
+      "IFIX": {
+        "title": "IFIX (Índice de Fundos Imobiliários)",
+        "body": "Acompanha os fundos imobiliários mais negociados da B3, considerando a variação das cotas e os rendimentos distribuídos."
+      },
+      "SMLL": {
+        "title": "Índice Small Cap (SMLL)",
+        "body": "Acompanha as empresas menores da B3: as que ficam fora do grupo das maiores, que juntas somam 85% do valor de mercado da bolsa."
+      },
+      "IDIV": {
+        "title": "Índice Dividendos (IDIV)",
+        "body": "Acompanha as ações da B3 com os maiores dividend yields, pelos critérios da B3, contando dividendos e juros sobre capital próprio. Distribuições passadas não indicam distribuições futuras."
+      }
+    }
+  },
   "DataFreshness": {
     "live": "Ao vivo · 15s",
     "asOf": "Em {time} · atualizado a cada hora",

@@ -258,6 +258,27 @@
     "vsPrevClose": "{change} vs poprz. zamknięcie",
     "unavailable": "Notowanie niedostępne"
   },
+  "IndexHelp": {
+    "about": "Czym jest {name}?",
+    "items": {
+      "IBOV": {
+        "title": "Ibovespa",
+        "body": "Główny indeks B3, brazylijskiej giełdy. Obejmuje najczęściej handlowane akcje, ważone wartością rynkową akcji w wolnym obrocie. Skład jest weryfikowany co cztery miesiące."
+      },
+      "IFIX": {
+        "title": "IFIX (indeks funduszy nieruchomości)",
+        "body": "Obejmuje najczęściej handlowane fundusze nieruchomości notowane na B3, uwzględniając zmianę cen jednostek i wypłacane dochody."
+      },
+      "SMLL": {
+        "title": "Indeks Small Cap (SMLL)",
+        "body": "Obejmuje mniejsze spółki z B3: te spoza grupy największych spółek, które łącznie stanowią 85% wartości rynkowej giełdy."
+      },
+      "IDIV": {
+        "title": "Indeks dywidendowy (IDIV)",
+        "body": "Obejmuje akcje z B3 o najwyższej stopie dywidendy według kryteriów B3, licząc dywidendy i odsetki od kapitału własnego. Wcześniejsze wypłaty nie wskazują przyszłych."
+      }
+    }
+  },
   "DataFreshness": {
     "live": "Na żywo · 15 s",
     "asOf": "Stan na {time} · odświeżane co godzinę",

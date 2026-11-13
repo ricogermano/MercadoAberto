@@ -85,7 +85,9 @@
       "banksInsurance": "البنوك والتأمين",
       "energyIndustry": "الطاقة والصناعة",
       "consumerTech": "الاستهلاك والتقنية",
-      "utilitiesIndustry": "المرافق والصناعة"
+      "utilitiesIndustry": "المرافق والصناعة",
+      "utilities": "المرافق",
+      "realEstate": "العقارات"
     }
   },
   "WatchlistTable": {

@@ -85,7 +85,9 @@
       "banksInsurance": "Bancos e seguros",
       "energyIndustry": "Energia e indústria",
       "consumerTech": "Consumo e tecnologia",
-      "utilitiesIndustry": "Utilidades e indústria"
+      "utilitiesIndustry": "Utilidades e indústria",
+      "utilities": "Utilidade pública",
+      "realEstate": "Imobiliário"
     }
   },
   "WatchlistTable": {

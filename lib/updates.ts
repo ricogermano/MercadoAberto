@@ -12,6 +12,14 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Excluir a conta pelo Perfil',
+        items: [
+            'Na tela “Perfil” há agora o botão “Excluir minha conta”: ele apaga de vez o cadastro, as listas e os alertas.',
+            'Para evitar acidentes, o painel pede a senha de novo antes de apagar.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Política de privacidade',
         items: [
             'Nova página “Privacidade”: quais dados o painel guarda, para que servem, com quem são compartilhados e como pedir a exclusão da conta.',

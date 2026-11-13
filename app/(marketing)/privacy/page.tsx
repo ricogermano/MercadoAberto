@@ -87,7 +87,7 @@ export default function PrivacyPage() {
         },
         {
             title: 'Por quanto tempo',
-            body: 'Enquanto a conta existir. Quando você pede a exclusão, apagamos o cadastro, as listas e os alertas. Cópias de segurança e registros técnicos dos serviços acima podem levar mais alguns dias para sumir.',
+            body: 'Enquanto a conta existir. Quando você exclui a conta (na tela Perfil) ou pede a exclusão, apagamos o cadastro, as listas e os alertas. Cópias de segurança e registros técnicos dos serviços acima podem levar mais alguns dias para sumir.',
         },
         {
             title: 'Seus direitos',
@@ -97,7 +97,7 @@ export default function PrivacyPage() {
                     <List items={[
                         'saber se guardamos dados seus e receber uma cópia;',
                         <>corrigir nome e preferências, direto na tela <Link href="/profile" className={linkClass}>Perfil</Link>;</>,
-                        'pedir a exclusão da conta e dos dados;',
+                        <>excluir a conta e os dados, direto na tela <Link href="/profile" className={linkClass}>Perfil</Link> (“Excluir minha conta”);</>,
                         'pedir os dados em formato que possa ser levado a outro serviço;',
                         'retirar um consentimento ou se opor a um uso.',
                     ]} />

@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { cache } from "react";
 import { sendPasswordResetEmail } from "@/lib/nodemailer/reset-password";
 import { resolveLocale } from "@/i18n/locale";
+import { deleteUserData } from "@/lib/account-data";
 
 
 type MongoDb = Parameters<typeof mongodbAdapter>[0];
@@ -22,6 +23,12 @@ const createAuth = (database: MongoDb) => betterAuth({
                 investmentGoals: { type: "string", required: false },
                 riskTolerance: { type: "string", required: false },
                 preferredIndustry: { type: "string", required: false },
+            },
+            // "Delete my account" on the profile page (LGPD art. 18). The password is asked again there;
+            // without one (social sign-in) better-auth only accepts a session less than a day old.
+            deleteUser: {
+                enabled: true,
+                beforeDelete: async (user) => { await deleteUserData(user.id); },
             },
         },
         emailAndPassword: {

@@ -247,7 +247,9 @@
     "methodCredential": "البريد وكلمة المرور",
     "connected": "متصل",
     "passwordTitle": "كلمة المرور",
-    "passwordSub": "تغييرها يخرج أجهزتك الأخرى"
+    "passwordSub": "تغييرها يخرج أجهزتك الأخرى",
+    "deleteTitle": "حذف الحساب",
+    "deleteSub": "يمحو حسابك وقوائمك وتنبيهاتك"
   },
   "ProfileForm": {
     "nameLabel": "الاسم",
@@ -271,6 +273,23 @@
     "otherDevicesSignedOut": "تم تسجيل خروج الأجهزة الأخرى.",
     "submit": "تغيير كلمة المرور",
     "submitting": "جارٍ التغيير…"
+  },
+  "DeleteAccount": {
+    "intro": "إذا لم تعد ترغب في استخدام اللوحة، يمكنك حذف حسابك من هنا. لا يمكن التراجع عن ذلك.",
+    "open": "حذف حسابي",
+    "title": "حذف الحساب؟",
+    "body": "سنمحو نهائيًا حسابك ({email}) وجميع قوائمك وتنبيهاتك. لا يمكن استرجاعها بعد ذلك.",
+    "passwordLabel": "اكتب كلمة المرور للتأكيد",
+    "passwordPlaceholder": "كلمة المرور",
+    "passwordRequired": "اكتب كلمة المرور",
+    "emailLabel": "اكتب بريدك الإلكتروني للتأكيد",
+    "emailRequired": "اكتب بريد هذا الحساب",
+    "cancel": "إلغاء",
+    "confirm": "حذف نهائي",
+    "confirming": "جارٍ الحذف",
+    "notDeleted": "لم يُحذف الحساب",
+    "deleted": "تم حذف الحساب",
+    "deletedSub": "تم محو بياناتك."
   },
   "Dashboard": {
     "title": "السوق",
@@ -444,7 +463,11 @@
     "listLimit": "يمكنك الاحتفاظ بـ {max} قوائم. احذف واحدة لتفسح المجال.",
     "listExists": "لديك قائمة باسم «{name}» بالفعل.",
     "symbolInvalid": "هذا ليس رمزًا يمكننا البحث عنه.",
-    "listFull": "تتسع القائمة لـ {max} رمزًا كحد أقصى."
+    "listFull": "تتسع القائمة لـ {max} رمزًا كحد أقصى.",
+    "accountDeleteFailed": "تعذّر حذف الحساب. حاول مرة أخرى بعد قليل.",
+    "accountDeleteWrongPassword": "كلمة المرور غير صحيحة.",
+    "accountDeleteWrongEmail": "البريد الإلكتروني لا يطابق هذا الحساب.",
+    "accountDeleteSignInAgain": "للأمان، سجّل الخروج ثم ادخل مجددًا وكرّر الحذف."
   },
   "NewsSources": {
     "companyNews": "أخبار الشركة",

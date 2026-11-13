@@ -247,7 +247,9 @@
     "methodCredential": "Email and password",
     "connected": "Connected",
     "passwordTitle": "Password",
-    "passwordSub": "Changing it signs out your other devices"
+    "passwordSub": "Changing it signs out your other devices",
+    "deleteTitle": "Delete account",
+    "deleteSub": "Erases your account, your lists and your alerts"
   },
   "ProfileForm": {
     "nameLabel": "Name",
@@ -271,6 +273,23 @@
     "otherDevicesSignedOut": "Other devices were signed out.",
     "submit": "Change password",
     "submitting": "Changing"
+  },
+  "DeleteAccount": {
+    "intro": "If you no longer want to use the dashboard, you can erase your account here. This cannot be undone.",
+    "open": "Delete my account",
+    "title": "Delete the account?",
+    "body": "We will permanently erase your account ({email}), all your lists and your alerts. They cannot be recovered afterwards.",
+    "passwordLabel": "Type your password to confirm",
+    "passwordPlaceholder": "Your password",
+    "passwordRequired": "Type your password",
+    "emailLabel": "Type your email to confirm",
+    "emailRequired": "Type this account's email",
+    "cancel": "Cancel",
+    "confirm": "Delete for good",
+    "confirming": "Deleting",
+    "notDeleted": "Account not deleted",
+    "deleted": "Account deleted",
+    "deletedSub": "Your data has been erased."
   },
   "Dashboard": {
     "title": "Markets",
@@ -444,7 +463,11 @@
     "listLimit": "You can keep {max} lists. Delete one to make room.",
     "listExists": "You already have a list called “{name}”.",
     "symbolInvalid": "That is not a symbol we can look up.",
-    "listFull": "A list holds up to {max} symbols."
+    "listFull": "A list holds up to {max} symbols.",
+    "accountDeleteFailed": "The account could not be deleted. Try again in a moment.",
+    "accountDeleteWrongPassword": "Incorrect password.",
+    "accountDeleteWrongEmail": "That email does not match this account.",
+    "accountDeleteSignInAgain": "For safety, sign out, sign in again and repeat the deletion."
   },
   "NewsSources": {
     "companyNews": "Company News",

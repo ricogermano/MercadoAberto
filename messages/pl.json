@@ -247,7 +247,9 @@
     "methodCredential": "Adres e-mail i hasło",
     "connected": "Połączone",
     "passwordTitle": "Hasło",
-    "passwordSub": "Zmiana hasła wyloguje cię na pozostałych urządzeniach"
+    "passwordSub": "Zmiana hasła wyloguje cię na pozostałych urządzeniach",
+    "deleteTitle": "Usuń konto",
+    "deleteSub": "Usuwa Twoje konto, listy i alerty"
   },
   "ProfileForm": {
     "nameLabel": "Imię",
@@ -271,6 +273,23 @@
     "otherDevicesSignedOut": "Pozostałe urządzenia zostały wylogowane.",
     "submit": "Zmień hasło",
     "submitting": "Zmienianie…"
+  },
+  "DeleteAccount": {
+    "intro": "Jeśli nie chcesz już korzystać z panelu, możesz tutaj usunąć konto. Tego nie da się cofnąć.",
+    "open": "Usuń moje konto",
+    "title": "Usunąć konto?",
+    "body": "Trwale usuniemy Twoje konto ({email}), wszystkie listy i alerty. Nie będzie można ich odzyskać.",
+    "passwordLabel": "Wpisz hasło, aby potwierdzić",
+    "passwordPlaceholder": "Twoje hasło",
+    "passwordRequired": "Wpisz hasło",
+    "emailLabel": "Wpisz swój e-mail, aby potwierdzić",
+    "emailRequired": "Wpisz e-mail tego konta",
+    "cancel": "Anuluj",
+    "confirm": "Usuń na stałe",
+    "confirming": "Usuwanie",
+    "notDeleted": "Konto nie zostało usunięte",
+    "deleted": "Konto usunięte",
+    "deletedSub": "Twoje dane zostały usunięte."
   },
   "Dashboard": {
     "title": "Rynki",
@@ -444,7 +463,11 @@
     "listLimit": "Możesz mieć maksymalnie {max} list. Usuń jedną, żeby zrobić miejsce.",
     "listExists": "Masz już listę o nazwie „{name}”.",
     "symbolInvalid": "Nie możemy wyszukać takiego symbolu.",
-    "listFull": "Lista może zawierać maksymalnie {max} symboli."
+    "listFull": "Lista może zawierać maksymalnie {max} symboli.",
+    "accountDeleteFailed": "Nie udało się usunąć konta. Spróbuj ponownie za chwilę.",
+    "accountDeleteWrongPassword": "Nieprawidłowe hasło.",
+    "accountDeleteWrongEmail": "Ten e-mail nie pasuje do tego konta.",
+    "accountDeleteSignInAgain": "Dla bezpieczeństwa wyloguj się, zaloguj ponownie i powtórz usuwanie."
   },
   "NewsSources": {
     "companyNews": "Aktualności firmy",

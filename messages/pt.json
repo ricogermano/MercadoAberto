@@ -247,7 +247,9 @@
     "methodCredential": "E-mail e senha",
     "connected": "Conectado",
     "passwordTitle": "Senha",
-    "passwordSub": "Ao trocar, seus outros dispositivos são desconectados"
+    "passwordSub": "Ao trocar, seus outros dispositivos são desconectados",
+    "deleteTitle": "Excluir conta",
+    "deleteSub": "Apaga seu cadastro, suas listas e seus alertas"
   },
   "ProfileForm": {
     "nameLabel": "Nome",
@@ -271,6 +273,23 @@
     "otherDevicesSignedOut": "Os outros dispositivos foram desconectados.",
     "submit": "Alterar senha",
     "submitting": "Alterando"
+  },
+  "DeleteAccount": {
+    "intro": "Se você não quiser mais usar o painel, pode apagar sua conta aqui. Isso não pode ser desfeito.",
+    "open": "Excluir minha conta",
+    "title": "Excluir a conta?",
+    "body": "Vamos apagar de vez o seu cadastro ({email}), todas as suas listas e os seus alertas. Não é possível recuperar depois.",
+    "passwordLabel": "Digite sua senha para confirmar",
+    "passwordPlaceholder": "Sua senha",
+    "passwordRequired": "Digite sua senha",
+    "emailLabel": "Digite seu e-mail para confirmar",
+    "emailRequired": "Digite o e-mail desta conta",
+    "cancel": "Cancelar",
+    "confirm": "Excluir de vez",
+    "confirming": "Excluindo",
+    "notDeleted": "Conta não excluída",
+    "deleted": "Conta excluída",
+    "deletedSub": "Seus dados foram apagados."
   },
   "Dashboard": {
     "title": "Mercados",
@@ -444,7 +463,11 @@
     "listLimit": "Você pode ter {max} listas. Exclua uma para abrir espaço.",
     "listExists": "Você já tem uma lista chamada “{name}”.",
     "symbolInvalid": "Esse não é um símbolo que possamos consultar.",
-    "listFull": "Uma lista comporta até {max} símbolos."
+    "listFull": "Uma lista comporta até {max} símbolos.",
+    "accountDeleteFailed": "Não foi possível excluir a conta. Tente de novo em instantes.",
+    "accountDeleteWrongPassword": "Senha incorreta.",
+    "accountDeleteWrongEmail": "O e-mail não confere com o desta conta.",
+    "accountDeleteSignInAgain": "Por segurança, saia, entre de novo e repita a exclusão."
   },
   "NewsSources": {
     "companyNews": "Notícias da empresa",

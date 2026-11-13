@@ -5,6 +5,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import Panel from "@/components/Panel";
 import ProfileForm from "@/components/profile/ProfileForm";
 import PasswordForm from "@/components/profile/PasswordForm";
+import DeleteAccount from "@/components/profile/DeleteAccount";
 import { auth, getSession } from "@/lib/better-auth/auth";
 import { getUserWatchlist } from "@/lib/actions/watchlist.actions";
 import { getUserAlerts } from "@/lib/actions/alert.actions";
@@ -96,6 +97,10 @@ export default async function ProfilePage() {
                             <PasswordForm />
                         </Panel>
                     )}
+
+                    <Panel title={t('deleteTitle')} sub={t('deleteSub')}>
+                        <DeleteAccount email={user.email} hasPassword={linked.has('credential')} />
+                    </Panel>
                 </div>
             </div>
         </>

@@ -2,7 +2,8 @@
 
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/better-auth/auth";
+import { auth, getSession } from "@/lib/better-auth/auth";
+import { isRateLimited } from "@/lib/rate-limit";
 import { getTranslations } from "next-intl/server";
 import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 
@@ -58,5 +59,40 @@ export async function changePassword({ currentPassword, newPassword }: { current
         console.error('Password change failed', e);
         const t = await getTranslations('Errors');
         return { success: false, error: t('passwordChangeFailed') };
+    }
+}
+
+// Irreversible: removes the user, their sessions and sign-in methods, and (through `beforeDelete`) lists and alerts.
+// Password accounts must type the password again; others type their email and need a recent sign-in.
+export async function deleteAccount({ password, email }: { password?: string; email?: string }) {
+    const t = await getTranslations('Errors');
+    const session = await getSession();
+    if (!session?.user) return { success: false, error: t('accountDeleteFailed') };
+    const { user } = session;
+
+    // Each try checks a password: cap the guesses a stolen session could make
+    if (await isRateLimited(`delete-account:user:${user.id}`, 5, 10 * 60)) {
+        return { success: false, error: t('tooManyAttempts') };
+    }
+
+    try {
+        const requestHeaders = await headers();
+        const accounts = await auth.api.listUserAccounts({ headers: requestHeaders });
+        const hasPassword = accounts.some((a: { providerId: string }) => a.providerId === 'credential');
+
+        if (hasPassword) {
+            if (typeof password !== 'string' || !password) return { success: false, error: t('accountDeleteWrongPassword') };
+        } else if (typeof email !== 'string' || email.trim().toLowerCase() !== user.email.toLowerCase()) {
+            return { success: false, error: t('accountDeleteWrongEmail') };
+        }
+
+        await auth.api.deleteUser({ headers: requestHeaders, body: hasPassword ? { password } : {} });
+        return { success: true };
+    } catch (e) {
+        console.error('Account deletion failed', e);
+        const code = (e as { body?: { code?: string } })?.body?.code;
+        if (code === 'INVALID_PASSWORD') return { success: false, error: t('accountDeleteWrongPassword') };
+        if (code === 'SESSION_EXPIRED') return { success: false, error: t('accountDeleteSignInAgain') };
+        return { success: false, error: t('accountDeleteFailed') };
     }
 }

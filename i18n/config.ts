@@ -2,7 +2,7 @@
 // (and static); only routes that already render per request read the locale cookie.
 export const LOCALES = ['en', 'pl', 'ar', 'pt'] as const;
 export type Locale = (typeof LOCALES)[number];
-export const DEFAULT_LOCALE: Locale = 'en';
+export const DEFAULT_LOCALE: Locale = 'pt';
 export const LOCALE_COOKIE = 'NEXT_LOCALE';
 
 export const LOCALE_NAMES: Record<Locale, string> = { en: 'English', pl: 'Polski', ar: 'العربية', pt: 'Português (Brasil)' };

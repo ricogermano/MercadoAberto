@@ -250,7 +250,7 @@ export function marketsInTabOrder(nameOf: (id: MarketId) => string, locale?: str
     return [...TABS_FIRST.map(byId), ...middle, ...TABS_LAST.map(byId)];
 }
 
-export const DEFAULT_MARKET: MarketId = 'us';
+export const DEFAULT_MARKET: MarketId = 'br';
 export const MARKET_COOKIE = 'openstock-market';
 
 // "CMD:GC" -> "GC", the key of a commodity's translated name in the messages (Markets.commodities); null for anything else
@@ -258,7 +258,7 @@ export const commodityCode = (symbol: string) => (symbol.startsWith('CMD:') ? sy
 
 export const getMarket = (id?: string | null) => MARKETS.find((m) => m.id === id) ?? MARKETS[0];
 
-const COUNTRY_MARKET: Record<string, MarketId> = { IN: 'in', DE: 'de', CA: 'ca', AU: 'au', SA: 'sa', PL: 'pl', BR: 'br' };
+const COUNTRY_MARKET: Record<string, MarketId> = { US: 'us', IN: 'in', DE: 'de', CA: 'ca', AU: 'au', SA: 'sa', PL: 'pl', BR: 'br' };
 export const marketForCountry = (country?: string | null): MarketId => COUNTRY_MARKET[country ?? ''] ?? DEFAULT_MARKET;
 
 // Finnhub free can price (and so alert on) US listings and Binance pairs only.

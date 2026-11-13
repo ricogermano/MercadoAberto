@@ -32,6 +32,7 @@ describe('sendPasswordResetEmail', () => {
             email: 'user@example.com',
             name: '<Admin&Co.>',
             resetUrl: 'https://example.com/reset-password?token=a b&next=<script>',
+            locale: 'en',
         });
 
         expect(sendMailMock).toHaveBeenCalledTimes(1);

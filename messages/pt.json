@@ -90,7 +90,10 @@
       "utilities": "Utilidade pública",
       "realEstate": "Imobiliário",
       "metals": "Metais",
-      "agriculture": "Agrícolas"
+      "agriculture": "Agrícolas",
+      "grains": "Grãos e derivados",
+      "softs": "Outros agrícolas",
+      "livestock": "Pecuária e leite"
     },
     "commodities": {
       "BZ": "Petróleo Brent",
@@ -110,7 +113,19 @@
       "CT": "Algodão",
       "CC": "Cacau",
       "OJ": "Suco de laranja",
-      "LE": "Boi gordo (EUA)"
+      "LE": "Boi gordo (EUA)",
+      "RB": "Gasolina (RBOB)",
+      "HO": "Óleo de aquecimento (diesel)",
+      "HRC": "Aço (bobina a quente, EUA)",
+      "ZM": "Farelo de soja",
+      "ZL": "Óleo de soja",
+      "KE": "Trigo duro (Kansas)",
+      "ZO": "Aveia",
+      "ZR": "Arroz em casca",
+      "LBR": "Madeira serrada",
+      "GF": "Boi magro (EUA)",
+      "HE": "Suíno",
+      "DC": "Leite (classe III)"
     }
   },
   "WatchlistTable": {
@@ -347,7 +362,7 @@
         "body": "Lucro operacional (EBIT) dos últimos doze meses como porcentagem do capital empregado (ativo total menos passivo circulante), considerando dívida e patrimônio juntos. Os dados vêm do Yahoo Finance. Não aparece para bancos e seguradoras, cujos balanços não têm essa divisão."
       }
     },
-    "commoditiesNote": "Contratos futuros de vencimento mais próximo, via Yahoo Finance, com atraso. Cada preço está na unidade ao lado do nome: bbl = barril, oz = onça troy (31,1 g), lb = libra-peso (0,454 kg), bu = bushel (cerca de 27 kg de soja ou trigo, 25 kg de milho), t = tonelada, MMBtu = milhão de BTU (medida de energia do gás), US¢ = centavos de dólar."
+    "commoditiesNote": "Contratos futuros de vencimento mais próximo, via Yahoo Finance, com atraso. Cada preço está na unidade ao lado do nome: bbl = barril, oz = onça troy (31,1 g), lb = libra-peso (0,454 kg), bu = bushel (cerca de 27 kg de soja ou trigo, 25 kg de milho), t = tonelada, MMBtu = milhão de BTU (medida de energia do gás), US¢ = centavos de dólar. gal = galão americano (3,785 litros), st = tonelada curta (907 kg), cwt = 100 libras-peso (45,4 kg), mbf = mil pés de tábua (cerca de 2,36 m³ de madeira)."
   },
   "MarketNews": {
     "unavailable": "As manchetes estão indisponíveis no momento.",

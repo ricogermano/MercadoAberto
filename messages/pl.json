@@ -90,7 +90,10 @@
       "utilities": "Usługi komunalne",
       "realEstate": "Nieruchomości",
       "metals": "Metale",
-      "agriculture": "Rolnictwo"
+      "agriculture": "Rolnictwo",
+      "grains": "Zboża i oleiste",
+      "softs": "Pozostałe rolne",
+      "livestock": "Żywiec i mleko"
     },
     "commodities": {
       "BZ": "Ropa Brent",
@@ -110,7 +113,19 @@
       "CT": "Bawełna",
       "CC": "Kakao",
       "OJ": "Sok pomarańczowy",
-      "LE": "Bydło żywe (USA)"
+      "LE": "Bydło żywe (USA)",
+      "RB": "Benzyna (RBOB)",
+      "HO": "Olej opałowy (diesel)",
+      "HRC": "Stal (blacha gorącowalcowana, USA)",
+      "ZM": "Śruta sojowa",
+      "ZL": "Olej sojowy",
+      "KE": "Pszenica twarda (Kansas)",
+      "ZO": "Owies",
+      "ZR": "Ryż niełuskany",
+      "LBR": "Tarcica",
+      "GF": "Bydło opasowe (USA)",
+      "HE": "Trzoda chlewna",
+      "DC": "Mleko (klasa III)"
     }
   },
   "WatchlistTable": {
@@ -347,7 +362,7 @@
         "body": "Zysk operacyjny (EBIT) z ostatnich dwunastu miesięcy jako procent zaangażowanego kapitału (aktywa ogółem minus zobowiązania krótkoterminowe), czyli z uwzględnieniem długu i kapitału własnego razem. Dane pochodzą z Yahoo Finance. Nie jest pokazywany dla banków i ubezpieczycieli, których bilanse nie mają takiego podziału."
       }
     },
-    "commoditiesNote": "Kontrakty terminowe o najbliższym terminie wygaśnięcia, z Yahoo Finance, z opóźnieniem. Każda cena jest w jednostce podanej obok nazwy: bbl = baryłka, oz = uncja trojańska (31,1 g), lb = funt (0,454 kg), bu = buszel (około 27 kg soi lub pszenicy, 25 kg kukurydzy), t = tona, MMBtu = milion brytyjskich jednostek ciepła, US¢ = centy amerykańskie."
+    "commoditiesNote": "Kontrakty terminowe o najbliższym terminie wygaśnięcia, z Yahoo Finance, z opóźnieniem. Każda cena jest w jednostce podanej obok nazwy: bbl = baryłka, oz = uncja trojańska (31,1 g), lb = funt (0,454 kg), bu = buszel (około 27 kg soi lub pszenicy, 25 kg kukurydzy), t = tona, MMBtu = milion brytyjskich jednostek ciepła, US¢ = centy amerykańskie. gal = galon amerykański (3,785 litra), st = tona krótka (907 kg), cwt = cetnar amerykański (45,4 kg), mbf = tysiąc stóp deskowych (około 2,36 m³ tarcicy)."
   },
   "MarketNews": {
     "unavailable": "Nagłówki są obecnie niedostępne.",

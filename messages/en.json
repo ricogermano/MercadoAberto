@@ -90,7 +90,10 @@
       "utilities": "Utilities",
       "realEstate": "Real estate",
       "metals": "Metals",
-      "agriculture": "Agriculture"
+      "agriculture": "Agriculture",
+      "grains": "Grains & oilseeds",
+      "softs": "Softs & lumber",
+      "livestock": "Livestock & dairy"
     },
     "commodities": {
       "BZ": "Brent crude",
@@ -110,7 +113,19 @@
       "CT": "Cotton",
       "CC": "Cocoa",
       "OJ": "Orange juice",
-      "LE": "Live cattle (US)"
+      "LE": "Live cattle (US)",
+      "RB": "Gasoline (RBOB)",
+      "HO": "Heating oil (diesel)",
+      "HRC": "Steel (US hot-rolled coil)",
+      "ZM": "Soybean meal",
+      "ZL": "Soybean oil",
+      "KE": "Wheat (Kansas hard red)",
+      "ZO": "Oats",
+      "ZR": "Rough rice",
+      "LBR": "Lumber",
+      "GF": "Feeder cattle (US)",
+      "HE": "Lean hogs",
+      "DC": "Milk (class III)"
     }
   },
   "WatchlistTable": {
@@ -347,7 +362,7 @@
         "body": "Operating profit (EBIT) of the last twelve months as a percentage of capital employed (total assets minus current liabilities), so it considers debt and equity together. Figures come from Yahoo Finance. Not shown for banks and insurers, whose balance sheets do not have this split."
       }
     },
-    "commoditiesNote": "Nearest-expiry futures contracts via Yahoo Finance, delayed. Each price is in the unit shown next to the name: bbl = barrel, oz = troy ounce (31.1 g), lb = pound (0.454 kg), bu = bushel (about 27 kg of soybeans or wheat, 25 kg of corn), t = tonne, MMBtu = million British thermal units, US¢ = US cents."
+    "commoditiesNote": "Nearest-expiry futures contracts via Yahoo Finance, delayed. Each price is in the unit shown next to the name: bbl = barrel, oz = troy ounce (31.1 g), lb = pound (0.454 kg), bu = bushel (about 27 kg of soybeans or wheat, 25 kg of corn), t = tonne, MMBtu = million British thermal units, US¢ = US cents. gal = US gallon (3.785 litres), st = short ton (907 kg), cwt = hundredweight (45.4 kg), mbf = thousand board feet (about 2.36 m³ of lumber)."
   },
   "MarketNews": {
     "unavailable": "Headlines are unavailable right now.",

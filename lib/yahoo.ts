@@ -80,7 +80,7 @@ export function dailyQuoteFromChart(json: unknown, fallbackCurrency = 'USD'): Ya
     };
 }
 
-export type YahooFundamentals = { pe: number | null; pb: number | null; roe: number | null };
+export type YahooFundamentals = { pe: number | null; pb: number | null; roe: number | null; roce: number | null };
 
 type YahooTimeseriesJson = {
     timeseries?: {
@@ -104,14 +104,52 @@ function latestRatio(json: unknown, type: string): number | null {
     return best ? best.raw : null;
 }
 
-// P/E and P/B from /ws/fundamentals-timeseries; null when Yahoo has neither (units such as BPAC11 come back empty)
+type DatedValue = { date: string; currency: string; raw: number };
+
+// Every finite item of one type, with its date and currency
+function seriesOf(json: unknown, type: string): DatedValue[] {
+    const out: DatedValue[] = [];
+    for (const entry of (json as YahooTimeseriesJson)?.timeseries?.result ?? []) {
+        const items = entry?.[type];
+        if (!Array.isArray(items)) continue;
+        for (const item of items) {
+            const raw = item?.reportedValue?.raw;
+            if (typeof raw !== 'number' || !Number.isFinite(raw)) continue;
+            out.push({ date: typeof item?.asOfDate === 'string' ? item.asOfDate : '', currency: typeof item?.currencyCode === 'string' ? item.currencyCode : '', raw });
+        }
+    }
+    return out;
+}
+
+// ROCE % = EBIT / (total assets - current liabilities), for the latest EBIT that has a balance sheet of the same date AND currency
+// (Yahoo sometimes switches currency between periods, so mixing either would make the ratio meaningless). Trailing EBIT with
+// the latest quarter first, then annual figures. Banks and insurers have no current liabilities, so they get null.
+function roceFrom(json: unknown): number | null {
+    for (const [ebitType, assetsType, liabilitiesType] of [
+        ['trailingEBIT', 'quarterlyTotalAssets', 'quarterlyCurrentLiabilities'],
+        ['annualEBIT', 'annualTotalAssets', 'annualCurrentLiabilities'],
+    ]) {
+        const ebit = seriesOf(json, ebitType).sort((a, b) => b.date.localeCompare(a.date))[0];
+        if (!ebit) continue;
+        const same = (v: DatedValue) => v.date === ebit.date && v.currency === ebit.currency;
+        const assets = seriesOf(json, assetsType).find(same);
+        const liabilities = seriesOf(json, liabilitiesType).find(same);
+        if (!assets || !liabilities) continue;
+        const capital = assets.raw - liabilities.raw;
+        return capital > 0 ? (ebit.raw / capital) * 100 : null;
+    }
+    return null;
+}
+
+// P/E, P/B, ROE and ROCE from /ws/fundamentals-timeseries; null when Yahoo has none (units such as BPAC11 come back empty)
 export function fundamentalsFromTimeseries(json: unknown): YahooFundamentals | null {
     const pe = latestRatio(json, 'trailingPeRatio');
     const pb = latestRatio(json, 'trailingPbRatio');
-    if (pe === null && pb === null) return null;
+    const roce = roceFrom(json);
+    if (pe === null && pb === null && roce === null) return null;
     // ROE = P/B / P/E: both ratios are currency-free, while Yahoo mixes USD and BRL in the statement fields
     const roe = pe !== null && pb !== null && pe > 0 && pb > 0 ? (pb / pe) * 100 : null;
-    return { pe, pb, roe };
+    return { pe, pb, roe, roce };
 }
 
 // Orders rows for a sortable column: nulls always last in both directions, strings A-Z / Z-A, numbers by value

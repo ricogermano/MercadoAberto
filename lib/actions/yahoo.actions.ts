@@ -29,12 +29,12 @@ export async function getYahooDailyQuotes(symbols: string[]): Promise<Record<str
     return Object.fromEntries(entries.filter(([, q]) => q)) as Record<string, YahooDailyQuote>;
 }
 
-// Trailing P/E, P/B and ROE per symbol (indices skipped). The window is rounded to whole days so the URL is stable
+// Trailing P/E, P/B, ROE and ROCE per symbol (indices skipped). The window is rounded to whole days so the URL is stable
 // and Next's fetch cache can hit; the ratios change once a day, so six hours is plenty.
 export async function getYahooFundamentals(symbols: string[]): Promise<Record<string, YahooFundamentals>> {
     const day = 86_400;
     const today = Math.floor(Date.now() / 1000 / day) * day;
-    const period1 = today - 400 * day;
+    const period1 = today - 800 * day;
     const period2 = today + day;
     const entries = await Promise.all(
         symbols.map(async (symbol) => {
@@ -42,7 +42,7 @@ export async function getYahooFundamentals(symbols: string[]): Promise<Record<st
             if (!yahooSymbol) return [symbol, null] as const;
             try {
                 const res = await fetch(
-                    `https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/${encodeURIComponent(yahooSymbol)}?type=trailingPeRatio,trailingPbRatio&period1=${period1}&period2=${period2}`,
+                    `https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/${encodeURIComponent(yahooSymbol)}?type=trailingPeRatio,trailingPbRatio,trailingEBIT,quarterlyTotalAssets,quarterlyCurrentLiabilities,annualEBIT,annualTotalAssets,annualCurrentLiabilities&period1=${period1}&period2=${period2}`,
                     {
                         headers: { 'User-Agent': 'Mozilla/5.0' },
                         next: { revalidate: 21600 },

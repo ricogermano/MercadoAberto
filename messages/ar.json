@@ -269,9 +269,10 @@
     "pe": "P/E",
     "pb": "P/B",
     "roe": "ROE",
+    "roce": "ROCE",
     "clearSort": "إلغاء الترتيب",
     "sortBy": "ترتيب حسب {column}",
-    "fundamentalsNote": "P/E وP/B للاثني عشر شهرًا الأخيرة، من Yahoo Finance؛ ROE هو P/B مقسومًا على P/E."
+    "fundamentalsNote": "P/E وP/B للاثني عشر شهرًا الأخيرة، من Yahoo Finance؛ ROE هو P/B مقسومًا على P/E. ROCE هو الربح التشغيلي (EBIT) مقسومًا على إجمالي الأصول ناقص الالتزامات المتداولة؛ غير متاح للبنوك وشركات التأمين."
   },
   "TradingViewWidget": {
     "fullScreen": "ملء الشاشة",

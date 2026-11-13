@@ -269,9 +269,10 @@
     "pe": "C/Z",
     "pb": "C/WK",
     "roe": "ROE",
+    "roce": "ROCE",
     "clearSort": "Wyczyść sortowanie",
     "sortBy": "Sortuj według: {column}",
-    "fundamentalsNote": "C/Z i C/WK dotyczą ostatnich dwunastu miesięcy, dane z Yahoo Finance; ROE to C/WK podzielone przez C/Z."
+    "fundamentalsNote": "C/Z i C/WK dotyczą ostatnich dwunastu miesięcy, dane z Yahoo Finance; ROE to C/WK podzielone przez C/Z. ROCE to zysk operacyjny (EBIT) w relacji do aktywów ogółem pomniejszonych o zobowiązania krótkoterminowe; niedostępne dla banków i ubezpieczycieli."
   },
   "TradingViewWidget": {
     "fullScreen": "Pełny ekran",

@@ -118,9 +118,9 @@ describe('fundamentalsFromTimeseries', () => {
 
     it('leaves roe null for a negative or missing P/E but keeps P/B', () => {
         const neg = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)]), series('trailingPeRatio', [point('2026-01-01', -5)])] } };
-        expect(fundamentalsFromTimeseries(neg)).toEqual({ pe: -5, pb: 2, roe: null });
+        expect(fundamentalsFromTimeseries(neg)).toEqual({ pe: -5, pb: 2, roe: null, roce: null });
         const missing = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)])] } };
-        expect(fundamentalsFromTimeseries(missing)).toEqual({ pe: null, pb: 2, roe: null });
+        expect(fundamentalsFromTimeseries(missing)).toEqual({ pe: null, pb: 2, roe: null, roce: null });
     });
 
     it('returns null without throwing for empty entries, null items and garbage', () => {
@@ -143,5 +143,44 @@ describe('compareNullable', () => {
     it('sorts strings with localeCompare', () => {
         expect(sortWith(['Vale', 'Ambev', 'Itaú'], 'asc')).toEqual(['Ambev', 'Itaú', 'Vale']);
         expect(sortWith(['Vale', 'Ambev', 'Itaú'], 'desc')).toEqual(['Vale', 'Itaú', 'Ambev']);
+    });
+});
+
+describe('fundamentalsFromTimeseries ROCE', () => {
+    const item = (asOfDate: string, raw: number, currencyCode = 'BRL') => ({ asOfDate, currencyCode, reportedValue: { raw } });
+    const build = (parts: Record<string, unknown[]>) => ({ timeseries: { result: Object.entries(parts).map(([type, items]) => series(type, items)) } });
+
+    it('uses the trailing EBIT with a same-date, same-currency balance sheet', () => {
+        const json = build({
+            trailingEBIT: [item('2026-09-30', 8.35e9)],
+            quarterlyTotalAssets: [item('2026-09-30', 45.64e9)],
+            quarterlyCurrentLiabilities: [item('2026-09-30', 18.46e9)],
+        });
+        expect(fundamentalsFromTimeseries(json)?.roce).toBeCloseTo(30.72, 1);
+    });
+
+    it('falls back to annual figures when the balance sheet date or currency differs', () => {
+        const annual = { annualEBIT: [item('2025-12-31', 10)], annualTotalAssets: [item('2025-12-31', 100)], annualCurrentLiabilities: [item('2025-12-31', 50)] };
+        const otherDate = build({ trailingEBIT: [item('2026-09-30', 99)], quarterlyTotalAssets: [item('2026-06-30', 200)], quarterlyCurrentLiabilities: [item('2026-06-30', 100)], ...annual });
+        expect(fundamentalsFromTimeseries(otherDate)?.roce).toBeCloseTo(20);
+        const otherCurrency = build({ trailingEBIT: [item('2026-09-30', 99)], quarterlyTotalAssets: [item('2026-09-30', 200, 'USD')], quarterlyCurrentLiabilities: [item('2026-09-30', 100, 'USD')], ...annual });
+        expect(fundamentalsFromTimeseries(otherCurrency)?.roce).toBeCloseTo(20);
+    });
+
+    it('gives null roce without current liabilities, keeping pe and pb', () => {
+        const json = build({
+            trailingPeRatio: [point('2026-11-11', 8)],
+            trailingPbRatio: [point('2026-11-11', 1.6)],
+            trailingEBIT: [item('2026-09-30', 5)],
+            quarterlyTotalAssets: [item('2026-09-30', 100)],
+        });
+        expect(fundamentalsFromTimeseries(json)).toEqual({ pe: 8, pb: 1.6, roe: 20, roce: null });
+    });
+
+    it('gives null roce when capital employed is zero or negative, and keeps a negative EBIT', () => {
+        const base = { trailingEBIT: [item('2026-09-30', 5)], quarterlyTotalAssets: [item('2026-09-30', 100)] };
+        expect(fundamentalsFromTimeseries(build({ ...base, quarterlyCurrentLiabilities: [item('2026-09-30', 120)] }))).toBeNull();
+        const loss = build({ trailingEBIT: [item('2026-09-30', -10)], quarterlyTotalAssets: [item('2026-09-30', 100)], quarterlyCurrentLiabilities: [item('2026-09-30', 50)] });
+        expect(fundamentalsFromTimeseries(loss)?.roce).toBeCloseTo(-20);
     });
 });

@@ -41,6 +41,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
                 pe: f?.pe ?? null,
                 pb: f?.pb ?? null,
                 roe: f?.roe ?? null,
+                roce: f?.roce ?? null,
             };
         }),
     }));
@@ -53,6 +54,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
         pe: t('pe'),
         pb: t('pb'),
         roe: t('roe'),
+        roce: t('roce'),
         clearSort: t('clearSort'),
     };
     const sortByTemplate = {
@@ -63,6 +65,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
         pe: t('sortBy', { column: labels.pe }),
         pb: t('sortBy', { column: labels.pb }),
         roe: t('sortBy', { column: labels.roe }),
+        roce: t('sortBy', { column: labels.roce }),
     };
     const hasFundamentals = Object.keys(fundamentals).length > 0;
     const source = currency ? t('source', { currency }) : t('sourceNoCurrency');

@@ -16,6 +16,7 @@ export type QuoteRow = {
     pe: number | null;
     pb: number | null;
     roe: number | null;
+    roce: number | null;
 };
 
 export type QuoteLabels = {
@@ -26,10 +27,11 @@ export type QuoteLabels = {
     pe: string;
     pb: string;
     roe: string;
+    roce: string;
     clearSort: string;
 };
 
-type SortKey = 'name' | 'price' | 'change' | 'changePercent' | 'pe' | 'pb' | 'roe';
+type SortKey = 'name' | 'price' | 'change' | 'changePercent' | 'pe' | 'pb' | 'roe' | 'roce';
 type Sort = { key: SortKey; dir: 'asc' | 'desc' } | null;
 
 const fmt = (v: number) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -48,7 +50,7 @@ export default function YahooQuotesSortable({
 }) {
     const [sort, setSort] = useState<Sort>(null);
     const allRows = groups.flatMap((g) => g.rows);
-    const showFundamentals = allRows.some((r) => r.pe != null || r.pb != null);
+    const showFundamentals = allRows.some((r) => r.pe != null || r.pb != null || r.roce != null);
 
     const columns: { key: SortKey; label: string; numeric: boolean }[] = [
         { key: 'name', label: labels.company, numeric: false },
@@ -60,6 +62,7 @@ export default function YahooQuotesSortable({
                   { key: 'pe', label: labels.pe, numeric: true },
                   { key: 'pb', label: labels.pb, numeric: true },
                   { key: 'roe', label: labels.roe, numeric: true },
+                  { key: 'roce', label: labels.roce, numeric: true },
               ] as const)
             : []),
     ];
@@ -89,6 +92,7 @@ export default function YahooQuotesSortable({
                     <td className="num whitespace-nowrap px-3 py-2 text-end">{fmtOrDash(r.pe)}</td>
                     <td className="num whitespace-nowrap px-3 py-2 text-end">{fmtOrDash(r.pb)}</td>
                     <td className="num whitespace-nowrap px-3 py-2 text-end">{r.roe == null ? '—' : `${r.roe.toFixed(1)}%`}</td>
+                    <td className="num whitespace-nowrap px-3 py-2 text-end">{r.roce == null ? '—' : `${r.roce.toFixed(1)}%`}</td>
                 </>
             )}
         </tr>

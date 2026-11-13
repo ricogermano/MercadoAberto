@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
+import { Maximize2, Minimize2 } from 'lucide-react';
 import { htmlLang } from '@/i18n/config';
 import type { NewsItem } from '@/lib/rss';
 
@@ -21,7 +22,20 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
     const [now, setNow] = useState<number | null>(null);
     const [selected, setSelected] = useState<string[]>([]);
     const [onlyTable, setOnlyTable] = useState(false);
+    // Full screen resizes the list in place, like the TradingView frames: the chosen filters stay
+    const tw = useTranslations('TradingViewWidget');
+    const [expanded, setExpanded] = useState(false);
     useEffect(() => setNow(Date.now()), []);
+    useEffect(() => {
+        if (!expanded) return;
+        const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setExpanded(false);
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', onKey);
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', onKey);
+        };
+    }, [expanded]);
 
     if (items.length === 0) return <p className="search-list-indicator">{unavailable}</p>;
 
@@ -35,7 +49,9 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
     const chip = (active: boolean) => `pill h-7 cursor-pointer px-3 text-[12px] ${active ? 'is-up' : 'hover:bg-hover hover:text-foreground'}`;
 
     return (
-        <div>
+        <>
+        {expanded && <div className="fixed inset-0 z-50 bg-page/70 backdrop-blur-[3px]" onClick={() => setExpanded(false)} />}
+        <div className={expanded ? 'fixed inset-3 z-50 flex flex-col overflow-hidden rounded-xl bg-card shadow-[0_0_0_4px_var(--frame),0_24px_60px_oklch(0_0_0/0.6)]' : ''}>
             <div className="flex flex-wrap items-center gap-1.5 border-b border-line/60 px-3 py-2" role="group" aria-label={t('sourcesLabel')}>
                 {sources.map((source) => (
                     <button key={source} type="button" className={chip(selected.includes(source))} aria-pressed={selected.includes(source)} onClick={() => toggle(source)}>
@@ -57,9 +73,18 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
                 >
                     {t('clearFilters')}
                 </button>
+                <button
+                    type="button"
+                    onClick={() => setExpanded((v) => !v)}
+                    className="icon-btn"
+                    aria-label={expanded ? tw('exitFullScreen') : tw('fullScreen')}
+                    title={expanded ? tw('exitFullScreenHint') : tw('fullScreen')}
+                >
+                    {expanded ? <Minimize2 /> : <Maximize2 />}
+                </button>
             </div>
 
-            <div className="max-h-[480px] overflow-y-auto">
+            <div className={expanded ? 'min-h-0 flex-1 overflow-y-auto' : 'max-h-[480px] overflow-y-auto'}>
                 {filtered.length === 0 ? (
                     <div className="flex flex-col items-center gap-2 px-3 py-8 text-center">
                         <p className="search-list-indicator">{t('noMatch')}</p>
@@ -87,7 +112,10 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
                     </ul>
                 )}
             </div>
-            <p className="border-t border-line/60 px-3 py-2 text-[11.5px] text-faint">{t('footnote', { sources: sources.join(', ') })}</p>
+            <p className="border-t border-line/60 px-3 py-2 text-[11.5px] text-faint">
+                {t('count', { count: filtered.length })} <span aria-hidden>·</span> {t('footnote', { sources: sources.join(', ') })}
+            </p>
         </div>
+        </>
     );
 }

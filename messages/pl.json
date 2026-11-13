@@ -439,7 +439,8 @@
     "onlyTable": "Tylko spółki z tabeli",
     "clearFilters": "Wyczyść filtry",
     "sourcesLabel": "Źródła",
-    "footnote": "Nagłówki z: {sources}; linki otwierają oryginalną stronę."
+    "footnote": "Nagłówki z: {sources}; linki otwierają oryginalną stronę.",
+    "count": "{count, plural, one {# nagłówek} few {# nagłówki} other {# nagłówków}}"
   },
   "TradingViewWidget": {
     "fullScreen": "Pełny ekran",
@@ -689,8 +690,8 @@
     "symbolsTitle": "Symbole",
     "symbolsSub": "Kliknij wiersz, żeby zobaczyć wykresy, analizę techniczną i dane finansowe",
     "newsTitle": "Aktualności",
-    "newsSubWatched": "Najnowsze wiadomości dotyczące symboli, które obserwujesz",
-    "newsSubGeneral": "Ogólne wiadomości rynkowe",
+    "newsSubWatched": "Wiadomości ze świata i z Brazylii na jednej liście, od najnowszych",
+    "newsSubGeneral": "Ogólne wiadomości ze świata i z Brazylii na jednej liście",
     "alertsTitle": "Alerty",
     "alertsSubActive": "Aktywne: {count} · sprawdzane co 5 minut",
     "alertsSubCloud": "Niedostępne w tej wersji",
@@ -747,7 +748,13 @@
   },
   "NewsList": {
     "emptyTitle": "Brak najnowszych wiadomości",
-    "emptyBody": "W ostatnich dniach nie było wiadomości o tych symbolach."
+    "emptyBody": "W ostatnich dniach nie było wiadomości o tych symbolach.",
+    "filtersLabel": "Filtry",
+    "local": "Brazylia",
+    "world": "Świat",
+    "onlyWatched": "Tylko moja lista",
+    "clearFilters": "Wyczyść filtry",
+    "noMatch": "Żadne wiadomości nie pasują do tych filtrów."
   },
   "NamedLists": {
     "starred": "Oznaczone gwiazdką",

@@ -439,7 +439,8 @@
     "onlyTable": "Only companies in the table",
     "clearFilters": "Clear filters",
     "sourcesLabel": "Sources",
-    "footnote": "Headlines from {sources}; links open the original site."
+    "footnote": "Headlines from {sources}; links open the original site.",
+    "count": "{count, plural, one {# headline} other {# headlines}}"
   },
   "TradingViewWidget": {
     "fullScreen": "Full screen",
@@ -690,8 +691,8 @@
     "symbolsTitle": "Symbols",
     "symbolsSub": "Click a row for charts, technicals and financials",
     "newsTitle": "News",
-    "newsSubWatched": "Latest stories for the symbols you watch",
-    "newsSubGeneral": "General market news",
+    "newsSubWatched": "World and Brazilian stories in one list, newest first",
+    "newsSubGeneral": "General world and Brazilian news, in one list",
     "alertsTitle": "Alerts",
     "alertsSubActive": "{count} active · checked every 5 minutes",
     "alertsSubCloud": "Not available in this version",
@@ -747,7 +748,13 @@
   },
   "NewsList": {
     "emptyTitle": "No recent news",
-    "emptyBody": "Nothing published in the last few days for these symbols."
+    "emptyBody": "Nothing published in the last few days for these symbols.",
+    "filtersLabel": "Filters",
+    "local": "Brazil",
+    "world": "World",
+    "onlyWatched": "Only my list",
+    "clearFilters": "Clear filters",
+    "noMatch": "No stories match these filters."
   },
   "NamedLists": {
     "starred": "Starred",

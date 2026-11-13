@@ -439,7 +439,8 @@
     "onlyTable": "شركات الجدول فقط",
     "clearFilters": "مسح المرشحات",
     "sourcesLabel": "المصادر",
-    "footnote": "عناوين من {sources}؛ تفتح الروابط الموقع الأصلي."
+    "footnote": "عناوين من {sources}؛ تفتح الروابط الموقع الأصلي.",
+    "count": "{count, plural, other {# عنوان}}"
   },
   "TradingViewWidget": {
     "fullScreen": "ملء الشاشة",
@@ -690,8 +691,8 @@
     "symbolsTitle": "رمز",
     "symbolsSub": "اضغط الصف للشارت والتحليل والمالية",
     "newsTitle": "الأخبار",
-    "newsSubWatched": "آخر أخبار رموزك",
-    "newsSubGeneral": "أخبار السوق العامة",
+    "newsSubWatched": "أخبار العالم والبرازيل في قائمة واحدة، الأحدث أولاً",
+    "newsSubGeneral": "أخبار عامة من العالم والبرازيل في قائمة واحدة",
     "alertsTitle": "التنبيهات",
     "alertsSubActive": "{count} نشط · يُفحص كل ٥ دقائق",
     "alertsSubCloud": "غير متاحة في هذه النسخة",
@@ -747,7 +748,13 @@
   },
   "NewsList": {
     "emptyTitle": "لا أخبار حديثة",
-    "emptyBody": "لا يوجد شيء منشور في الأيام الأخيرة لهذه الرموز."
+    "emptyBody": "لا يوجد شيء منشور في الأيام الأخيرة لهذه الرموز.",
+    "filtersLabel": "المرشحات",
+    "local": "البرازيل",
+    "world": "العالم",
+    "onlyWatched": "قائمتي فقط",
+    "clearFilters": "مسح المرشحات",
+    "noMatch": "لا توجد أخبار تطابق هذه المرشحات."
   },
   "NamedLists": {
     "starred": "المميّزة",

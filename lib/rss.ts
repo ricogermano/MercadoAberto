@@ -133,3 +133,28 @@ export function mergeNews(
     }
     return out;
 }
+
+export type WatchNewsItem = { title: string; link: string; source: string; publishedAt: number; tag: string; origin: 'local' | 'world'; watched: boolean };
+
+type WorldArticle = { headline: string; url: string; source: string; datetime: number; related?: string; category?: string };
+
+// One newest-first list for the watchlist: the world articles (Finnhub, `datetime` in seconds) with the local portal headlines.
+// Every local headline that mentions a watched symbol is kept; the rest fill up to `localLimit`. `watched` marks what is about
+// a symbol the reader follows; `tag` is that symbol (or the first company mentioned), '' when the story is general.
+export function mergeWatchlistNews(world: WorldArticle[], local: NewsItem[], watchedSymbols: string[], { localLimit = 30 } = {}): WatchNewsItem[] {
+    const watching = new Set(watchedSymbols.map((s) => s.trim().toUpperCase()));
+    const locals = local.map((item): WatchNewsItem => {
+        const mine = item.tickers.find((t) => watching.has(t.toUpperCase()));
+        return { title: item.title, link: item.link, source: item.source, publishedAt: item.publishedAt, tag: mine ?? item.tickers[0] ?? '', origin: 'local', watched: Boolean(mine) };
+    });
+    const room = Math.max(0, localLimit - locals.filter((i) => i.watched).length);
+    let general = 0;
+    const keptLocals = locals.filter((i) => i.watched || general++ < room);
+    const worlds = world.map((a): WatchNewsItem => ({
+        title: a.headline, link: a.url, source: a.source, publishedAt: (a.datetime || 0) * 1000, tag: a.related ?? '', origin: 'world', watched: a.category === 'company',
+    }));
+    const seen = new Set<string>();
+    return [...worlds, ...keptLocals]
+        .sort((a, b) => b.publishedAt - a.publishedAt)
+        .filter((i) => (seen.has(i.link) ? false : (seen.add(i.link), true)));
+}

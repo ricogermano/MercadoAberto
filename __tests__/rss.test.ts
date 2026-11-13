@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { matchesKeywords, mergeNews, parseRss, tagTickers, type RssItem } from '@/lib/rss';
+import { matchesKeywords, mergeNews, mergeWatchlistNews, parseRss, tagTickers, type RssItem } from '@/lib/rss';
 
 describe('parseRss', () => {
     it('reads RSS items with CDATA, entities, markup and RFC 822 dates', () => {
@@ -99,5 +99,30 @@ describe('matchesKeywords', () => {
         expect(matchesKeywords('Federação critica medida', words)).toBe(false);
         expect(matchesKeywords('Eurofarma compra rival', words)).toBe(false);
         expect(matchesKeywords('Petrobras sobe 2%', words)).toBe(false);
+    });
+});
+
+describe('mergeWatchlistNews', () => {
+    const local = (title: string, link: string, publishedAt: number, tickers: string[] = []) => ({ title, link, source: 'Portal', publishedAt, tickers });
+    const world = (headline: string, url: string, seconds: number, category = 'company', related = 'AAPL') => ({ headline, url, source: 'Wire', datetime: seconds, category, related });
+
+    it('interleaves both origins newest first and marks what is about a followed symbol', () => {
+        const out = mergeWatchlistNews(
+            [world('Apple', 'https://w/1', 2000), world('Macro', 'https://w/2', 500, 'general', '')],
+            [local('Petrobras sobe', 'https://l/1', 3_000_000, ['VALE3.SA', 'PETR4.SA']), local('Bolsa cai', 'https://l/2', 1_000_000)],
+            ['petr4.sa', 'AAPL'],
+        );
+        expect(out.map((i) => i.title)).toEqual(['Petrobras sobe', 'Apple', 'Bolsa cai', 'Macro']);
+        expect(out.map((i) => i.origin)).toEqual(['local', 'world', 'local', 'world']);
+        expect(out.map((i) => i.watched)).toEqual([true, true, false, false]);
+        expect(out.map((i) => i.tag)).toEqual(['PETR4.SA', 'AAPL', '', '']);
+    });
+
+    it('caps the general local headlines but never drops one about a followed symbol, and dedupes by link', () => {
+        const many = Array.from({ length: 10 }, (_, i) => local(`Geral ${i}`, `https://l/${i}`, 10_000 - i));
+        const out = mergeWatchlistNews([world('Igual', 'https://l/0', 1)], [...many, local('ITUB4 antiga', 'https://l/x', 1, ['ITUB4.SA'])], ['ITUB4.SA'], { localLimit: 4 });
+        expect(out.filter((i) => i.origin === 'local')).toHaveLength(4);
+        expect(out.some((i) => i.title === 'ITUB4 antiga')).toBe(true);
+        expect(out.filter((i) => i.link === 'https://l/0')).toHaveLength(1);
     });
 });

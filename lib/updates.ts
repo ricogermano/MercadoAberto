@@ -12,6 +12,15 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Notícias do Brasil e do mundo juntas, e manchetes em tela cheia',
+        items: [
+            'Na lista de acompanhamento, as notícias do mundo e as manchetes dos portais brasileiros aparecem numa lista só, da mais recente para a mais antiga. Os botões “Brasil”, “Mundo” e “Só da minha lista” filtram; “Limpar filtros” volta ao início.',
+            'A etiqueta fica destacada quando a notícia cita uma ação que você acompanha.',
+            'Nas notícias do Brasil do painel, o botão no canto direito abre as manchetes em tela cheia (Esc fecha). A lista agora guarda até 150 manchetes dos últimos três dias, em vez de 60.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Mediana histórica ao lado de cada indicador',
         items: [
             'Nas tabelas de cotações e da lista de acompanhamento, cada indicador ganhou ao lado a coluna “Med.”: a mediana da própria empresa nos últimos quatro exercícios (no DY, em até dez anos).',

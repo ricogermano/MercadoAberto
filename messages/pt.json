@@ -439,7 +439,8 @@
     "onlyTable": "Só empresas da tabela",
     "clearFilters": "Limpar filtros",
     "sourcesLabel": "Fontes",
-    "footnote": "Manchetes de {sources}; os links abrem o site original."
+    "footnote": "Manchetes de {sources}; os links abrem o site original.",
+    "count": "{count, plural, one {# manchete} other {# manchetes}}"
   },
   "TradingViewWidget": {
     "fullScreen": "Tela cheia",
@@ -690,8 +691,8 @@
     "symbolsTitle": "Símbolos",
     "symbolsSub": "Clique em uma linha para ver gráficos, análise técnica e demonstrações",
     "newsTitle": "Notícias",
-    "newsSubWatched": "Últimas notícias dos símbolos que você acompanha",
-    "newsSubGeneral": "Notícias gerais do mercado",
+    "newsSubWatched": "Notícias do mundo e do Brasil numa lista só, da mais recente para a mais antiga",
+    "newsSubGeneral": "Notícias gerais do mundo e do Brasil, numa lista só",
     "alertsTitle": "Alertas",
     "alertsSubActive": "{count} ativos · verificados a cada 5 minutos",
     "alertsSubCloud": "Indisponíveis nesta versão",
@@ -747,7 +748,13 @@
   },
   "NewsList": {
     "emptyTitle": "Sem notícias recentes",
-    "emptyBody": "Nada publicado nos últimos dias para estes símbolos."
+    "emptyBody": "Nada publicado nos últimos dias para estes símbolos.",
+    "filtersLabel": "Filtros",
+    "local": "Brasil",
+    "world": "Mundo",
+    "onlyWatched": "Só da minha lista",
+    "clearFilters": "Limpar filtros",
+    "noMatch": "Nenhuma notícia corresponde a estes filtros."
   },
   "NamedLists": {
     "starred": "Com estrela",

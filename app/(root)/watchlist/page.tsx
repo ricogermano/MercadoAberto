@@ -5,6 +5,9 @@ import { getUserWatchlist } from '@/lib/actions/watchlist.actions';
 import { getUserAlerts } from '@/lib/actions/alert.actions';
 import { alertsEnabled } from '@/lib/market-data';
 import { getNews, getWatchlistData } from '@/lib/actions/finnhub.actions';
+import { getMarketNews } from '@/lib/actions/news.actions';
+import { getMarket } from '@/lib/markets';
+import { mergeWatchlistNews } from '@/lib/rss';
 import { getYahooFundamentals } from '@/lib/actions/yahoo.actions';
 import { getWatchlistLists } from '@/lib/actions/watchlist-lists.actions';
 import WatchlistTable from '@/components/watchlist/WatchlistTable';
@@ -35,7 +38,12 @@ async function Symbols({ symbols, lists }: { symbols: string[]; lists: { id: str
 }
 
 async function News({ symbols }: { symbols: string[] }) {
-    return <NewsList news={await getNews(symbols).catch(() => [] as MarketNewsArticle[])} />;
+    // World stories (Finnhub) and the Brazilian portals' headlines, in one newest-first list
+    const [world, local] = await Promise.all([
+        getNews(symbols).catch(() => [] as MarketNewsArticle[]),
+        getMarketNews(getMarket('br'), { watched: symbols }).catch(() => []),
+    ]);
+    return <NewsList items={mergeWatchlistNews(world, local, symbols)} />;
 }
 
 // DB reads render first; everything from Finnhub streams in behind skeletons.

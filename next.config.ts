@@ -5,9 +5,11 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
     devIndicators: false,
-    // /whats-new was live briefly before the changelog replaced it
+    // Upstream's English marketing pages (sponsorship, OpenStock Cloud, guides, US ticker directory) are not part of this fork:
+    // the files stay for easier upstream merges, the routes go home. Temporary, so a page can come back without stale browser caches.
     async redirects() {
-        return [{ source: '/whats-new', destination: '/changelog', permanent: true }];
+        return ['/about', '/help', '/api-docs', '/sponsor', '/love', '/changelog', '/whats-new', '/compare', '/compare/:slug', '/s', '/s/:ticker']
+            .map((source) => ({ source, destination: '/', permanent: false }));
     },
     turbopack: {
         root: process.cwd(),

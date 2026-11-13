@@ -97,7 +97,7 @@ export const sendWelcomeEmail = async ({ email, name, intro, locale }: WelcomeEm
         });
 
         const mailOptions = {
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"MercadoAberto" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
             subject: t('welcome.subject'),
             text: t('welcome.text'),
@@ -127,10 +127,10 @@ export const sendNewsSummaryEmail = async (
             .replace('{{newsContent}}', newsContent);
 
         const mailOptions = {
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"MercadoAberto" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
             subject: `📈 Market News Summary Today - ${date}`,
-            text: `Today's market news summary from Openstock`,
+            text: `Today's market news summary from MercadoAberto`,
             html: htmlTemplate,
         };
 
@@ -187,7 +187,7 @@ export const sendStockAlertEmail = async (
         });
 
         const mailOptions = {
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"MercadoAberto" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
             subject: t(`stockAlert.subject${dir}`, values),
             text: t(`stockAlert.text${dir}`, values),

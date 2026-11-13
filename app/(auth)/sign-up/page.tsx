@@ -12,7 +12,6 @@ import { signUpWithEmail } from "@/lib/actions/auth.actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-import OpenDevSocietyBranding from "@/components/OpenDevSocietyBranding";
 import SocialAuthButtons from "@/components/forms/SocialAuthButtons";
 import React from "react";
 
@@ -21,7 +20,6 @@ const SignUp = () => {
     const tFields = useTranslations('AuthFields');
     const tPrefs = useTranslations('PreferenceFields');
     const tPassword = useTranslations('Password');
-    const tBrand = useTranslations('OpenDevSocietyBranding');
     const router = useRouter()
     const {
         register,
@@ -131,7 +129,6 @@ const SignUp = () => {
                     <FooterLink text={t('haveAccount')} linkText={t('signIn')} href="/sign-in" />
                 </div>
 
-                <OpenDevSocietyBranding outerClassName="flex justify-center" text={tBrand('initiativeBy')} />
             </form>
         </>
     )

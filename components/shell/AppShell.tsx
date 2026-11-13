@@ -7,7 +7,6 @@ import Sidebar from "@/components/shell/Sidebar";
 import TabBar from "@/components/shell/TabBar";
 import SearchCommand from "@/components/SearchCommand";
 import { cn } from "@/lib/utils";
-import UpdateBanner from "@/components/UpdateBanner";
 import LegalFooter from "@/components/LegalFooter";
 
 type AppShellProps = {
@@ -49,7 +48,6 @@ const AppShell = ({ user, watchlist, initialStocks, children }: AppShellProps) =
                     <TabBar onMenu={() => setNavOpen(true)} />
                     <main ref={workspaceRef} className={cn('workspace', pathname === '/dashboard' && 'is-first-tab')}>
                         <div className="workspace-inner">
-                            <UpdateBanner labels={{ new: t('new'), seeWhatsNew: t('seeWhatsNew'), fullChangelog: t('fullChangelog') }} />
                             {children}
                             <LegalFooter labels={{ disclaimer: t('disclaimer'), sourceCode: t('sourceCode'), basedOn: t('basedOn') }} />
                         </div>

@@ -9,7 +9,6 @@ import { useTranslations } from 'next-intl';
 import FooterLink from '@/components/forms/FooterLink';
 import InputField from '@/components/forms/InputField';
 import PasswordRequirements from '@/components/forms/PasswordRequirements';
-import OpenDevSocietyBranding from '@/components/OpenDevSocietyBranding';
 import { Button } from '@/components/ui/button';
 import { resetPasswordWithToken } from '@/lib/actions/auth.actions';
 import { passwordValidation } from '@/lib/constants';
@@ -22,7 +21,6 @@ type ResetPasswordFormData = {
 const ResetPasswordForm = () => {
     const t = useTranslations('ResetPassword');
     const tPassword = useTranslations('Password');
-    const tBrand = useTranslations('OpenDevSocietyBranding');
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get('token') ?? '';
@@ -115,7 +113,6 @@ const ResetPasswordForm = () => {
                 </Button>
 
                 <FooterLink text={t('needFreshLink')} linkText={t('requestAnother')} href="/forgot-password" />
-                <OpenDevSocietyBranding outerClassName="mt-10 flex justify-center" text={tBrand('initiativeBy')} />
             </form>
         </>
     );

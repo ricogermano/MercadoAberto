@@ -4,7 +4,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import HtmlLang from "@/components/HtmlLang";
 import AppShell from "@/components/shell/AppShell";
-import DonatePopup from "@/components/DonatePopup";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 import { getUserWatchlist } from "@/lib/actions/watchlist.actions";
 
@@ -35,7 +34,6 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
             >
                 {children}
             </AppShell>
-            <DonatePopup />
         </NextIntlClientProvider>
     )
 }

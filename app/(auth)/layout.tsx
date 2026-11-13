@@ -1,11 +1,11 @@
 import Link from "next/link";
 import React from "react";
-import Image from "next/image";
 import {redirect} from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import BrandLogo from "@/components/BrandLogo";
 import HtmlLang from "@/components/HtmlLang";
+import LegalFooter from "@/components/LegalFooter";
 import {getSession} from "@/lib/better-auth/auth";
 import ProductPreview from "@/components/landing/ProductPreview";
 import { SocialProvidersProvider } from "@/components/forms/SocialAuthButtons";
@@ -18,6 +18,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
 
     const locale = await getLocale();
     const t = await getTranslations('AuthLayout');
+    const tLegal = await getTranslations('UpdateBanner');
 
     // Same condition that enables the providers in lib/better-auth/auth.ts
     const socialProviders = [
@@ -36,23 +37,11 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
                 <div className="pb-6 lg:pb-8 flex-1">
                     <SocialProvidersProvider enabled={socialProviders}>{children}</SocialProvidersProvider>
                 </div>
+                <LegalFooter labels={{ disclaimer: tLegal('disclaimer'), sourceCode: tLegal('sourceCode'), basedOn: tLegal('basedOn') }} />
             </section>
             <section className="auth-right-section">
                 <div className="z-10 relative lg:mt-4 lg:mb-16">
-                    <blockquote className="auth-blockquote">
-                        {t('testimonialQuote')}
-                    </blockquote>
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <cite className="auth-testimonial-author">- Ravi Pratap Singh (@ravixalgorithm)</cite>
-                            <p className="max-md:text-xs text-gray-500">{t('founderRole', { org: '@opendevsociety' })}</p>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                            {[1,2,3,4,5].map((star) => (
-                                <Image src="/assets/icons/star.svg" alt={t('starAlt')} key={star} width={20} height={20} className="w-4 h-4"/>
-                            ))}
-                        </div>
-                    </div>
+                    <p className="auth-blockquote">{t('tagline')}</p>
                 </div>
                 <div className="relative flex-1" aria-hidden>
                     <div className="auth-dashboard-preview absolute top-0">

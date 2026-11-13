@@ -139,9 +139,7 @@
     }
   },
   "AuthLayout": {
-    "testimonialQuote": "بالنسبة لي، OpenStock ليس مجرد تطبيق أسهم آخر؛ إنه منح الناس وضوحاً وتحكّماً في السوق، بلا حواجز ولا اشتراكات.",
-    "founderRole": "المؤسس {org}",
-    "starAlt": "نجمة"
+    "tagline": "الأسهم البرازيلية والسلع والأسواق العالمية في لوحة واحدة."
   },
   "AuthFields": {
     "email": "البريد",
@@ -411,26 +409,26 @@
       "visitOpenstock": "زر MercadoAberto"
     },
     "welcome": {
-      "subject": "أهلًا بك في OpenStock، أدواتك مفتوحة المصدر لسوق الأسهم!",
-      "text": "شكرًا لانضمامك إلى OpenStock، مبادرة من Open Dev Society",
+      "subject": "أهلًا بك في MercadoAberto، أدواتك مفتوحة المصدر لسوق الأسهم!",
+      "text": "شكرًا لانضمامك إلى MercadoAberto",
       "title": "أهلًا بك في MercadoAberto",
       "dashboardAlt": "معاينة لوحة MercadoAberto",
       "heading": "أهلًا بك {name}",
-      "fallbackIntro": "شكرًا لانضمامك إلى OpenStock. أصبحت لديك الأدوات لمتابعة الأسواق واتخاذ قرارات أذكى.",
+      "fallbackIntro": "شكرًا لانضمامك إلى MercadoAberto. أصبحت لديك الأدوات لمتابعة الأسواق واتخاذ قرارات أذكى.",
       "featuresLabel": "إليك ما يمكنك فعله الآن:",
       "featureWatchlist": "أنشئ قائمة متابعة لتتابع أسهمك المفضلة",
       "featureSearch": "ابحث عن أي سهم بـ ⌘K وافتحه في تبويب",
       "featureDashboard": "استكشف لوحة الأسواق لترى الاتجاهات وآخر أخبار السوق",
       "closing": "سنبقيك على اطلاع بالتحديثات والرؤى والتنبيهات في وقتها، لتركّز على اتخاذ القرار الصحيح.",
       "cta": "اذهب إلى لوحة الأسواق",
-      "initiative": "مبادرة من Open Dev Society"
+      "initiative": "مبني على OpenStock من Open Dev Society"
     },
     "resetPassword": {
-      "subject": "أعد تعيين كلمة مرور OpenStock",
+      "subject": "أعد تعيين كلمة مرور MercadoAberto",
       "heading": "أعد تعيين كلمة المرور",
       "greeting": "مرحبًا {name}،",
       "greetingNoName": "مرحبًا،",
-      "body": "وصلنا طلب لإعادة تعيين كلمة مرور OpenStock الخاصة بك. استخدم الزر أدناه لاختيار كلمة مرور جديدة.",
+      "body": "وصلنا طلب لإعادة تعيين كلمة مرور MercadoAberto الخاصة بك. استخدم الزر أدناه لاختيار كلمة مرور جديدة.",
       "cta": "استعادة كلمة المرور",
       "ignore": "إن لم تطلب ذلك، يمكنك تجاهل هذه الرسالة بأمان.",
       "text": "أعد تعيين كلمة المرور: {url}"
@@ -455,7 +453,7 @@
       "calloutTitleBelow": "انخفض السعر",
       "calloutBodyBelow": "نزل {symbol} تحت سعرك المستهدف. قد يكون وقتًا مناسبًا للشراء.",
       "cta": "افتح لوحة الأسواق",
-      "footer": "تصلك هذه الرسالة لأنك مشترك في تحديثات أخبار OpenStock."
+      "footer": "تصلك هذه الرسالة لأنك مشترك في تحديثات أخبار MercadoAberto."
     }
   },
   "Sidebar": {
@@ -466,16 +464,8 @@
     "watching": "المتابعة",
     "watchingEmpty": "ضع نجمة على سهم لتثبيته هنا.",
     "resources": {
-      "help": "مساعدة",
-      "apiDocs": "توثيق API",
-      "about": "عن التطبيق",
       "terms": "الشروط"
     },
-    "support": "ادعم OpenStock",
-    "sponsor": "راعي",
-    "sponsorSlotsOpen": "أماكن الرعاة متاحة",
-    "sponsorSlotsLeft": "{count, plural, one {بقي مكان رعاية واحد} two {بقي مكانا رعاية} few {بقيت # أماكن رعاية} many {بقي # مكانًا للرعاية} other {بقي # مكان رعاية}}",
-    "sponsorPitch": "اجعل شركتك أمام كل مستخدمي OpenStock.",
     "signOut": "تسجيل الخروج"
   },
   "TabBar": {
@@ -513,16 +503,6 @@
     "disclaimer": "محتوى للمعلومات والتعليم فقط. ليس نصيحة استثمارية ولا توصية بشراء أو بيع أي أصل. الأسعار متأخرة وقد تحتوي على أخطاء.",
     "sourceCode": "الشيفرة المصدرية (AGPL-3.0)",
     "basedOn": "مبني على"
-  },
-  "DonatePopup": {
-    "kicker": "الباب مفتوح للرعاة",
-    "title": "خلّ OpenStock مجانياً",
-    "description": "دعمكم لـ OpenStock و‏Open Dev Society ساعدنا على النمو، ووصلنا الآن إلى حدود الطبقة المجانية في Vercel. ارعَنا من ٥ دولارات شهرياً، أو تبرّع مرة واحدة، أو تحدّث معنا عن شراكة.",
-    "becomeSponsor": "كن راعياً",
-    "maybeLater": "لاحقاً"
-  },
-  "OpenDevSocietyBranding": {
-    "initiativeBy": "مبادرة من"
   },
   "StockPage": {
     "sentimentTitle": "المعنويات",
@@ -619,7 +599,7 @@
     "newsSubGeneral": "أخبار السوق العامة",
     "alertsTitle": "التنبيهات",
     "alertsSubActive": "{count} نشط · يُفحص كل ٥ دقائق",
-    "alertsSubCloud": "ميزة OpenStock Cloud",
+    "alertsSubCloud": "غير متاحة في هذه النسخة",
     "listsTitle": "قوائمي",
     "listsSub": "رتّب الأسهم التي تتابعها في قوائم بأسماء"
   },
@@ -640,12 +620,11 @@
     },
     "removed": "أُزيل تنبيه \"{symbol}\"",
     "removeFailed": "تعذر حذف التنبيه",
-    "cloudTitle": "التنبيهات مع السحابة",
-    "cloudBody": "تنبيهات الأسعار بالبريد جزء من OpenStock Cloud، مقابل ٥ دولارات شهرياً وقريباً.",
-    "seeCloud": "شاهد OpenStock Cloud",
+    "cloudTitle": "تنبيهات الأسعار غير متاحة",
+    "cloudBody": "تنبيهات الأسعار عبر البريد الإلكتروني غير مفعّلة بعد في هذه النسخة.",
     "emptyTitle": "لا تنبيهات بعد",
     "emptyBody": "استخدم الجرس بأي صف، أو \"فعّل تنبيه\" بصفحة السهم. نراسلك عند تحققه.",
-    "movedNotice": "انتقلت التنبيهات إلى <link>OpenStock Cloud</link>، لذا أُوقفت مؤقتًا.",
+    "movedNotice": "تنبيهات الأسعار متوقفة مؤقتًا في هذه النسخة.",
     "above": "فوق ⁦{price}⁩",
     "below": "تحت ⁦{price}⁩",
     "until": "حتى {date}",
@@ -667,9 +646,8 @@
     "nowWithDistance": "الآن ⁦{price}⁩ · يبعد ⁦{distance}⁩٪",
     "setting": "جارٍ التعيين…",
     "setAlert": "فعّل تنبيه",
-    "cloudTitle": "تنبيهات الأسعار تأتي مع Cloud",
-    "cloudBody": "يضيف Cloud تنبيهات الأسعار بالبريد والأسعار المباشرة مقابل ٥ دولارات شهرياً، وهو قادم قريباً. أما الاستضافة الذاتية فتتضمن الميزتين اليوم.",
-    "seeCloud": "شاهد OpenStock Cloud",
+    "cloudTitle": "تنبيهات الأسعار غير متاحة",
+    "cloudBody": "تنبيهات الأسعار عبر البريد الإلكتروني غير مفعّلة بعد في هذه النسخة.",
     "selfHost": "استضف بنفسك"
   },
   "NewsList": {

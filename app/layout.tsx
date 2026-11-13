@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, IBM_Plex_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import {Toaster} from "@/components/ui/sonner";
-import OntoLaunchCard from "@/components/OntoLaunchCard";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -27,7 +26,7 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "MercadoAberto",
-  description: "OpenStock is an open-source alternative to expensive market platforms. Track real-time prices, set personalized alerts, and explore detailed company insights — built openly, for everyone, forever free.",
+  description: "Bolsa brasileira, commodities e mercados globais em um só painel. Código aberto. Conteúdo informativo, não é recomendação de investimento.",
 };
 
 export default function RootLayout({
@@ -36,13 +35,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className="dark" suppressHydrationWarning>
+        <html lang="pt-BR" className="dark" suppressHydrationWarning>
             <body
                 className={`${jakarta.variable} ${arabic.variable} ${plexMono.variable} font-sans antialiased`}
             >
                 {children}
                 <Toaster/>
-                <OntoLaunchCard />
                 <Analytics />
             </body>
         </html>

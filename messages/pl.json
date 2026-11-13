@@ -139,9 +139,7 @@
     }
   },
   "AuthLayout": {
-    "testimonialQuote": "„Dla mnie OpenStock to nie tylko kolejna aplikacja giełdowa. Chodzi o to, żeby dać ludziom przejrzystość i kontrolę na rynku, bez żadnych barier ani abonamentów.”",
-    "founderRole": "Założyciel {org}",
-    "starAlt": "gwiazdka"
+    "tagline": "Brazylijska giełda, surowce i rynki światowe w jednym panelu."
   },
   "AuthFields": {
     "email": "E-mail",
@@ -411,26 +409,26 @@
       "visitOpenstock": "Odwiedź MercadoAberto"
     },
     "welcome": {
-      "subject": "Witaj w OpenStock – twoim zestawie narzędzi open source do obsługi rynku akcji!",
-      "text": "Dzięki za dołączenie do OpenStock, inicjatywy stowarzyszenia Open Dev Society",
+      "subject": "Witaj w MercadoAberto – twoim zestawie narzędzi open source do obsługi rynku akcji!",
+      "text": "Dzięki za dołączenie do MercadoAberto",
       "title": "Witaj w MercadoAberto",
       "dashboardAlt": "Podgląd pulpitu MercadoAberto",
       "heading": "Witaj na pokładzie, {name}",
-      "fallbackIntro": "Dzięki za dołączenie do OpenStock. Masz teraz narzędzia do śledzenia rynków i podejmowania mądrzejszych decyzji.",
+      "fallbackIntro": "Dzięki za dołączenie do MercadoAberto. Masz teraz narzędzia do śledzenia rynków i podejmowania mądrzejszych decyzji.",
       "featuresLabel": "Oto, co możesz zrobić już teraz:",
       "featureWatchlist": "Skonfiguruj swoją listę obserwowanych, żeby śledzić ulubione akcje",
       "featureSearch": "Wyszukaj dowolną akcję za pomocą ⌘K i otwórz ją w nowej karcie",
       "featureDashboard": "Zajrzyj na pulpit, żeby zobaczyć trendy i najnowsze wiadomości z rynku",
       "closing": "Będziemy informować cię o nowościach, spostrzeżeniach i alertach — a ty skup się na podejmowaniu dobrych decyzji.",
       "cta": "Przejdź do pulpitu",
-      "initiative": "Inicjatywa Open Dev Society"
+      "initiative": "Oparte na OpenStock od Open Dev Society"
     },
     "resetPassword": {
-      "subject": "Zresetuj hasło do OpenStock",
+      "subject": "Zresetuj hasło do MercadoAberto",
       "heading": "Zresetuj hasło",
       "greeting": "Cześć, {name},",
       "greetingNoName": "Cześć,",
-      "body": "Otrzymaliśmy prośbę o zresetowanie twojego hasła do OpenStock. Skorzystaj z przycisku poniżej, żeby wybrać nowe.",
+      "body": "Otrzymaliśmy prośbę o zresetowanie twojego hasła do MercadoAberto. Skorzystaj z przycisku poniżej, żeby wybrać nowe.",
       "cta": "Zresetuj hasło",
       "ignore": "Jeśli to nie ty prosisz o zmianę hasła, możesz zignorować tę wiadomość.",
       "text": "Zresetuj hasło: {url}"
@@ -455,7 +453,7 @@
       "calloutTitleBelow": "Cena spadła",
       "calloutBodyBelow": "{symbol} spadł poniżej twojej ceny docelowej. To może być dobry moment na zakup.",
       "cta": "Zobacz pulpit",
-      "footer": "Dostajesz tę wiadomość, bo masz włączone alerty w OpenStock."
+      "footer": "Dostajesz tę wiadomość, bo masz włączone alerty w MercadoAberto."
     }
   },
   "Sidebar": {
@@ -466,17 +464,9 @@
     "watching": "Obserwowane",
     "watchingEmpty": "Oznacz akcję gwiazdką, żeby ją tu przypiąć.",
     "resources": {
-      "help": "Pomoc",
-      "apiDocs": "Dokumentacja API",
-      "about": "O nas",
       "terms": "Regulamin"
     },
-    "support": "Wesprzyj OpenStock",
-    "sponsor": "Sponsor",
-    "sponsorSlotsOpen": "Otwarte są miejsca dla sponsorów",
-    "sponsorPitch": "Zaprezentuj swoją firmę każdemu użytkownikowi OpenStock.",
-    "signOut": "Wyloguj się",
-    "sponsorSlotsLeft": "{count, plural, one {Zostało # miejsce dla sponsora} few {Zostały # miejsca dla sponsorów} many {Zostało # miejsc dla sponsorów} other {Zostało # miejsca dla sponsorów}}"
+    "signOut": "Wyloguj się"
   },
   "TabBar": {
     "pages": {
@@ -513,16 +503,6 @@
     "disclaimer": "Treści informacyjne i edukacyjne. Nie stanowią porady inwestycyjnej ani rekomendacji kupna lub sprzedaży jakichkolwiek aktywów. Notowania są opóźnione i mogą zawierać błędy.",
     "sourceCode": "Kod źródłowy (AGPL-3.0)",
     "basedOn": "Na podstawie"
-  },
-  "DonatePopup": {
-    "kicker": "Szukamy sponsorów",
-    "title": "Pomóż utrzymać OpenStock za darmo",
-    "description": "Twoje wsparcie dla OpenStock i Open Dev Society pomogło nam się rozwinąć, a teraz osiągamy limity darmowego planu Vercel. Zostań sponsorem już od 5 dolarów miesięcznie, przekaż jednorazową darowiznę albo porozmawiaj z nami o partnerstwie.",
-    "becomeSponsor": "Zostań sponsorem",
-    "maybeLater": "Może później"
-  },
-  "OpenDevSocietyBranding": {
-    "initiativeBy": "Inicjatywa"
   },
   "StockPage": {
     "sentimentTitle": "Nastrój",
@@ -618,7 +598,7 @@
     "newsSubGeneral": "Ogólne wiadomości rynkowe",
     "alertsTitle": "Alerty",
     "alertsSubActive": "Aktywne: {count} · sprawdzane co 5 minut",
-    "alertsSubCloud": "Funkcja OpenStock Cloud",
+    "alertsSubCloud": "Niedostępne w tej wersji",
     "symbolCount": "{count, plural, one {# symbol} few {# symbole} many {# symboli} other {# symbolu}}",
     "listsTitle": "Moje listy",
     "listsSub": "Pogrupuj obserwowane akcje w nazwane listy"
@@ -640,12 +620,11 @@
     },
     "removed": "Usunięto alert: {symbol}",
     "removeFailed": "Nie udało się usunąć alertu",
-    "cloudTitle": "Alerty są w OpenStock Cloud",
-    "cloudBody": "E-mailowe alerty cenowe są częścią OpenStock Cloud — 5 $ miesięcznie, wkrótce dostępne.",
-    "seeCloud": "Zobacz OpenStock Cloud",
+    "cloudTitle": "Alerty cenowe są niedostępne",
+    "cloudBody": "Alerty cenowe e-mail nie są jeszcze aktywne w tej wersji.",
     "emptyTitle": "Nie masz jeszcze alertów",
     "emptyBody": "Kliknij dzwonek w dowolnym wierszu albo „Ustaw alert” na stronie akcji. Wyślemy ci e-mail, gdy alert się uruchomi.",
-    "movedNotice": "Alerty przeniosły się do <link>OpenStock Cloud</link>, więc te są wstrzymane.",
+    "movedNotice": "Alerty cenowe są wstrzymane w tej wersji.",
     "above": "Powyżej {price}",
     "below": "Poniżej {price}",
     "until": "do {date}",
@@ -665,9 +644,8 @@
     "nowWithDistance": "Teraz {price} · {distance}% różnicy",
     "setting": "Ustawianie alertu…",
     "setAlert": "Ustaw alert",
-    "cloudTitle": "Alerty cenowe są w OpenStock Cloud",
-    "cloudBody": "Cloud daje e-mailowe alerty cenowe i notowania na żywo za 5 $ miesięcznie — już wkrótce. Wersja hostowana samodzielnie ma oba już teraz.",
-    "seeCloud": "Zobacz OpenStock Cloud",
+    "cloudTitle": "Alerty cenowe są niedostępne",
+    "cloudBody": "Alerty cenowe e-mail nie są jeszcze aktywne w tej wersji.",
     "selfHost": "Hostuj samodzielnie",
     "created": "Ustawiono alert: {symbol} {condition, select, ABOVE {powyżej} other {poniżej}} {price}",
     "alreadyMet": "Cena jest już {condition, select, ABOVE {powyżej} other {poniżej}} tego poziomu — alert uruchomi się przy następnym sprawdzeniu"

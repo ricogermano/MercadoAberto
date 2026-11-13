@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { createAlert } from "@/lib/actions/alert.actions";
@@ -122,17 +121,12 @@ export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD
                         </form>
                     </>
                 ) : (
-                    // Alerts are an OpenStock Cloud feature; the free hourly site points people to it
+                    // Alerts only run in realtime mode (lib/market-data.ts)
                     <div>
-                        <p className="kicker text-brand-ink">OpenStock Cloud</p>
                         <DialogTitle className="mt-1 text-xl font-bold tracking-tight">{t('cloudTitle')}</DialogTitle>
                         <DialogDescription className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">
                             {t('cloudBody')}
                         </DialogDescription>
-                        <div className="mt-5 flex gap-2">
-                            <Link href="/#data" className="btn btn-primary h-11 flex-1">{t('seeCloud')}</Link>
-                            <Link href="/#self-host" className="btn btn-ghost h-11">{t('selfHost')}</Link>
-                        </div>
                     </div>
                 )}
             </DialogContent>

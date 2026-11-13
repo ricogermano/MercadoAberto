@@ -43,7 +43,7 @@ export const sendPasswordResetEmail = async (
         `;
 
         const info = await transporter.sendMail({
-            from: `"Openstock" <${process.env.NODEMAILER_EMAIL}>`,
+            from: `"MercadoAberto" <${process.env.NODEMAILER_EMAIL}>`,
             to: email,
             subject: t('resetPassword.subject'),
             text: t('resetPassword.text', { url: encodeUnsafeUrlChars(resetUrl) }),

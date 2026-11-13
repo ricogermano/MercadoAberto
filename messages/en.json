@@ -139,9 +139,7 @@
     }
   },
   "AuthLayout": {
-    "testimonialQuote": "“For me, OpenStock isn’t just another stock app. It’s about giving people clarity and control in the market, without barriers or subscriptions.”",
-    "founderRole": "Founder {org}",
-    "starAlt": "star"
+    "tagline": "Brazilian stocks, commodities and global markets in one dashboard."
   },
   "AuthFields": {
     "email": "Email",
@@ -411,26 +409,26 @@
       "visitOpenstock": "Visit MercadoAberto"
     },
     "welcome": {
-      "subject": "Welcome to Openstock - your open-source stock market toolkit!",
-      "text": "Thanks for joining Openstock, an initiative by open dev society",
+      "subject": "Welcome to MercadoAberto - your open-source stock market toolkit!",
+      "text": "Thanks for joining MercadoAberto",
       "title": "Welcome to MercadoAberto",
       "dashboardAlt": "MercadoAberto Dashboard Preview",
       "heading": "Welcome aboard {name}",
-      "fallbackIntro": "Thanks for joining Openstock. You now have the tools to track markets and make smarter moves.",
+      "fallbackIntro": "Thanks for joining MercadoAberto. You now have the tools to track markets and make smarter moves.",
       "featuresLabel": "Here's what you can do right now:",
       "featureWatchlist": "Set up your watchlist to follow your favorite stocks",
       "featureSearch": "Search any stock with ⌘K and open it as a tab",
       "featureDashboard": "Explore the dashboard for trends and the latest market news",
       "closing": "We'll keep you informed with timely updates, insights, and alerts — so you can focus on making the right calls.",
       "cta": "Go to Dashboard",
-      "initiative": "Initiative by Open Dev Society"
+      "initiative": "Based on OpenStock, by Open Dev Society"
     },
     "resetPassword": {
-      "subject": "Reset your Openstock password",
+      "subject": "Reset your MercadoAberto password",
       "heading": "Reset your password",
       "greeting": "Hi {name},",
       "greetingNoName": "Hi there,",
-      "body": "We received a request to reset your Openstock password. Use the button below to choose a new one.",
+      "body": "We received a request to reset your MercadoAberto password. Use the button below to choose a new one.",
       "cta": "Reset password",
       "ignore": "If you did not request this, you can safely ignore this email.",
       "text": "Reset your password: {url}"
@@ -455,7 +453,7 @@
       "calloutTitleBelow": "Price Dropped",
       "calloutBodyBelow": "{symbol} dropped below your target price. This might be a good time to buy.",
       "cta": "View Dashboard",
-      "footer": "You're receiving this because you subscribed to Openstock news updates."
+      "footer": "You're receiving this because you subscribed to MercadoAberto news updates."
     }
   },
   "Sidebar": {
@@ -466,16 +464,8 @@
     "watching": "Watching",
     "watchingEmpty": "Star a stock to pin it here.",
     "resources": {
-      "help": "Help",
-      "apiDocs": "API docs",
-      "about": "About",
       "terms": "Terms"
     },
-    "support": "Support OpenStock",
-    "sponsor": "Sponsor",
-    "sponsorSlotsOpen": "Sponsor slots open",
-    "sponsorSlotsLeft": "{count, plural, one {# sponsor slot left} other {# sponsor slots left}}",
-    "sponsorPitch": "Put your company in front of every OpenStock user.",
     "signOut": "Sign out"
   },
   "TabBar": {
@@ -513,16 +503,6 @@
     "disclaimer": "Informational and educational content. Not investment advice or a recommendation to buy or sell any asset. Quotes are delayed and may contain errors.",
     "sourceCode": "Source code (AGPL-3.0)",
     "basedOn": "Based on"
-  },
-  "DonatePopup": {
-    "kicker": "Open for sponsors",
-    "title": "Keep OpenStock free",
-    "description": "Your love for OpenStock and Open Dev Society has helped us grow, and we're now hitting Vercel's free tier limits. Sponsor from $5 a month, give once, or talk with us about a partnership.",
-    "becomeSponsor": "Become a sponsor",
-    "maybeLater": "Maybe later"
-  },
-  "OpenDevSocietyBranding": {
-    "initiativeBy": "Initiative by"
   },
   "StockPage": {
     "sentimentTitle": "Sentiment",
@@ -619,7 +599,7 @@
     "newsSubGeneral": "General market news",
     "alertsTitle": "Alerts",
     "alertsSubActive": "{count} active · checked every 5 minutes",
-    "alertsSubCloud": "An OpenStock Cloud feature",
+    "alertsSubCloud": "Not available in this version",
     "listsTitle": "My lists",
     "listsSub": "Group the stocks you watch into named lists"
   },
@@ -640,12 +620,11 @@
     },
     "removed": "Alert for {symbol} removed",
     "removeFailed": "Couldn’t remove the alert",
-    "cloudTitle": "Alerts come with Cloud",
-    "cloudBody": "Email price alerts are part of OpenStock Cloud, $5 a month and coming soon.",
-    "seeCloud": "See OpenStock Cloud",
+    "cloudTitle": "Price alerts are not available",
+    "cloudBody": "Email price alerts are not active in this version yet.",
     "emptyTitle": "No alerts yet",
     "emptyBody": "Use the bell on any row, or “Set alert” on a stock page. We email you when it fires.",
-    "movedNotice": "Alerts moved to <link>OpenStock Cloud</link>, so these are paused.",
+    "movedNotice": "Price alerts are paused in this version.",
     "above": "Above {price}",
     "below": "Below {price}",
     "until": "until {date}",
@@ -667,9 +646,8 @@
     "nowWithDistance": "Now {price} · {distance}% away",
     "setting": "Setting alert",
     "setAlert": "Set alert",
-    "cloudTitle": "Price alerts come with Cloud",
-    "cloudBody": "Cloud adds email price alerts and live quotes for $5 a month. It’s coming soon. Self-hosting includes both today.",
-    "seeCloud": "See OpenStock Cloud",
+    "cloudTitle": "Price alerts are not available",
+    "cloudBody": "Email price alerts are not active in this version yet.",
     "selfHost": "Self-host"
   },
   "NewsList": {

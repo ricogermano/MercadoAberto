@@ -139,9 +139,7 @@
     }
   },
   "AuthLayout": {
-    "testimonialQuote": "“Para mim, o OpenStock não é só mais um app de ações. Ele dá clareza e controle às pessoas no mercado, sem barreiras nem assinaturas.”",
-    "founderRole": "Fundador {org}",
-    "starAlt": "estrela"
+    "tagline": "Bolsa brasileira, commodities e mercados globais em um só painel."
   },
   "AuthFields": {
     "email": "E-mail",
@@ -411,26 +409,26 @@
       "visitOpenstock": "Visitar o MercadoAberto"
     },
     "welcome": {
-      "subject": "Bem-vindo ao Openstock - sua caixa de ferramentas de código aberto para o mercado de ações!",
-      "text": "Obrigado por entrar no Openstock, uma iniciativa da Open Dev Society",
+      "subject": "Bem-vindo ao MercadoAberto - sua caixa de ferramentas de código aberto para o mercado de ações!",
+      "text": "Obrigado por entrar no MercadoAberto",
       "title": "Bem-vindo ao MercadoAberto",
       "dashboardAlt": "Prévia do painel do MercadoAberto",
       "heading": "Bem-vindo a bordo, {name}",
-      "fallbackIntro": "Obrigado por entrar no Openstock. Agora você tem as ferramentas para acompanhar os mercados.",
+      "fallbackIntro": "Obrigado por entrar no MercadoAberto. Agora você tem as ferramentas para acompanhar os mercados.",
       "featuresLabel": "Veja o que você pode fazer agora:",
       "featureWatchlist": "Monte sua lista de acompanhamento para seguir suas ações favoritas",
       "featureSearch": "Busque qualquer ação com ⌘K e abra como uma aba",
       "featureDashboard": "Explore o painel com tendências e as últimas notícias do mercado",
       "closing": "Vamos manter você informado com atualizações, dados e alertas no momento certo.",
       "cta": "Ir para o painel",
-      "initiative": "Iniciativa da Open Dev Society"
+      "initiative": "Baseado no OpenStock, da Open Dev Society"
     },
     "resetPassword": {
-      "subject": "Redefina sua senha do Openstock",
+      "subject": "Redefina sua senha do MercadoAberto",
       "heading": "Redefina sua senha",
       "greeting": "Olá, {name},",
       "greetingNoName": "Olá,",
-      "body": "Recebemos um pedido para redefinir sua senha do Openstock. Use o botão abaixo para escolher uma nova.",
+      "body": "Recebemos um pedido para redefinir sua senha do MercadoAberto. Use o botão abaixo para escolher uma nova.",
       "cta": "Redefinir senha",
       "ignore": "Se você não fez esse pedido, pode ignorar este e-mail com segurança.",
       "text": "Redefina sua senha: {url}"
@@ -455,7 +453,7 @@
       "calloutTitleBelow": "Preço em queda",
       "calloutBodyBelow": "{symbol} caiu abaixo do seu preço-alvo.",
       "cta": "Ver painel",
-      "footer": "Você está recebendo este e-mail porque se inscreveu nas atualizações do Openstock."
+      "footer": "Você está recebendo este e-mail porque se inscreveu nas atualizações do MercadoAberto."
     }
   },
   "Sidebar": {
@@ -466,16 +464,8 @@
     "watching": "Acompanhando",
     "watchingEmpty": "Marque uma ação com estrela para fixá-la aqui.",
     "resources": {
-      "help": "Ajuda",
-      "apiDocs": "Documentação da API",
-      "about": "Sobre",
       "terms": "Termos"
     },
-    "support": "Apoie o OpenStock",
-    "sponsor": "Patrocinar",
-    "sponsorSlotsOpen": "Vagas de patrocínio abertas",
-    "sponsorSlotsLeft": "{count, plural, one {# vaga de patrocínio restante} other {# vagas de patrocínio restantes}}",
-    "sponsorPitch": "Coloque sua empresa na frente de todos os usuários do OpenStock.",
     "signOut": "Sair"
   },
   "TabBar": {
@@ -513,16 +503,6 @@
     "disclaimer": "Conteúdo informativo e educacional. Não é recomendação de investimento nem oferta de compra ou venda de qualquer ativo. Cotações com atraso e sujeitas a erro.",
     "sourceCode": "Código-fonte (AGPL-3.0)",
     "basedOn": "Baseado no"
-  },
-  "DonatePopup": {
-    "kicker": "Aberto a patrocinadores",
-    "title": "Mantenha o OpenStock gratuito",
-    "description": "O carinho de vocês pelo OpenStock e pela Open Dev Society nos ajudou a crescer, e agora estamos chegando aos limites do plano gratuito da Vercel. Patrocine a partir de US$ 5 por mês, contribua uma vez ou fale conosco sobre uma parceria.",
-    "becomeSponsor": "Seja um patrocinador",
-    "maybeLater": "Talvez depois"
-  },
-  "OpenDevSocietyBranding": {
-    "initiativeBy": "Iniciativa da"
   },
   "StockPage": {
     "sentimentTitle": "Sentimento",
@@ -619,7 +599,7 @@
     "newsSubGeneral": "Notícias gerais do mercado",
     "alertsTitle": "Alertas",
     "alertsSubActive": "{count} ativos · verificados a cada 5 minutos",
-    "alertsSubCloud": "Um recurso do OpenStock Cloud",
+    "alertsSubCloud": "Indisponíveis nesta versão",
     "listsTitle": "Minhas listas",
     "listsSub": "Agrupe as ações que você acompanha em listas com nome"
   },
@@ -640,12 +620,11 @@
     },
     "removed": "Alerta de {symbol} removido",
     "removeFailed": "Não foi possível remover o alerta",
-    "cloudTitle": "Os alertas vêm com o Cloud",
-    "cloudBody": "Os alertas de preço por e-mail fazem parte do OpenStock Cloud, US$ 5 por mês, em breve.",
-    "seeCloud": "Conhecer o OpenStock Cloud",
+    "cloudTitle": "Alertas de preço indisponíveis",
+    "cloudBody": "Os alertas de preço por e-mail ainda não estão ativos nesta versão.",
     "emptyTitle": "Nenhum alerta ainda",
     "emptyBody": "Use o sino em qualquer linha ou “Criar alerta” na página de uma ação. Avisamos por e-mail quando disparar.",
-    "movedNotice": "Os alertas passaram para o <link>OpenStock Cloud</link>, por isso estes estão pausados.",
+    "movedNotice": "Os alertas de preço estão pausados nesta versão.",
     "above": "Acima de {price}",
     "below": "Abaixo de {price}",
     "until": "até {date}",
@@ -667,9 +646,8 @@
     "nowWithDistance": "Agora {price} · {distance}% de distância",
     "setting": "Criando alerta",
     "setAlert": "Criar alerta",
-    "cloudTitle": "Os alertas de preço vêm com o Cloud",
-    "cloudBody": "O Cloud inclui alertas de preço por e-mail e cotações ao vivo por US$ 5 por mês. Em breve. Quem hospeda por conta própria já tem os dois hoje.",
-    "seeCloud": "Conhecer o OpenStock Cloud",
+    "cloudTitle": "Alertas de preço indisponíveis",
+    "cloudBody": "Os alertas de preço por e-mail ainda não estão ativos nesta versão.",
     "selfHost": "Hospedar por conta própria"
   },
   "NewsList": {

@@ -1,32 +1,64 @@
 import { Metadata } from 'next';
-import { AlertTriangle, Check, X } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import PageHero from '@/components/marketing/PageHero';
-import SectionHead from '@/components/marketing/SectionHead';
+import { APP_NAME, SOURCE_URL, UPSTREAM_NAME, UPSTREAM_URL } from '@/lib/constants';
 
 export const metadata: Metadata = {
-    title: 'Terms of Service | OpenStock',
-    description: 'Fair, transparent, and open terms for our community.',
+    title: `Termos de uso | ${APP_NAME}`,
+    description: 'Regras de uso, aviso sobre investimentos, origem dos dados e licença do código.',
 };
 
-const PROMISES = [
-    'Core features will remain free forever.',
-    'We will never sell your personal data.',
-    'Terms changes will be discussed openly.',
-    'You own your watchlists and analysis.',
+const linkClass = 'font-semibold text-brand-ink hover:underline';
+
+const SECTIONS: { title: string; body: React.ReactNode }[] = [
+    {
+        title: 'O que é o serviço',
+        body: `O ${APP_NAME} é um painel para acompanhar cotações, indicadores, notícias e commodities. Ele não envia ordens, não guarda dinheiro e não tem ligação com corretoras.`,
+    },
+    {
+        title: 'Dados de terceiros',
+        body: 'Cotações e indicadores vêm do Yahoo Finance, os gráficos vêm do TradingView e as notícias vêm dos portais de origem. Os dados têm atraso, podem estar incompletos ou errados e podem sair do ar sem aviso.',
+    },
+    {
+        title: 'Sem garantias',
+        body: 'O serviço é oferecido como está, sem garantia de disponibilidade ou de exatidão. O uso das informações é por conta e risco de quem usa.',
+    },
+    {
+        title: 'Sua conta',
+        body: 'Para criar a conta pedimos nome, e-mail e senha. Guardamos também a sua lista de acompanhamento e as preferências que você informar. Esses dados servem só para o funcionamento do painel.',
+    },
+    {
+        title: 'Uso aceitável',
+        body: 'Não use robôs para extrair dados em volume, não tente derrubar ou invadir o serviço e não compartilhe o acesso da sua conta.',
+    },
+    {
+        title: 'Código e licença',
+        body: (
+            <>
+                O código é aberto, sob a licença AGPL-3.0, e está em{' '}
+                <a href={SOURCE_URL} target="_blank" rel="noreferrer" className={linkClass}>{SOURCE_URL.replace('https://', '')}</a>. O projeto é baseado no{' '}
+                <a href={UPSTREAM_URL} target="_blank" rel="noreferrer" className={linkClass}>{UPSTREAM_NAME}</a>.
+            </>
+        ),
+    },
+    {
+        title: 'Dúvidas e mudanças',
+        body: (
+            <>
+                Estes termos podem mudar; a data no topo mostra a última atualização. Dúvidas e problemas podem ser registrados em{' '}
+                <a href={`${SOURCE_URL}/issues`} target="_blank" rel="noreferrer" className={linkClass}>{`${SOURCE_URL.replace('https://', '')}/issues`}</a>.
+            </>
+        ),
+    },
 ];
-
-const RULES = {
-    do: ['Share knowledge freely', 'Use the API for personal projects', 'Respect other members'],
-    dont: ['Scrape data excessively', 'Share API keys', 'Use OpenStock for high-frequency trading'],
-};
 
 export default function TermsPage() {
     return (
         <>
             <PageHero
-                kicker="Terms · Last updated October 2025"
-                title="Terms of Service"
-                sub="Built on trust, transparency and community values. No hidden gotchas, just clear rules."
+                kicker="Termos · Atualizado em novembro de 2026"
+                title="Termos de uso"
+                sub="Regras curtas e diretas para usar o painel."
             />
 
             <section className="mx-auto mt-14 max-w-[1200px] px-5">
@@ -34,53 +66,24 @@ export default function TermsPage() {
                     <div className="card flex gap-4 p-6 shadow-[inset_0_0_0_1px_oklch(0.76_0.119_70/0.35)]">
                         <AlertTriangle className="mt-0.5 size-5 flex-none text-warn" />
                         <div>
-                            <h2 className="font-bold text-warn">Investment disclaimer</h2>
+                            <h2 className="font-bold text-warn">Aviso sobre investimentos</h2>
                             <p className="mt-2 max-w-3xl leading-relaxed text-muted-foreground">
-                                <strong className="text-foreground">OpenStock is an educational and analysis tool, not a financial advisor.</strong>{' '}
-                                Data is provided as is, for information only. Never invest money you cannot afford to lose. Always do your own
-                                research or consult a certified professional before making financial decisions.
+                                <strong className="text-foreground">O {APP_NAME} é uma ferramenta informativa e educacional.</strong>{' '}
+                                Nada aqui é recomendação de investimento, análise de valores mobiliários ou oferta de compra ou venda de qualquer ativo.
+                                Indicadores e ordenações são cálculos automáticos sobre dados públicos. As decisões são de quem investe.
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section className="mx-auto mt-20 max-w-[1200px] px-5">
-                <SectionHead kicker="Our promise" title="What you can count on." />
-                <div className="grid gap-3 sm:grid-cols-2">
-                    {PROMISES.map((promise) => (
-                        <div key={promise} className="hatch">
-                            <div className="card flex h-full items-center gap-3 p-5">
-                                <span className="bento-ico bg-brand-soft text-brand-ink"><Check /></span>
-                                <span className="font-semibold">{promise}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            <section className="mx-auto mt-20 max-w-[1200px] px-5">
-                <SectionHead kicker="Community rules" title="Do’s and don’ts." />
-                <div className="grid gap-3 md:grid-cols-2">
-                    {([['Do', RULES.do, Check, 'text-up'], ['Don’t', RULES.dont, X, 'text-down']] as const).map(([title, items, Icon, tone]) => (
-                        <div key={title} className="hatch">
-                            <div className="card h-full p-5">
-                                <h3 className="kicker">{title}</h3>
-                                <ul className="mt-3 flex flex-col gap-2.5">
-                                    {items.map((item) => (
-                                        <li key={item} className="flex items-center gap-2.5">
-                                            <Icon className={`size-4 flex-none ${tone}`} />
-                                            <span className="text-muted-foreground">{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <p className="mt-8 text-muted-foreground">
-                    Questions about these terms? Email <a href="mailto:opendevsociety@gmail.com" className="font-semibold text-brand-ink hover:underline">opendevsociety@gmail.com</a>.
-                </p>
+            <section className="mx-auto mt-14 flex max-w-[1200px] flex-col gap-8 px-5">
+                {SECTIONS.map(({ title, body }) => (
+                    <div key={title} className="max-w-3xl">
+                        <h2 className="text-[18px] font-bold tracking-[-0.02em]">{title}</h2>
+                        <p className="mt-2 leading-relaxed text-muted-foreground">{body}</p>
+                    </div>
+                ))}
             </section>
         </>
     );

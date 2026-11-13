@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import InputField from '@/components/forms/InputField';
 import FooterLink from '@/components/forms/FooterLink';
-import OpenDevSocietyBranding from '@/components/OpenDevSocietyBranding';
 import { requestPasswordResetEmail } from '@/lib/actions/auth.actions';
 
 type ForgotPasswordFormData = {
@@ -17,7 +16,6 @@ type ForgotPasswordFormData = {
 const ForgotPasswordPage = () => {
     const t = useTranslations('ForgotPassword');
     const tFields = useTranslations('AuthFields');
-    const tBrand = useTranslations('OpenDevSocietyBranding');
     const {
         register,
         handleSubmit,
@@ -76,7 +74,6 @@ const ForgotPasswordPage = () => {
                 </Button>
 
                 <FooterLink text={t('remembered')} linkText={t('signIn')} href="/sign-in" />
-                <OpenDevSocietyBranding outerClassName="mt-10 flex justify-center" text={tBrand('initiativeBy')} />
             </form>
         </>
     );

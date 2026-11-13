@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import OpenDevSocietyBranding from "@/components/OpenDevSocietyBranding";
 import SocialAuthButtons from "@/components/forms/SocialAuthButtons";
 import React from "react";
 
@@ -17,7 +16,6 @@ const SignIn = () => {
     const t = useTranslations('SignIn');
     const tFields = useTranslations('AuthFields');
     const tPassword = useTranslations('Password');
-    const tBrand = useTranslations('OpenDevSocietyBranding');
     const router = useRouter()
     const {
         register,
@@ -93,7 +91,6 @@ const SignIn = () => {
                 </Button>
 
                 <FooterLink text={t('noAccount')} linkText={t('createAccount')} href="/sign-up" />
-                <OpenDevSocietyBranding outerClassName="mt-10 flex justify-center" text={tBrand('initiativeBy')} />
             </form>
         </>
     );

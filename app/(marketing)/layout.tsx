@@ -1,77 +1,50 @@
 import Link from "next/link";
-import { Github } from "lucide-react";
-import { formatCount, getRepoStats } from "@/lib/github";
-import OpenDevSocietyBranding from "@/components/OpenDevSocietyBranding";
-import SponsorsBand from "@/components/sponsors/SponsorsBand";
-import UpdateBanner from "@/components/UpdateBanner";
-import { APP_NAME, DISCORD_URL, REPO_URL } from "@/lib/constants";
 import BrandLogo from "@/components/BrandLogo";
+import LegalFooter from "@/components/LegalFooter";
+import { APP_NAME } from "@/lib/constants";
 
-const FOOTER_LINKS = [
-    { href: '/s', label: 'Stocks' },
-    { href: '/compare', label: 'Guides' },
-    { href: '/about', label: 'About' },
-    { href: '/help', label: 'Help' },
-    { href: '/api-docs', label: 'Architecture' },
-    { href: '/terms', label: 'Terms' },
-    { href: '/sponsor', label: 'Sponsor' },
-    { href: '/love', label: 'Wall of love' },
-    { href: '/changelog', label: 'Changelog' },
-    { href: REPO_URL, label: 'GitHub' },
-    { href: DISCORD_URL, label: 'Discord' },
-    { href: 'https://www.linkedin.com/company/opendevsociety-in/', label: 'LinkedIn' },
-];
+// Public pages are outside the translated app (no intl provider), so their text is Portuguese here.
+const LEGAL_LABELS = {
+    disclaimer: 'Conteúdo informativo e educacional. Não é recomendação de investimento nem oferta de compra ou venda de qualquer ativo. Cotações com atraso e sujeitas a erro.',
+    sourceCode: 'Código-fonte (AGPL-3.0)',
+    basedOn: 'Baseado no',
+};
 
 // No session read here: it made every public page (and every <Link> prefetch of one) a function call.
 // The header always shows the signed-out buttons; /sign-in and /sign-up send a signed-in visitor to /dashboard.
-export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
-    const repo = await getRepoStats();
-
+export default function MarketingLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="min-h-dvh bg-page">
-            <UpdateBanner className="mx-5 mt-3 xl:mx-auto xl:max-w-[1160px]" />
             <header className="sticky top-0 z-40 border-b border-transparent bg-page/80 backdrop-blur-md">
                 <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-6 px-5">
-                    <Link href="/" aria-label={`${APP_NAME} home`} className="shrink-0">
+                    <Link href="/" aria-label={`${APP_NAME}: página inicial`} className="shrink-0">
                         <BrandLogo />
                     </Link>
                     <nav className="hidden items-center gap-1 md:flex">
-                        {[['/#inside', 'Product'], ['/#data', 'Data'], ['/#self-host', 'Self-host'], ['/about', 'About']].map(([href, label]) => (
+                        {[['/#recursos', 'Recursos'], ['/#dados', 'Dados'], ['/#codigo-aberto', 'Código aberto'], ['/terms', 'Termos']].map(([href, label]) => (
                             <Link key={href} href={href} className="side-item h-8 font-semibold">{label}</Link>
                         ))}
-                        <Link href="/sponsor" className="side-item h-8 gap-2 font-semibold text-brand-ink hover:text-brand-ink">
-                            <span className="live-dot" /> Sponsor
-                        </Link>
                     </nav>
                     <div className="ml-auto flex items-center gap-2">
-                        <a href={REPO_URL} target="_blank" rel="noreferrer" className="btn btn-ghost hidden h-9 px-3 sm:inline-flex" aria-label="OpenStock on GitHub">
-                            <Github />
-                            {repo && <span className="num">{formatCount(repo.stars)}</span>}
-                        </a>
-                        <Link href="/sign-in" className="btn h-9 px-3 text-muted-foreground hover:text-foreground">Sign in</Link>
-                        <Link href="/sign-up" className="btn btn-primary h-9">Get started</Link>
+                        <Link href="/sign-in" className="btn h-9 px-3 text-muted-foreground hover:text-foreground">Entrar</Link>
+                        <Link href="/sign-up" className="btn btn-primary h-9">Criar conta</Link>
                     </div>
                 </div>
             </header>
 
             <main>{children}</main>
 
-            <SponsorsBand />
-
-            <footer className="mx-auto mt-24 flex max-w-[1200px] flex-col gap-6 px-5 pb-10 md:flex-row md:items-center md:justify-between">
-                <div className="flex flex-col gap-3">
+            <div className="mx-auto mt-24 max-w-[1200px] px-5 pb-10">
+                <div className="flex flex-wrap items-center justify-between gap-3">
                     <BrandLogo className="text-[18px]" />
-                    <p className="text-[13px] text-faint">© {new Date().getFullYear()} Open Dev Society · AGPL-3.0</p>
+                    <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-muted-foreground">
+                        <Link href="/" className="transition-colors hover:text-foreground">Início</Link>
+                        <Link href="/terms" className="transition-colors hover:text-foreground">Termos</Link>
+                        <Link href="/sign-in" className="transition-colors hover:text-foreground">Entrar</Link>
+                    </nav>
                 </div>
-                <nav className="flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-muted-foreground">
-                    {FOOTER_LINKS.map(({ href, label }) => (
-                        <Link key={label} href={href} className="transition-colors hover:text-foreground" {...(href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}>
-                            {label}
-                        </Link>
-                    ))}
-                </nav>
-                <OpenDevSocietyBranding />
-            </footer>
+                <LegalFooter labels={LEGAL_LABELS} />
+            </div>
         </div>
     );
 }

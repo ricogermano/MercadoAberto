@@ -274,7 +274,30 @@
     "clearSort": "Wyczyść sortowanie",
     "combinedHint": "Ranking łączony: pozycje spółki w wybranych kolumnach są sumowane, najniższa suma jest pierwsza. Spółki bez wartości trafiają na koniec.",
     "sortBy": "Sortuj według: {column}",
-    "fundamentalsNote": "C/Z i C/WK dotyczą ostatnich dwunastu miesięcy, dane z Yahoo Finance; ROE to C/WK podzielone przez C/Z. ROCE to zysk operacyjny (EBIT) w relacji do aktywów ogółem pomniejszonych o zobowiązania krótkoterminowe; niedostępne dla banków i ubezpieczycieli. DY to dywidendy wypłacone w ciągu ostatnich dwunastu miesięcy podzielone przez bieżącą cenę."
+    "fundamentalsNote": "Wskaźniki z Yahoo Finance, ostatnie dwanaście miesięcy; stuknij ? przy kolumnie, aby zobaczyć sposób obliczenia.",
+    "helpAbout": "Co to jest {column}?",
+    "help": {
+      "dy": {
+        "title": "DY (stopa dywidendy)",
+        "body": "Dywidendy wypłacone na akcję w ciągu ostatnich dwunastu miesięcy podzielone przez bieżącą cenę. Dane pochodzą z Yahoo Finance. Wypłaty z przeszłości, także jednorazowe, nie wskazują na przyszłe wypłaty."
+      },
+      "pe": {
+        "title": "C/Z (cena do zysku)",
+        "body": "Cena akcji podzielona przez zysk na akcję z ostatnich dwunastu miesięcy: ile lat obecnego zysku odpowiada cenie. Dane pochodzą z Yahoo Finance. Pole jest puste, gdy zysk jest ujemny, a jednorazowe zyski lub straty zniekształcają wynik."
+      },
+      "pb": {
+        "title": "C/WK (cena do wartości księgowej)",
+        "body": "Cena akcji podzielona przez wartość księgową (kapitał własny) na akcję. Dane pochodzą z Yahoo Finance. Wartość księgowa wynika z zasad rachunkowości i może różnić się od rzeczywistej wartości aktywów."
+      },
+      "roe": {
+        "title": "ROE (zwrot z kapitału własnego)",
+        "body": "Zysk netto z ostatnich dwunastu miesięcy jako procent kapitału własnego. Tutaj liczony jako C/WK podzielone przez C/Z, na danych z Yahoo Finance. Zadłużenie podnosi ROE, choć firma nie staje się bardziej rentowna."
+      },
+      "roce": {
+        "title": "ROCE (zwrot z zaangażowanego kapitału)",
+        "body": "Zysk operacyjny (EBIT) z ostatnich dwunastu miesięcy jako procent zaangażowanego kapitału (aktywa ogółem minus zobowiązania krótkoterminowe), czyli z uwzględnieniem długu i kapitału własnego razem. Dane pochodzą z Yahoo Finance. Nie jest pokazywany dla banków i ubezpieczycieli, których bilanse nie mają takiego podziału."
+      }
+    }
   },
   "TradingViewWidget": {
     "fullScreen": "Pełny ekran",

@@ -75,7 +75,11 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
     const source = currency ? t('source', { currency }) : t('sourceNoCurrency');
     const note = hasFundamentals ? `${source} ${t('fundamentalsNote')}` : source;
 
-    return <YahooQuotesSortable groups={groups} labels={labels} sortByTemplate={sortByTemplate} note={note} />;
+    const help = Object.fromEntries(
+        (['dy', 'pe', 'pb', 'roe', 'roce'] as const).map((k) => [k, { label: t('helpAbout', { column: labels[k] }), title: t(`help.${k}.title`), body: t(`help.${k}.body`) }]),
+    ) as Record<'dy' | 'pe' | 'pb' | 'roe' | 'roce', { label: string; title: string; body: string }>;
+
+    return <YahooQuotesSortable groups={groups} labels={labels} sortByTemplate={sortByTemplate} help={help} note={note} />;
 }
 
 // Today's biggest movers across the same groups, ranked by day change %

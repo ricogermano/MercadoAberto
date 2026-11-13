@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown, CircleHelp } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import ChangePill from '@/components/ChangePill';
 import { rankByCriteria, type SortCriterion } from '@/lib/yahoo';
 
@@ -47,11 +48,13 @@ export default function YahooQuotesSortable({
     groups,
     labels,
     sortByTemplate,
+    help,
     note,
 }: {
     groups: { title: string; rows: QuoteRow[] }[];
     labels: QuoteLabels;
     sortByTemplate: Record<SortKey, string>;
+    help: Partial<Record<SortKey, { label: string; title: string; body: string }>>;
     note: string;
 }) {
     const [criteria, setCriteria] = useState<Criterion[]>([]);
@@ -141,6 +144,7 @@ export default function YahooQuotesSortable({
                                     className={`px-3 py-2 font-medium ${c.numeric ? 'whitespace-nowrap text-end' : ''}`}
                                     aria-sort={index !== 0 ? 'none' : active === 'asc' ? 'ascending' : 'descending'}
                                 >
+                                    <div className="inline-flex items-center gap-1 whitespace-nowrap">
                                     <button
                                         type="button"
                                         onClick={() => onSort(c.key)}
@@ -151,6 +155,21 @@ export default function YahooQuotesSortable({
                                         <Icon className={`size-3 ${active ? '' : 'opacity-60'}`} aria-hidden />
                                         {combined && active && <span className="num text-[10.5px]">{index + 1}</span>}
                                     </button>
+                                    {help[c.key] && (
+                                        // A sibling of the sort button, so opening the help never changes the sort
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <button type="button" aria-label={help[c.key]!.label} className="text-faint opacity-60 hover:text-brand-ink hover:opacity-100">
+                                                    <CircleHelp className="size-3" aria-hidden />
+                                                </button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto max-w-72 whitespace-normal p-3 text-start text-[12.5px] font-normal">
+                                                <p className="font-semibold">{help[c.key]!.title}</p>
+                                                <p className="mt-1 leading-snug">{help[c.key]!.body}</p>
+                                            </PopoverContent>
+                                        </Popover>
+                                    )}
+                                    </div>
                                 </th>
                             );
                         })}

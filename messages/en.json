@@ -274,7 +274,30 @@
     "clearSort": "Clear sorting",
     "combinedHint": "Combined ranking: each company's positions in the selected columns are added up, lowest total first. Companies missing a value go last.",
     "sortBy": "Sort by {column}",
-    "fundamentalsNote": "P/L (price to earnings) and P/VP (price to book) are trailing twelve months, from Yahoo Finance; ROE is P/VP divided by P/L. ROCE is operating profit (EBIT) over total assets minus current liabilities; not available for banks and insurers. DY is the dividends paid over the last twelve months divided by the current price."
+    "fundamentalsNote": "Indicators from Yahoo Finance, trailing twelve months; tap ? on a column for how it is computed.",
+    "helpAbout": "What is {column}?",
+    "help": {
+      "dy": {
+        "title": "DY (dividend yield)",
+        "body": "Dividends paid per share over the last twelve months, divided by the current price. Figures come from Yahoo Finance. Past payments, including one-off ones, do not indicate future payments."
+      },
+      "pe": {
+        "title": "P/L (price to earnings)",
+        "body": "Share price divided by earnings per share over the last twelve months: how many years of current earnings the price represents. Figures come from Yahoo Finance. Empty when earnings are negative, and one-off gains or losses distort it."
+      },
+      "pb": {
+        "title": "P/VP (price to book)",
+        "body": "Share price divided by book value (shareholders’ equity) per share. Figures come from Yahoo Finance. Book value follows accounting rules and may differ from what the assets are worth."
+      },
+      "roe": {
+        "title": "ROE (return on equity)",
+        "body": "Net income of the last twelve months as a percentage of shareholders’ equity. Here it is computed as P/VP divided by P/L, from Yahoo Finance figures. Debt raises ROE without the business being more profitable."
+      },
+      "roce": {
+        "title": "ROCE (return on capital employed)",
+        "body": "Operating profit (EBIT) of the last twelve months as a percentage of capital employed (total assets minus current liabilities), so it considers debt and equity together. Figures come from Yahoo Finance. Not shown for banks and insurers, whose balance sheets do not have this split."
+      }
+    }
   },
   "TradingViewWidget": {
     "fullScreen": "Full screen",

@@ -274,7 +274,30 @@
     "clearSort": "Limpar ordenação",
     "combinedHint": "Ranking combinado: as posições de cada empresa nas colunas escolhidas são somadas, com o menor total primeiro. Empresas sem algum valor ficam por último.",
     "sortBy": "Ordenar por {column}",
-    "fundamentalsNote": "P/L (preço sobre lucro) e P/VP (preço sobre valor patrimonial) são dos últimos doze meses, do Yahoo Finance; ROE é P/VP dividido por P/L. ROCE é o lucro operacional (EBIT) sobre o ativo total menos o passivo circulante; não disponível para bancos e seguradoras. DY são os dividendos pagos nos últimos doze meses divididos pelo preço atual."
+    "fundamentalsNote": "Indicadores do Yahoo Finance, últimos doze meses; toque em ? numa coluna para ver como é calculado.",
+    "helpAbout": "O que é {column}?",
+    "help": {
+      "dy": {
+        "title": "DY (dividend yield)",
+        "body": "Dividendos pagos por ação nos últimos doze meses, divididos pelo preço atual. Os dados vêm do Yahoo Finance. Pagamentos passados, inclusive os pontuais, não indicam pagamentos futuros."
+      },
+      "pe": {
+        "title": "P/L (preço sobre lucro)",
+        "body": "Preço da ação dividido pelo lucro por ação dos últimos doze meses: quantos anos do lucro atual o preço representa. Os dados vêm do Yahoo Finance. Fica vazio quando o lucro é negativo, e ganhos ou perdas pontuais distorcem o resultado."
+      },
+      "pb": {
+        "title": "P/VP (preço sobre valor patrimonial)",
+        "body": "Preço da ação dividido pelo valor patrimonial (patrimônio líquido) por ação. Os dados vêm do Yahoo Finance. O valor patrimonial segue regras contábeis e pode diferir do valor real dos ativos."
+      },
+      "roe": {
+        "title": "ROE (retorno sobre o patrimônio líquido)",
+        "body": "Lucro líquido dos últimos doze meses como porcentagem do patrimônio líquido. Aqui é calculado como P/VP dividido por P/L, com dados do Yahoo Finance. O endividamento eleva o ROE sem que o negócio seja mais lucrativo."
+      },
+      "roce": {
+        "title": "ROCE (retorno sobre o capital empregado)",
+        "body": "Lucro operacional (EBIT) dos últimos doze meses como porcentagem do capital empregado (ativo total menos passivo circulante), considerando dívida e patrimônio juntos. Os dados vêm do Yahoo Finance. Não aparece para bancos e seguradoras, cujos balanços não têm essa divisão."
+      }
+    }
   },
   "TradingViewWidget": {
     "fullScreen": "Tela cheia",

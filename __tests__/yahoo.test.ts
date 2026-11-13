@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareNullable, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
+import { compareNullable, dividendYieldFromChart, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
 import { formatSymbolForTradingView, isChartEmbeddable } from '@/lib/utils';
 
 describe('Tadawul symbols', () => {
@@ -118,9 +118,9 @@ describe('fundamentalsFromTimeseries', () => {
 
     it('leaves roe null for a negative or missing P/E but keeps P/B', () => {
         const neg = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)]), series('trailingPeRatio', [point('2026-01-01', -5)])] } };
-        expect(fundamentalsFromTimeseries(neg)).toEqual({ pe: -5, pb: 2, roe: null, roce: null });
+        expect(fundamentalsFromTimeseries(neg)).toEqual({ pe: -5, pb: 2, roe: null, roce: null, dy: null });
         const missing = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)])] } };
-        expect(fundamentalsFromTimeseries(missing)).toEqual({ pe: null, pb: 2, roe: null, roce: null });
+        expect(fundamentalsFromTimeseries(missing)).toEqual({ pe: null, pb: 2, roe: null, roce: null, dy: null });
     });
 
     it('returns null without throwing for empty entries, null items and garbage', () => {
@@ -174,7 +174,7 @@ describe('fundamentalsFromTimeseries ROCE', () => {
             trailingEBIT: [item('2026-09-30', 5)],
             quarterlyTotalAssets: [item('2026-09-30', 100)],
         });
-        expect(fundamentalsFromTimeseries(json)).toEqual({ pe: 8, pb: 1.6, roe: 20, roce: null });
+        expect(fundamentalsFromTimeseries(json)).toEqual({ pe: 8, pb: 1.6, roe: 20, roce: null, dy: null });
     });
 
     it('gives null roce when capital employed is zero or negative, and keeps a negative EBIT', () => {
@@ -231,5 +231,35 @@ describe('rankByCriteria', () => {
             const plain = [...rows].sort((p, q) => compareNullable(p.a, q.a, dir)).map((r) => r.id);
             expect(ids(rankByCriteria(rows, [{ key: 'a', dir }]))).toEqual(plain);
         }
+    });
+});
+
+describe('dividendYieldFromChart', () => {
+    const chart = (price: unknown, dividends?: unknown) => ({ chart: { result: [{ meta: { regularMarketPrice: price }, ...(dividends ? { events: { dividends } } : {}) }] } });
+
+    it('sums the payments over the current price', () => {
+        const divs = { 1: { amount: 1, date: 1 }, 2: { amount: 1.5, date: 2 }, 3: { amount: 0.5, date: 3 } };
+        expect(dividendYieldFromChart(chart(50, divs))).toBeCloseTo(6);
+    });
+
+    it('is 0 for a valid chart without dividends', () => {
+        expect(dividendYieldFromChart(chart(10))).toBe(0);
+    });
+
+    it('is null without a usable price', () => {
+        expect(dividendYieldFromChart(chart(0, { 1: { amount: 1 } }))).toBeNull();
+        expect(dividendYieldFromChart(chart(undefined, { 1: { amount: 1 } }))).toBeNull();
+        expect(dividendYieldFromChart(chart(-3))).toBeNull();
+    });
+
+    it('is null for garbage', () => {
+        expect(dividendYieldFromChart(null)).toBeNull();
+        expect(dividendYieldFromChart('x')).toBeNull();
+        expect(dividendYieldFromChart({ chart: { result: [] } })).toBeNull();
+    });
+
+    it('ignores non-finite, negative and null amounts', () => {
+        const divs = { 1: { amount: 2 }, 2: { amount: Number.NaN }, 3: { amount: -1 }, 4: null, 5: { amount: 'x' } };
+        expect(dividendYieldFromChart(chart(100, divs))).toBeCloseTo(2);
     });
 });

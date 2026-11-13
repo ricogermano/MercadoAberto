@@ -17,6 +17,7 @@ export type QuoteRow = {
     pb: number | null;
     roe: number | null;
     roce: number | null;
+    dy: number | null;
 };
 
 export type QuoteLabels = {
@@ -28,11 +29,12 @@ export type QuoteLabels = {
     pb: string;
     roe: string;
     roce: string;
+    dy: string;
     clearSort: string;
     combinedHint: string;
 };
 
-type SortKey = 'name' | 'price' | 'change' | 'changePercent' | 'pe' | 'pb' | 'roe' | 'roce';
+type SortKey = 'name' | 'price' | 'change' | 'changePercent' | 'pe' | 'pb' | 'roe' | 'roce' | 'dy';
 type Criterion = SortCriterion<QuoteRow> & { key: SortKey };
 
 // Lowest first for the valuation multiples, A-Z for names, highest first for everything else
@@ -54,7 +56,7 @@ export default function YahooQuotesSortable({
 }) {
     const [criteria, setCriteria] = useState<Criterion[]>([]);
     const allRows = groups.flatMap((g) => g.rows);
-    const showFundamentals = allRows.some((r) => r.pe != null || r.pb != null || r.roce != null);
+    const showFundamentals = allRows.some((r) => r.pe != null || r.pb != null || r.roce != null || r.dy != null);
 
     const columns: { key: SortKey; label: string; numeric: boolean }[] = [
         { key: 'name', label: labels.company, numeric: false },
@@ -63,6 +65,7 @@ export default function YahooQuotesSortable({
         { key: 'changePercent', label: labels.changePercent, numeric: true },
         ...(showFundamentals
             ? ([
+                  { key: 'dy', label: labels.dy, numeric: true },
                   { key: 'pe', label: labels.pe, numeric: true },
                   { key: 'pb', label: labels.pb, numeric: true },
                   { key: 'roe', label: labels.roe, numeric: true },
@@ -99,6 +102,7 @@ export default function YahooQuotesSortable({
             <td className="whitespace-nowrap px-3 py-2 text-end"><ChangePill value={r.changePercent} /></td>
             {showFundamentals && (
                 <>
+                    <td className="num whitespace-nowrap px-3 py-2 text-end">{r.dy == null ? '—' : `${r.dy.toFixed(1)}%`}</td>
                     <td className="num whitespace-nowrap px-3 py-2 text-end">{fmtOrDash(r.pe)}</td>
                     <td className="num whitespace-nowrap px-3 py-2 text-end">{fmtOrDash(r.pb)}</td>
                     <td className="num whitespace-nowrap px-3 py-2 text-end">{r.roe == null ? '—' : `${r.roe.toFixed(1)}%`}</td>

@@ -80,7 +80,7 @@ export function dailyQuoteFromChart(json: unknown, fallbackCurrency = 'USD'): Ya
     };
 }
 
-export type YahooFundamentals = { pe: number | null; pb: number | null; roe: number | null; roce: number | null };
+export type YahooFundamentals = { pe: number | null; pb: number | null; roe: number | null; roce: number | null; dy: number | null };
 
 type YahooTimeseriesJson = {
     timeseries?: {
@@ -149,7 +149,25 @@ export function fundamentalsFromTimeseries(json: unknown): YahooFundamentals | n
     if (pe === null && pb === null && roce === null) return null;
     // ROE = P/B / P/E: both ratios are currency-free, while Yahoo mixes USD and BRL in the statement fields
     const roe = pe !== null && pb !== null && pe > 0 && pb > 0 ? (pb / pe) * 100 : null;
-    return { pe, pb, roe, roce };
+    return { pe, pb, roe, roce, dy: null };
+}
+
+type YahooDividendChartJson = {
+    chart?: { result?: Array<{ meta?: { regularMarketPrice?: number }; events?: { dividends?: Record<string, { amount?: number } | null> } }> };
+};
+
+// Dividend yield % = dividends paid in the chart's last twelve months / current price. 0 for a valid chart with no
+// dividends (Yahoo leaves `events` out then); null when there is no usable price to divide by.
+export function dividendYieldFromChart(json: unknown): number | null {
+    const result = (json as YahooDividendChartJson)?.chart?.result?.[0];
+    const price = result?.meta?.regularMarketPrice;
+    if (typeof price !== 'number' || !Number.isFinite(price) || price <= 0) return null;
+    let paid = 0;
+    for (const d of Object.values(result?.events?.dividends ?? {})) {
+        const amount = d?.amount;
+        if (typeof amount === 'number' && Number.isFinite(amount) && amount > 0) paid += amount;
+    }
+    return (paid / price) * 100;
 }
 
 // Orders rows for a sortable column: nulls always last in both directions, strings A-Z / Z-A, numbers by value

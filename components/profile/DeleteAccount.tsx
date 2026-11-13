@@ -32,7 +32,7 @@ export default function DeleteAccount({ email, hasPassword }: { email: string; h
 
     return (
         <div className="flex flex-col items-start gap-3 p-4">
-            <p className="text-[14px] leading-relaxed text-muted">{t('intro')}</p>
+            <p className="text-[14px] leading-relaxed text-foreground/85">{t('intro')}</p>
             <Dialog open={open} onOpenChange={(next) => { if (!isSubmitting) { setOpen(next); if (!next) reset(); } }}>
                 <DialogTrigger asChild>
                     <button type="button" className="btn btn-danger"><Trash2 />{t('open')}</button>

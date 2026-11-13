@@ -406,15 +406,15 @@
   },
   "Emails": {
     "common": {
-      "logoAlt": "OpenStock Logo",
+      "logoAlt": "MercadoAberto Logo",
       "unsubscribe": "Unsubscribe",
-      "visitOpenstock": "Visit OpenStock"
+      "visitOpenstock": "Visit MercadoAberto"
     },
     "welcome": {
       "subject": "Welcome to Openstock - your open-source stock market toolkit!",
       "text": "Thanks for joining Openstock, an initiative by open dev society",
-      "title": "Welcome to OpenStock",
-      "dashboardAlt": "OpenStock Dashboard Preview",
+      "title": "Welcome to MercadoAberto",
+      "dashboardAlt": "MercadoAberto Dashboard Preview",
       "heading": "Welcome aboard {name}",
       "fallbackIntro": "Thanks for joining Openstock. You now have the tools to track markets and make smarter moves.",
       "featuresLabel": "Here's what you can do right now:",
@@ -459,7 +459,7 @@
     }
   },
   "Sidebar": {
-    "homeAria": "OpenStock dashboard",
+    "homeAria": "MercadoAberto dashboard",
     "searchStocks": "Search stocks",
     "overview": "Overview",
     "watchlist": "Watchlist",
@@ -509,7 +509,10 @@
   "UpdateBanner": {
     "new": "New",
     "seeWhatsNew": "See what’s new",
-    "fullChangelog": "Read the full changelog"
+    "fullChangelog": "Read the full changelog",
+    "disclaimer": "Informational and educational content. Not investment advice or a recommendation to buy or sell any asset. Quotes are delayed and may contain errors.",
+    "sourceCode": "Source code (AGPL-3.0)",
+    "basedOn": "Based on"
   },
   "DonatePopup": {
     "kicker": "Open for sponsors",

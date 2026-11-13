@@ -406,15 +406,15 @@
   },
   "Emails": {
     "common": {
-      "logoAlt": "Logo OpenStock",
+      "logoAlt": "Logo MercadoAberto",
       "unsubscribe": "Wypisz się",
-      "visitOpenstock": "Odwiedź OpenStock"
+      "visitOpenstock": "Odwiedź MercadoAberto"
     },
     "welcome": {
       "subject": "Witaj w OpenStock – twoim zestawie narzędzi open source do obsługi rynku akcji!",
       "text": "Dzięki za dołączenie do OpenStock, inicjatywy stowarzyszenia Open Dev Society",
-      "title": "Witaj w OpenStock",
-      "dashboardAlt": "Podgląd pulpitu OpenStock",
+      "title": "Witaj w MercadoAberto",
+      "dashboardAlt": "Podgląd pulpitu MercadoAberto",
       "heading": "Witaj na pokładzie, {name}",
       "fallbackIntro": "Dzięki za dołączenie do OpenStock. Masz teraz narzędzia do śledzenia rynków i podejmowania mądrzejszych decyzji.",
       "featuresLabel": "Oto, co możesz zrobić już teraz:",
@@ -459,7 +459,7 @@
     }
   },
   "Sidebar": {
-    "homeAria": "OpenStock — strona główna",
+    "homeAria": "MercadoAberto — strona główna",
     "searchStocks": "Szukaj akcji",
     "overview": "Przegląd",
     "watchlist": "Lista obserwowanych",
@@ -509,7 +509,10 @@
   "UpdateBanner": {
     "new": "Nowość",
     "seeWhatsNew": "Zobacz, co nowego",
-    "fullChangelog": "Przeczytaj pełny dziennik zmian"
+    "fullChangelog": "Przeczytaj pełny dziennik zmian",
+    "disclaimer": "Treści informacyjne i edukacyjne. Nie stanowią porady inwestycyjnej ani rekomendacji kupna lub sprzedaży jakichkolwiek aktywów. Notowania są opóźnione i mogą zawierać błędy.",
+    "sourceCode": "Kod źródłowy (AGPL-3.0)",
+    "basedOn": "Na podstawie"
   },
   "DonatePopup": {
     "kicker": "Szukamy sponsorów",

@@ -12,7 +12,7 @@ import { alertsEnabled } from "@/lib/market-data";
 
 export async function generateMetadata() {
     const t = await getTranslations('ProfilePage');
-    return { title: `${t('metaTitle')} | OpenStock` };
+    return { title: `${t('metaTitle')} | MercadoAberto` };
 }
 
 export default async function ProfilePage() {

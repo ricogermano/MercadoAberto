@@ -406,15 +406,15 @@
   },
   "Emails": {
     "common": {
-      "logoAlt": "شعار OpenStock",
+      "logoAlt": "شعار MercadoAberto",
       "unsubscribe": "إلغاء الاشتراك",
-      "visitOpenstock": "زر OpenStock"
+      "visitOpenstock": "زر MercadoAberto"
     },
     "welcome": {
       "subject": "أهلًا بك في OpenStock، أدواتك مفتوحة المصدر لسوق الأسهم!",
       "text": "شكرًا لانضمامك إلى OpenStock، مبادرة من Open Dev Society",
-      "title": "أهلًا بك في OpenStock",
-      "dashboardAlt": "معاينة لوحة OpenStock",
+      "title": "أهلًا بك في MercadoAberto",
+      "dashboardAlt": "معاينة لوحة MercadoAberto",
       "heading": "أهلًا بك {name}",
       "fallbackIntro": "شكرًا لانضمامك إلى OpenStock. أصبحت لديك الأدوات لمتابعة الأسواق واتخاذ قرارات أذكى.",
       "featuresLabel": "إليك ما يمكنك فعله الآن:",
@@ -459,7 +459,7 @@
     }
   },
   "Sidebar": {
-    "homeAria": "لوحة OpenStock",
+    "homeAria": "لوحة MercadoAberto",
     "searchStocks": "ابحث عن الأسهم",
     "overview": "نظرة عامة",
     "watchlist": "قائمة المتابعة",
@@ -509,7 +509,10 @@
   "UpdateBanner": {
     "new": "جديد",
     "seeWhatsNew": "شاهد الجديد",
-    "fullChangelog": "اقرأ سجل التغييرات كاملاً"
+    "fullChangelog": "اقرأ سجل التغييرات كاملاً",
+    "disclaimer": "محتوى للمعلومات والتعليم فقط. ليس نصيحة استثمارية ولا توصية بشراء أو بيع أي أصل. الأسعار متأخرة وقد تحتوي على أخطاء.",
+    "sourceCode": "الشيفرة المصدرية (AGPL-3.0)",
+    "basedOn": "مبني على"
   },
   "DonatePopup": {
     "kicker": "الباب مفتوح للرعاة",

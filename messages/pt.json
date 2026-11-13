@@ -406,15 +406,15 @@
   },
   "Emails": {
     "common": {
-      "logoAlt": "Logo do OpenStock",
+      "logoAlt": "Logo do MercadoAberto",
       "unsubscribe": "Cancelar inscrição",
-      "visitOpenstock": "Visitar o OpenStock"
+      "visitOpenstock": "Visitar o MercadoAberto"
     },
     "welcome": {
       "subject": "Bem-vindo ao Openstock - sua caixa de ferramentas de código aberto para o mercado de ações!",
       "text": "Obrigado por entrar no Openstock, uma iniciativa da Open Dev Society",
-      "title": "Bem-vindo ao OpenStock",
-      "dashboardAlt": "Prévia do painel do OpenStock",
+      "title": "Bem-vindo ao MercadoAberto",
+      "dashboardAlt": "Prévia do painel do MercadoAberto",
       "heading": "Bem-vindo a bordo, {name}",
       "fallbackIntro": "Obrigado por entrar no Openstock. Agora você tem as ferramentas para acompanhar os mercados.",
       "featuresLabel": "Veja o que você pode fazer agora:",
@@ -459,7 +459,7 @@
     }
   },
   "Sidebar": {
-    "homeAria": "Painel do OpenStock",
+    "homeAria": "Painel do MercadoAberto",
     "searchStocks": "Buscar ações",
     "overview": "Visão geral",
     "watchlist": "Lista de acompanhamento",
@@ -509,7 +509,10 @@
   "UpdateBanner": {
     "new": "Novo",
     "seeWhatsNew": "Veja as novidades",
-    "fullChangelog": "Ler o histórico completo de mudanças"
+    "fullChangelog": "Ler o histórico completo de mudanças",
+    "disclaimer": "Conteúdo informativo e educacional. Não é recomendação de investimento nem oferta de compra ou venda de qualquer ativo. Cotações com atraso e sujeitas a erro.",
+    "sourceCode": "Código-fonte (AGPL-3.0)",
+    "basedOn": "Baseado no"
   },
   "DonatePopup": {
     "kicker": "Aberto a patrocinadores",

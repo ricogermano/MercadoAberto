@@ -4,6 +4,7 @@ import Image from "next/image";
 import {redirect} from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
+import BrandLogo from "@/components/BrandLogo";
 import HtmlLang from "@/components/HtmlLang";
 import {getSession} from "@/lib/better-auth/auth";
 import ProductPreview from "@/components/landing/ProductPreview";
@@ -29,7 +30,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
         <main className="auth-layout">
             <section className="auth-left-section scrollbar-hide-default">
                 <Link href="/" className="auth-logo flex items-center gap-2">
-                    <Image src="/assets/images/logo.png" alt="OpenStock" width={140} height={35} priority />
+                    <BrandLogo />
                 </Link>
 
                 <div className="pb-6 lg:pb-8 flex-1">

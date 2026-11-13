@@ -12,6 +12,15 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Mediana do setor ao lado dos indicadores',
+        items: [
+            'Na tabela de cotações, a linha de cada setor mostra a mediana de cada indicador (o valor do meio entre as empresas do setor).',
+            'Cada indicador fica verde ou vermelho conforme o lado da mediana em que está. É só uma comparação, não uma recomendação.',
+            'Com a tabela ordenada, a comparação passa a ser com a mediana de todas as empresas, mostrada na primeira linha.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Painel do Brasil começa pelo mapa de calor',
         items: [
             'Na aba Brasil, o mapa de calor vem primeiro, com as maiores variações do dia ao lado.',

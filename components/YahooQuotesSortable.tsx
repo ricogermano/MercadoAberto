@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import { SortBar, SortableTh, useSortCriteria } from '@/components/SortableTable';
 import { INDICATORS, IndicatorViewBar, formatIndicator, useIndicatorText, useIndicatorView, type IndicatorKey } from '@/components/IndicatorViews';
 import { rankByCriteria, type YahooFundamentals } from '@/lib/yahoo';
+import { medianSide, mediansOf } from '@/lib/medians';
 
 export type QuoteRow = {
     tvSymbol: string;
@@ -71,8 +72,31 @@ export default function YahooQuotesSortable({
 
     const sorted = criteria.length > 0 ? rankByCriteria(allRows, criteria) : null;
     const colCount = columns.length + 1 + (combined ? 1 : 0); // + the watchlist star
+    // Each value is compared with the median on screen: its sector's while the table is grouped, the whole table's once a
+    // sort mixes the sectors
+    type Medians = Record<IndicatorKey, number | null>;
+    const overallMedians = mediansOf(allRows, INDICATORS);
+    const sideClass = (key: IndicatorKey, value: number | null, med: number | null) => {
+        const side = medianSide(key, value, med);
+        return side === 'better' ? 'text-up' : side === 'worse' ? 'text-down' : '';
+    };
 
-    const renderRow = (r: QuoteRow, position?: number | null) => (
+    // A group heading whose indicator columns carry the group's medians
+    const renderMedians = (title: string, medianLabel: string, medians: Medians) => (
+        <tr>
+            <td colSpan={colCount - shownIndicators.length} className="px-3 pt-3 pb-1">
+                <div className="flex items-baseline justify-between gap-3">
+                    <span className="kicker">{title}</span>
+                    {shownIndicators.length > 0 && <span className="whitespace-nowrap text-[11.5px] text-faint">{medianLabel}</span>}
+                </div>
+            </td>
+            {shownIndicators.map((key) => (
+                <td key={key} className="num whitespace-nowrap px-3 pt-3 pb-1 text-end text-[12px] text-faint">{formatIndicator(key, medians[key])}</td>
+            ))}
+        </tr>
+    );
+
+    const renderRow = (r: QuoteRow, medians: Medians, position?: number | null) => (
         <tr key={r.tvSymbol} className="border-t border-line/60 transition-colors hover:bg-hover/40">
             <td className="py-1 ps-2 pe-0">
                 {r.appSymbol && (
@@ -105,7 +129,7 @@ export default function YahooQuotesSortable({
             )}
             <td className="whitespace-nowrap px-3 py-2 text-end"><ChangePill value={r.changePercent} /></td>
             {shownIndicators.map((key) => (
-                <td key={key} className="num whitespace-nowrap px-3 py-2 text-end">{formatIndicator(key, r[key])}</td>
+                <td key={key} className={`num whitespace-nowrap px-3 py-2 text-end ${sideClass(key, r[key], medians[key])}`}>{formatIndicator(key, r[key])}</td>
             ))}
         </tr>
     );
@@ -142,16 +166,20 @@ export default function YahooQuotesSortable({
                     </tr>
                 </thead>
                 {sorted ? (
-                    <tbody>{sorted.map(({ row, position }) => renderRow(row, position))}</tbody>
+                    <tbody>
+                        {shownIndicators.length > 0 && renderMedians(t('allCompanies'), t('medianAll'), overallMedians)}
+                        {sorted.map(({ row, position }) => renderRow(row, overallMedians, position))}
+                    </tbody>
                 ) : (
-                    groups.map((group) => (
-                        <tbody key={group.title}>
-                            <tr>
-                                <td colSpan={colCount} className="kicker px-3 pt-3 pb-1">{group.title}</td>
-                            </tr>
-                            {group.rows.map((r) => renderRow(r))}
-                        </tbody>
-                    ))
+                    groups.map((group) => {
+                        const medians = mediansOf(group.rows, INDICATORS);
+                        return (
+                            <tbody key={group.title}>
+                                {renderMedians(group.title, t('medianSector'), medians)}
+                                {group.rows.map((r) => renderRow(r, medians))}
+                            </tbody>
+                        );
+                    })
                 )}
             </table>
             <p className="px-3 py-2 text-[11.5px] text-faint">{note}</p>

@@ -380,6 +380,10 @@
     "combinedHint": "Combined ranking: each company's positions in the selected columns are added up, lowest total first. Companies missing a value go last.",
     "sortBy": "Sort by {column}",
     "fundamentalsNote": "Indicators from Yahoo Finance, trailing twelve months; tap ? on a column for how it is computed.",
+    "allCompanies": "All companies",
+    "medianSector": "Sector median",
+    "medianAll": "Table median",
+    "medianNote": "Each sector line shows the median of the indicators (the middle value, with at least three companies); once the table is sorted, the median is that of all companies. Green and red only show which side of the median a number is on: a comparison, not a recommendation.",
     "helpAbout": "What is {column}?",
     "help": {
       "dy": {

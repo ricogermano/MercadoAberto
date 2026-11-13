@@ -68,7 +68,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
     };
     const hasFundamentals = Object.keys(fundamentals).length > 0;
     const source = currency ? t('source', { currency }) : t('sourceNoCurrency');
-    const note = market.units ? t('commoditiesNote') : hasFundamentals ? `${source} ${t('fundamentalsNote')}` : source;
+    const note = market.units ? t('commoditiesNote') : hasFundamentals ? `${source} ${t('fundamentalsNote')} ${t('medianNote')}` : source;
 
     return <YahooQuotesSortable groups={groups} labels={labels} note={note} watchLabel={tw('title')} />;
 }

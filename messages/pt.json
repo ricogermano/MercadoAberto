@@ -380,6 +380,10 @@
     "combinedHint": "Ranking combinado: as posições de cada empresa nas colunas escolhidas são somadas, com o menor total primeiro. Empresas sem algum valor ficam por último.",
     "sortBy": "Ordenar por {column}",
     "fundamentalsNote": "Indicadores do Yahoo Finance, últimos doze meses; toque em ? numa coluna para ver como é calculado.",
+    "allCompanies": "Todas as empresas",
+    "medianSector": "Mediana do setor",
+    "medianAll": "Mediana da tabela",
+    "medianNote": "A linha de cada setor mostra a mediana dos indicadores (o valor do meio, com pelo menos três empresas); com a tabela ordenada, a mediana é a de todas as empresas. Verde e vermelho indicam só de que lado da mediana o número está: é uma comparação, não uma recomendação.",
     "helpAbout": "O que é {column}?",
     "help": {
       "dy": {

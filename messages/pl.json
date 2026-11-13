@@ -271,6 +271,7 @@
     "roe": "ROE",
     "roce": "ROCE",
     "clearSort": "Wyczyść sortowanie",
+    "combinedHint": "Ranking łączony: pozycje spółki w wybranych kolumnach są sumowane, najniższa suma jest pierwsza. Spółki bez wartości trafiają na koniec.",
     "sortBy": "Sortuj według: {column}",
     "fundamentalsNote": "C/Z i C/WK dotyczą ostatnich dwunastu miesięcy, dane z Yahoo Finance; ROE to C/WK podzielone przez C/Z. ROCE to zysk operacyjny (EBIT) w relacji do aktywów ogółem pomniejszonych o zobowiązania krótkoterminowe; niedostępne dla banków i ubezpieczycieli."
   },

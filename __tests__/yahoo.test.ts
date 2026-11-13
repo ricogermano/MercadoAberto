@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareNullable, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
+import { compareNullable, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
 import { formatSymbolForTradingView, isChartEmbeddable } from '@/lib/utils';
 
 describe('Tadawul symbols', () => {
@@ -182,5 +182,54 @@ describe('fundamentalsFromTimeseries ROCE', () => {
         expect(fundamentalsFromTimeseries(build({ ...base, quarterlyCurrentLiabilities: [item('2026-09-30', 120)] }))).toBeNull();
         const loss = build({ trailingEBIT: [item('2026-09-30', -10)], quarterlyTotalAssets: [item('2026-09-30', 100)], quarterlyCurrentLiabilities: [item('2026-09-30', 50)] });
         expect(fundamentalsFromTimeseries(loss)?.roce).toBeCloseTo(-20);
+    });
+});
+
+describe('rankByCriteria', () => {
+    type R = { id: string; a: number | null; b: number | null };
+    const ids = (out: { row: R }[]) => out.map((o) => o.row.id);
+
+    it('adds ranks, so a company that is never first can win', () => {
+        const rows: R[] = [{ id: 'x', a: 1, b: 5 }, { id: 'y', a: 2, b: 2 }, { id: 'z', a: 3, b: 1 }, { id: 'w', a: 4, b: 3 }];
+        // a asc ranks: x1 y2 z3 w4; b asc ranks: z1 y2 w3 x4 -> totals x5 y4 z4 w7
+        const out = rankByCriteria(rows, [{ key: 'a', dir: 'asc' }, { key: 'b', dir: 'asc' }]);
+        expect(ids(out)[0]).toBe('y');
+        expect(out.map((o) => o.position)).toEqual([1, 2, 3, 4]);
+    });
+
+    it('breaks a tie in total by the first criterion', () => {
+        const rows: R[] = [{ id: 'x', a: 1, b: 2 }, { id: 'y', a: 2, b: 1 }];
+        expect(ids(rankByCriteria(rows, [{ key: 'a', dir: 'asc' }, { key: 'b', dir: 'asc' }]))).toEqual(['x', 'y']);
+        expect(ids(rankByCriteria(rows, [{ key: 'b', dir: 'asc' }, { key: 'a', dir: 'asc' }]))).toEqual(['y', 'x']);
+    });
+
+    it('uses competition ranking on equal values (1, 1, 3)', () => {
+        const rows: R[] = [{ id: 'x', a: 5, b: 3 }, { id: 'y', a: 5, b: 1 }, { id: 'z', a: 9, b: 1 }];
+        // a desc: z1 x2 y2? no: z1, x and y share 2; b asc: y and z share 1, x3 -> totals x5 y3 z2
+        expect(ids(rankByCriteria(rows, [{ key: 'a', dir: 'desc' }, { key: 'b', dir: 'asc' }]))).toEqual(['z', 'y', 'x']);
+        const tied: R[] = [{ id: 'x', a: 1, b: 0 }, { id: 'y', a: 1, b: 0 }, { id: 'z', a: 2, b: 0 }, { id: 'w', a: 2, b: 0 }];
+        // a asc ranks 1,1,3,3 and b all 1 -> x,y totals 2; z,w totals 4
+        expect(ids(rankByCriteria(tied, [{ key: 'a', dir: 'asc' }, { key: 'b', dir: 'asc' }]))).toEqual(['x', 'y', 'z', 'w']);
+    });
+
+    it('puts incomplete rows last with no position', () => {
+        const rows: R[] = [{ id: 'x', a: 1, b: null }, { id: 'y', a: 9, b: 9 }, { id: 'z', a: 5, b: 5 }];
+        const out = rankByCriteria(rows, [{ key: 'a', dir: 'asc' }, { key: 'b', dir: 'asc' }]);
+        expect(ids(out)).toEqual(['z', 'y', 'x']);
+        expect(out.map((o) => o.position)).toEqual([1, 2, null]);
+    });
+
+    it('honours asc and desc per criterion', () => {
+        const rows: R[] = [{ id: 'x', a: 1, b: 1 }, { id: 'y', a: 2, b: 2 }];
+        expect(ids(rankByCriteria(rows, [{ key: 'a', dir: 'asc' }, { key: 'b', dir: 'desc' }]))).toEqual(['x', 'y']);
+        expect(ids(rankByCriteria(rows, [{ key: 'a', dir: 'desc' }, { key: 'b', dir: 'desc' }]))).toEqual(['y', 'x']);
+    });
+
+    it('matches the plain sort with a single criterion', () => {
+        const rows: R[] = [{ id: 'x', a: 2, b: 0 }, { id: 'y', a: null, b: 0 }, { id: 'z', a: 7, b: 0 }, { id: 'w', a: 1, b: 0 }];
+        for (const dir of ['asc', 'desc'] as const) {
+            const plain = [...rows].sort((p, q) => compareNullable(p.a, q.a, dir)).map((r) => r.id);
+            expect(ids(rankByCriteria(rows, [{ key: 'a', dir }]))).toEqual(plain);
+        }
     });
 });

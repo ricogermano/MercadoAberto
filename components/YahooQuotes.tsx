@@ -56,6 +56,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
         roe: t('roe'),
         roce: t('roce'),
         clearSort: t('clearSort'),
+        combinedHint: t('combinedHint'),
     };
     const sortByTemplate = {
         name: t('sortBy', { column: labels.company }),

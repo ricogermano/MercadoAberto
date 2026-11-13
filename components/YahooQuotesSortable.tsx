@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import ChangePill from '@/components/ChangePill';
-import { compareNullable } from '@/lib/yahoo';
+import { rankByCriteria, type SortCriterion } from '@/lib/yahoo';
 
 export type QuoteRow = {
     tvSymbol: string;
@@ -29,10 +29,14 @@ export type QuoteLabels = {
     roe: string;
     roce: string;
     clearSort: string;
+    combinedHint: string;
 };
 
 type SortKey = 'name' | 'price' | 'change' | 'changePercent' | 'pe' | 'pb' | 'roe' | 'roce';
-type Sort = { key: SortKey; dir: 'asc' | 'desc' } | null;
+type Criterion = SortCriterion<QuoteRow> & { key: SortKey };
+
+// Lowest first for the valuation multiples, A-Z for names, highest first for everything else
+const defaultDir = (key: SortKey): 'asc' | 'desc' => (key === 'name' || key === 'pe' || key === 'pb' ? 'asc' : 'desc');
 
 const fmt = (v: number) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtOrDash = (v: number | null) => (v == null ? '—' : fmt(v));
@@ -48,7 +52,7 @@ export default function YahooQuotesSortable({
     sortByTemplate: Record<SortKey, string>;
     note: string;
 }) {
-    const [sort, setSort] = useState<Sort>(null);
+    const [criteria, setCriteria] = useState<Criterion[]>([]);
     const allRows = groups.flatMap((g) => g.rows);
     const showFundamentals = allRows.some((r) => r.pe != null || r.pb != null || r.roce != null);
 
@@ -67,16 +71,22 @@ export default function YahooQuotesSortable({
             : []),
     ];
 
+    // Not selected -> appended -> direction flipped -> removed
     const onSort = (key: SortKey) =>
-        setSort((cur) => {
-            if (cur?.key === key) return { key, dir: cur.dir === 'asc' ? 'desc' : 'asc' };
-            return { key, dir: key === 'name' ? 'asc' : 'desc' };
+        setCriteria((cur) => {
+            const found = cur.find((c) => c.key === key);
+            if (!found) return [...cur, { key, dir: defaultDir(key) }];
+            if (found.dir === defaultDir(key)) return cur.map((c) => (c.key === key ? { key, dir: c.dir === 'asc' ? 'desc' : 'asc' } : c));
+            return cur.filter((c) => c.key !== key);
         });
 
-    const sorted = sort ? [...allRows].sort((a, b) => compareNullable(a[sort.key], b[sort.key], sort.dir)) : null;
+    const combined = criteria.length > 1;
+    const sorted = criteria.length > 0 ? rankByCriteria(allRows, criteria) : null;
+    const colCount = columns.length + (combined ? 1 : 0);
 
-    const renderRow = (r: QuoteRow) => (
+    const renderRow = (r: QuoteRow, position?: number | null) => (
         <tr key={r.tvSymbol} className="border-t border-line/60 transition-colors hover:bg-hover/40">
+            {combined && <td className="num px-3 py-2 text-faint">{position ?? '—'}</td>}
             <td className="px-3 py-2">
                 <Link href={`/stocks/${r.appSymbol}`} className="font-semibold hover:text-brand-ink">
                     {r.name} <span className="mono text-[11px] text-faint">{r.appSymbol}</span>
@@ -100,14 +110,15 @@ export default function YahooQuotesSortable({
 
     return (
         <div className="overflow-x-auto">
-            {/* Always rendered so the table doesn't jump when a sort starts; hidden while unsorted */}
-            <div className="flex h-6 justify-end px-3">
+            {/* Always rendered so the table doesn't jump when a sort starts; the button is hidden while unsorted */}
+            <div className="flex min-h-6 items-start justify-between gap-3 px-3">
+                <span className="text-[11.5px] text-faint">{combined ? labels.combinedHint : ''}</span>
                 <button
                     type="button"
-                    onClick={() => setSort(null)}
-                    className={`text-[11.5px] text-faint hover:text-brand-ink ${sort ? '' : 'invisible'}`}
-                    tabIndex={sort ? 0 : -1}
-                    aria-hidden={!sort}
+                    onClick={() => setCriteria([])}
+                    className={`shrink-0 text-[11.5px] text-faint hover:text-brand-ink ${criteria.length ? '' : 'invisible'}`}
+                    tabIndex={criteria.length ? 0 : -1}
+                    aria-hidden={!criteria.length}
                 >
                     {labels.clearSort}
                 </button>
@@ -115,14 +126,16 @@ export default function YahooQuotesSortable({
             <table className="w-full text-[13px]">
                 <thead>
                     <tr className="text-start text-faint">
+                        {combined && <th className="px-3 py-2 font-medium">#</th>}
                         {columns.map((c) => {
-                            const active = sort?.key === c.key ? sort.dir : null;
+                            const index = criteria.findIndex((x) => x.key === c.key);
+                            const active = index >= 0 ? criteria[index].dir : null;
                             const Icon = active === 'asc' ? ArrowUp : active === 'desc' ? ArrowDown : ChevronsUpDown;
                             return (
                                 <th
                                     key={c.key}
                                     className={`px-3 py-2 font-medium ${c.numeric ? 'whitespace-nowrap text-end' : ''}`}
-                                    aria-sort={active === 'asc' ? 'ascending' : active === 'desc' ? 'descending' : 'none'}
+                                    aria-sort={index !== 0 ? 'none' : active === 'asc' ? 'ascending' : 'descending'}
                                 >
                                     <button
                                         type="button"
@@ -132,6 +145,7 @@ export default function YahooQuotesSortable({
                                     >
                                         {c.label}
                                         <Icon className={`size-3 ${active ? '' : 'opacity-60'}`} aria-hidden />
+                                        {combined && active && <span className="num text-[10.5px]">{index + 1}</span>}
                                     </button>
                                 </th>
                             );
@@ -139,14 +153,14 @@ export default function YahooQuotesSortable({
                     </tr>
                 </thead>
                 {sorted ? (
-                    <tbody>{sorted.map(renderRow)}</tbody>
+                    <tbody>{sorted.map(({ row, position }) => renderRow(row, position))}</tbody>
                 ) : (
                     groups.map((group) => (
                         <tbody key={group.title}>
                             <tr>
-                                <td colSpan={columns.length} className="kicker px-3 pt-3 pb-1">{group.title}</td>
+                                <td colSpan={colCount} className="kicker px-3 pt-3 pb-1">{group.title}</td>
                             </tr>
-                            {group.rows.map(renderRow)}
+                            {group.rows.map((r) => renderRow(r))}
                         </tbody>
                     ))
                 )}

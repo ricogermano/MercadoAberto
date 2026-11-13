@@ -160,3 +160,29 @@ export function compareNullable(a: number | string | null | undefined, b: number
     const order = typeof a === 'string' && typeof b === 'string' ? a.localeCompare(b) : (a as number) - (b as number);
     return dir === 'asc' ? order : -order;
 }
+
+export type SortCriterion<T> = { key: keyof T; dir: 'asc' | 'desc' };
+
+// Combined ranking: each chosen column gives a rank (1 = best in its direction, ties share a rank: 1, 1, 3) and the ranks are
+// added up, lowest total first. Values are continuous, so a plain multi-key sort would only ever break exact ties.
+// Rows missing a value in any chosen column can't be ranked fairly: they go last, without a position.
+export function rankByCriteria<T>(rows: T[], criteria: SortCriterion<T>[]): { row: T; position: number | null }[] {
+    const value = (row: T, key: keyof T) => row[key] as unknown as number | string | null;
+    const byCriteria = (a: T, b: T) => {
+        for (const c of criteria) {
+            const order = compareNullable(value(a, c.key), value(b, c.key), c.dir);
+            if (order !== 0) return order;
+        }
+        return 0;
+    };
+    const complete = rows.filter((r) => criteria.every((c) => isFiniteValue(value(r, c.key))));
+    const incomplete = rows.filter((r) => !complete.includes(r));
+    const total = new Map(complete.map((r) => [r, criteria.reduce((sum, c) => sum + 1 + complete.filter((o) => compareNullable(value(o, c.key), value(r, c.key), c.dir) < 0).length, 0)]));
+    const ranked = [...complete].sort((a, b) => total.get(a)! - total.get(b)! || byCriteria(a, b));
+    return [
+        ...ranked.map((row, i) => ({ row, position: i + 1 })),
+        ...[...incomplete].sort(byCriteria).map((row) => ({ row, position: null })),
+    ];
+}
+
+const isFiniteValue = (v: number | string | null | undefined) => v != null && (typeof v !== 'number' || Number.isFinite(v));

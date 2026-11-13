@@ -271,6 +271,7 @@
     "roe": "ROE",
     "roce": "ROCE",
     "clearSort": "Clear sorting",
+    "combinedHint": "Combined ranking: each company's positions in the selected columns are added up, lowest total first. Companies missing a value go last.",
     "sortBy": "Sort by {column}",
     "fundamentalsNote": "P/L (price to earnings) and P/VP (price to book) are trailing twelve months, from Yahoo Finance; ROE is P/VP divided by P/L. ROCE is operating profit (EBIT) over total assets minus current liabilities; not available for banks and insurers."
   },

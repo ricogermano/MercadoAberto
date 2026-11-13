@@ -20,6 +20,28 @@ describe('Tadawul symbols', () => {
     });
 });
 
+describe('B3 (Brazil) symbols', () => {
+    it('maps app and TradingView symbols to Yahoo', () => {
+        expect(normalizeYahooSymbol('PETR4.SA')).toBe('PETR4.SA');
+        expect(normalizeYahooSymbol('bmfbovespa:petr4')).toBe('PETR4.SA');
+        expect(normalizeYahooSymbol('BMFBOVESPA:BPAC11')).toBe('BPAC11.SA');
+        expect(normalizeYahooSymbol('BMFBOVESPA:B3SA3')).toBe('B3SA3.SA');
+        expect(normalizeYahooSymbol('BMFBOVESPA:IBOV')).toBe('^BVSP');
+        expect(normalizeYahooSymbol('BMFBOVESPA:IFIX')).toBe('IFIX.SA');
+        expect(yahooAppSymbol('BMFBOVESPA:VALE3')).toBe('VALE3.SA');
+        expect(yahooAppSymbol('BMFBOVESPA:IBOV')).toBeNull();
+        expect(yahooAppSymbol('IFIX.SA')).toBeNull();
+        // A bare ticker stays ambiguous, and .SA is not a suffix of .USA-style names
+        expect(normalizeYahooSymbol('PETR4')).toBeNull();
+    });
+
+    it('charts .SA on TradingView as BMFBOVESPA, in reais', () => {
+        expect(formatSymbolForTradingView('PETR4.SA')).toBe('BMFBOVESPA:PETR4');
+        expect(isChartEmbeddable('BMFBOVESPA:PETR4')).toBe(true);
+        expect(yahooCurrency('PETR4.SA')).toBe('BRL');
+    });
+});
+
 describe('Warsaw (GPW) symbols', () => {
     it('maps app and TradingView symbols to Yahoo', () => {
         expect(normalizeYahooSymbol('PKN.WA')).toBe('PKN.WA');

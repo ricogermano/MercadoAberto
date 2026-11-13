@@ -6,11 +6,12 @@
 //   - Tadawul is blocked in embeds and on Finnhub free, so Saudi tiles and tables are priced from Yahoo Finance (lib/yahoo.ts).
 //   - GPW (Warsaw) stocks, indices and charts render in embeds, but end of day only, so Polish tiles and tables use Yahoo's
 //     ~15-minute delayed quotes too.
+//   - B3 (Brazil) is not on Finnhub free; its tiles and tables use Yahoo's ~15-minute delayed quotes as well (.SA, ^BVSP).
 // Adding a market = adding an entry here with symbols from an exchange that renders in embeds.
 
 import { isInternationalSymbol } from "@/lib/utils";
 
-export type MarketId = 'us' | 'in' | 'de' | 'ca' | 'au' | 'sa' | 'pl' | 'crypto' | 'fx';
+export type MarketId = 'us' | 'in' | 'de' | 'ca' | 'au' | 'sa' | 'pl' | 'br' | 'crypto' | 'fx';
 
 type Hours = { open: number; close: number }; // minutes of the local day
 
@@ -140,6 +141,23 @@ export const MARKETS: Market[] = [
         news: 'stock',
     },
     {
+        // B3's cash session; from November to March it runs an hour later (to 18:00) to follow New York. Not modelled.
+        id: 'br', name: 'Brazil', short: 'BR', timeZone: 'America/Sao_Paulo', hours: { open: hm(10), close: hm(17) }, feed: 'Delayed', yahoo: true,
+        pulse: [
+            { symbol: 'BMFBOVESPA:IBOV', label: 'Ibovespa' },
+            { symbol: 'BMFBOVESPA:IFIX', label: 'IFIX' },
+            { symbol: 'BMFBOVESPA:SMLL', label: 'Small Caps' },
+            { symbol: 'BMFBOVESPA:IDIV', label: 'IDIV' },
+        ],
+        groups: [
+            { title: 'Banks & insurance', symbols: [['BMFBOVESPA:ITUB4', 'Itaú Unibanco'], ['BMFBOVESPA:BBDC4', 'Bradesco'], ['BMFBOVESPA:BBAS3', 'Banco do Brasil'], ['BMFBOVESPA:BPAC11', 'BTG Pactual'], ['BMFBOVESPA:BBSE3', 'BB Seguridade']] },
+            { title: 'Energy & materials', symbols: [['BMFBOVESPA:PETR4', 'Petrobras'], ['BMFBOVESPA:VALE3', 'Vale'], ['BMFBOVESPA:PRIO3', 'PRIO'], ['BMFBOVESPA:SUZB3', 'Suzano'], ['BMFBOVESPA:GGBR4', 'Gerdau']] },
+            { title: 'Utilities & industry', symbols: [['BMFBOVESPA:WEGE3', 'WEG'], ['BMFBOVESPA:AXIA3', 'Axia Energia'], ['BMFBOVESPA:EQTL3', 'Equatorial'], ['BMFBOVESPA:SBSP3', 'Sabesp'], ['BMFBOVESPA:EMBJ3', 'Embraer']] },
+            { title: 'Consumer & health', symbols: [['BMFBOVESPA:ABEV3', 'Ambev'], ['BMFBOVESPA:LREN3', 'Lojas Renner'], ['BMFBOVESPA:RADL3', 'RD Saúde'], ['BMFBOVESPA:RDOR3', "Rede D'Or"], ['BMFBOVESPA:VIVT3', 'Vivo']] },
+        ],
+        news: 'stock',
+    },
+    {
         id: 'crypto', name: 'Crypto', short: 'Crypto', timeZone: 'UTC', hours: '24/7', feed: 'Live',
         pulse: [
             { symbol: 'BINANCE:BTCUSDT', label: 'Bitcoin', finnhub: 'BINANCE:BTCUSDT' },
@@ -174,7 +192,7 @@ export const MARKET_COOKIE = 'openstock-market';
 
 export const getMarket = (id?: string | null) => MARKETS.find((m) => m.id === id) ?? MARKETS[0];
 
-const COUNTRY_MARKET: Record<string, MarketId> = { IN: 'in', DE: 'de', CA: 'ca', AU: 'au', SA: 'sa', PL: 'pl' };
+const COUNTRY_MARKET: Record<string, MarketId> = { IN: 'in', DE: 'de', CA: 'ca', AU: 'au', SA: 'sa', PL: 'pl', BR: 'br' };
 export const marketForCountry = (country?: string | null): MarketId => COUNTRY_MARKET[country ?? ''] ?? DEFAULT_MARKET;
 
 // Finnhub free can price (and so alert on) US listings and Binance pairs only.

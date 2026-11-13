@@ -1,5 +1,6 @@
 // Yahoo Finance helpers for exchanges the free sources price badly: Tadawul (.SR) is blocked in TradingView's free
 // embeds and on Finnhub free; Warsaw (GPW, .WA) renders in embeds but only end of day, where Yahoo is ~15 minutes delayed.
+// B3 (BMFBOVESPA, .SA) is not on Finnhub free at all; Yahoo has it ~15 minutes delayed.
 // Pure functions, covered by tests; the network call lives in lib/actions/yahoo.actions.ts.
 
 type YahooExchange = { suffix: string; currency: string; ticker: RegExp; indices: Record<string, string> };
@@ -8,6 +9,8 @@ type YahooExchange = { suffix: string; currency: string; ticker: RegExp; indices
 const YAHOO_EXCHANGES: Record<string, YahooExchange> = {
     TADAWUL: { suffix: 'SR', currency: 'SAR', ticker: /^\d+$/, indices: { TASI: '^TASI.SR' } },
     GPW: { suffix: 'WA', currency: 'PLN', ticker: /^[A-Z0-9]+$/, indices: { WIG20: 'WIG20.WA', WIG: 'WIG.WA', MWIG40: 'MWIG40.WA', SWIG80: 'SWIG80.WA' } },
+    // PETR4, VALE3, units like BPAC11, BDRs like AAPL34
+    BMFBOVESPA: { suffix: 'SA', currency: 'BRL', ticker: /^[A-Z0-9]{4}\d{1,2}$/, indices: { IBOV: '^BVSP', IFIX: 'IFIX.SA', SMLL: 'SMLL.SA', IDIV: 'IDIV.SA' } },
 };
 
 const INDEX_SYMBOLS = new Set(Object.values(YAHOO_EXCHANGES).flatMap((ex) => Object.values(ex.indices)));

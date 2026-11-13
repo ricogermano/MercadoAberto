@@ -76,7 +76,7 @@
 ## 🔋 Features <a name="features"></a>
 
 **Markets**
-- A dashboard for nine markets: US, India, Germany, Canada, Australia, Saudi Arabia, Poland, Crypto and Forex, with an index pulse, a sector heatmap, market leaders and top stories.
+- A dashboard for ten markets: US, India, Germany, Canada, Australia, Saudi Arabia, Poland, Brazil, Crypto and Forex, with an index pulse, a sector heatmap, market leaders and top stories.
 - Search every exchange Finnhub covers with **⌘K**, and keep stocks open as browser-style tabs.
 
 **Stock pages**
@@ -275,6 +275,7 @@ __tests__/        Vitest tests
 | 🇨🇦 Canada, 🇦🇺 Australia | Delayed | No |
 | 🇸🇦 Saudi Arabia (Tadawul) | Blocked; delayed Yahoo Finance quotes instead | No |
 | 🇵🇱 Poland (GPW Warsaw) | End of day; delayed Yahoo Finance quotes on the dashboard | No |
+| 🇧🇷 Brazil (B3) | Delayed Yahoo Finance quotes on the dashboard | No |
 | 🇮🇳 India (BSE; `.NS` symbols chart on BSE), 🇩🇪 Germany | End of day | No |
 | London, Tokyo, Hong Kong, Korea and others | Candles blocked; financials, technicals and profile work | No |
 

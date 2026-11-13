@@ -66,5 +66,10 @@ describe('markets', () => {
         expect(isMarketOpen(getMarket('pl'), new Date('2026-09-23T08:00:00Z'))).toBe(true);
         expect(isMarketOpen(getMarket('pl'), new Date('2026-09-23T15:30:00Z'))).toBe(false);
         expect(isMarketOpen(getMarket('pl'), new Date('2026-09-26T10:00:00Z'))).toBe(false);
+        // B3 trades Monday to Friday, 10:00-17:00 São Paulo (13:00-20:00 UTC, no daylight saving)
+        expect(isMarketOpen(getMarket('br'), new Date('2026-09-23T14:00:00Z'))).toBe(true);
+        expect(isMarketOpen(getMarket('br'), new Date('2026-09-23T12:30:00Z'))).toBe(false);
+        expect(isMarketOpen(getMarket('br'), new Date('2026-09-23T20:30:00Z'))).toBe(false);
+        expect(isMarketOpen(getMarket('br'), new Date('2026-09-26T14:00:00Z'))).toBe(false);
     });
 });

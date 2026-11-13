@@ -58,7 +58,8 @@
       "sa": "السعودية",
       "crypto": "العملات الرقمية",
       "fx": "الفوركس",
-      "pl": "بولندا"
+      "pl": "بولندا",
+      "br": "البرازيل"
     },
     "feed": {
       "live": "مباشرة",
@@ -83,7 +84,8 @@
       "commodityFX": "عملات السلع",
       "banksInsurance": "البنوك والتأمين",
       "energyIndustry": "الطاقة والصناعة",
-      "consumerTech": "الاستهلاك والتقنية"
+      "consumerTech": "الاستهلاك والتقنية",
+      "utilitiesIndustry": "المرافق والصناعة"
     }
   },
   "WatchlistTable": {

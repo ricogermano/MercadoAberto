@@ -58,7 +58,8 @@
       "sa": "Saudi Arabia",
       "crypto": "Crypto",
       "fx": "Forex",
-      "pl": "Poland"
+      "pl": "Poland",
+      "br": "Brazil"
     },
     "feed": {
       "live": "Live",
@@ -83,7 +84,8 @@
       "commodityFX": "Commodity FX",
       "banksInsurance": "Banks & insurance",
       "energyIndustry": "Energy & industry",
-      "consumerTech": "Consumer & tech"
+      "consumerTech": "Consumer & tech",
+      "utilitiesIndustry": "Utilities & industry"
     }
   },
   "WatchlistTable": {

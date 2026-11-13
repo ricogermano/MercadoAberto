@@ -58,7 +58,8 @@
       "sa": "Arabia Saudyjska",
       "crypto": "Kryptowaluty",
       "fx": "Forex",
-      "pl": "Polska"
+      "pl": "Polska",
+      "br": "Brazylia"
     },
     "feed": {
       "live": "Na żywo",
@@ -83,7 +84,8 @@
       "commodityFX": "Waluty surowcowe",
       "banksInsurance": "Banki i ubezpieczenia",
       "energyIndustry": "Energetyka i przemysł",
-      "consumerTech": "Konsumpcja i technologie"
+      "consumerTech": "Konsumpcja i technologie",
+      "utilitiesIndustry": "Usługi komunalne i przemysł"
     }
   },
   "WatchlistTable": {

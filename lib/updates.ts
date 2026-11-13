@@ -17,6 +17,7 @@ export const UPDATES: UpdateEntry[] = [
             'No iPhone, a tela não fica mais ampliada e cortada à direita depois de entrar.',
             'No tema escuro, os quadros do TradingView (Pulso, Líderes, Cotações, Notícias) deixam de aparecer com fundo branco e letra apagada.',
             'No celular, os quadros do Pulso ficam um por linha, com o nome inteiro.',
+            'No tema escuro, os textos cinza (subtítulos e explicações pequenas) ficaram mais claros e fáceis de ler.',
         ],
     },
     {

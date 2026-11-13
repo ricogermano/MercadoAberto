@@ -19,8 +19,9 @@
     --line:        oklch(0.29 0.008 95);
     --line-strong: oklch(0.36 0.01 95);
     --text:        oklch(0.95 0.006 95);
-    --muted:       oklch(0.74 0.012 95);
-    --faint:       oklch(0.62 0.012 95);
+    /* Secondary text. Kept light: small helper lines in --faint must stay easy to read on the dark cards (about 7:1) */
+    --muted:       oklch(0.84 0.012 95);
+    --faint:       oklch(0.74 0.012 95);
 
     --brand:        oklch(0.80 0.13 176);   /* fills + icons */
     --brand-strong: oklch(0.72 0.12 176);

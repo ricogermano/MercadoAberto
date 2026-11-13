@@ -59,7 +59,8 @@
       "crypto": "Kryptowaluty",
       "fx": "Forex",
       "pl": "Polska",
-      "br": "Brazylia"
+      "br": "Brazylia",
+      "cmd": "Surowce"
     },
     "feed": {
       "live": "Na żywo",
@@ -87,12 +88,35 @@
       "consumerTech": "Konsumpcja i technologie",
       "utilitiesIndustry": "Usługi komunalne i przemysł",
       "utilities": "Usługi komunalne",
-      "realEstate": "Nieruchomości"
+      "realEstate": "Nieruchomości",
+      "metals": "Metale",
+      "agriculture": "Rolnictwo"
+    },
+    "commodities": {
+      "BZ": "Ropa Brent",
+      "CL": "Ropa WTI",
+      "NG": "Gaz ziemny",
+      "GC": "Złoto",
+      "SI": "Srebro",
+      "HG": "Miedź",
+      "PL": "Platyna",
+      "PA": "Pallad",
+      "ALI": "Aluminium",
+      "ZS": "Soja",
+      "ZC": "Kukurydza",
+      "ZW": "Pszenica",
+      "KC": "Kawa (arabika)",
+      "SB": "Cukier",
+      "CT": "Bawełna",
+      "CC": "Kakao",
+      "OJ": "Sok pomarańczowy",
+      "LE": "Bydło żywe (USA)"
     }
   },
   "WatchlistTable": {
     "headers": {
       "company": "Firma",
+      "commodity": "Surowiec",
       "price": "Cena",
       "change": "Zmiana",
       "marketCap": "Kapitalizacja rynkowa",
@@ -242,6 +266,8 @@
     "stockHeatmapTitle": "Mapa cieplna indeksu S&P 500",
     "cryptoHeatmapTitle": "Mapa cieplna kryptowalut",
     "heatmapSub": "Wielkość według kapitalizacji, kolor według dzisiejszej zmiany",
+    "marketHeatmapTitle": "Mapa cieplna: {market}",
+    "heatmapNote": "Kapitalizacja i ceny z Yahoo Finance; dla unitów przyjęto wartość całej spółki. Wybierz blok, aby otworzyć spółkę.",
     "quotesTitle": "Notowania",
     "quotesSub": "Liderzy według grup · {market}",
     "storiesTitle": "Najważniejsze wiadomości",
@@ -320,7 +346,16 @@
         "title": "ROCE (zwrot z zaangażowanego kapitału)",
         "body": "Zysk operacyjny (EBIT) z ostatnich dwunastu miesięcy jako procent zaangażowanego kapitału (aktywa ogółem minus zobowiązania krótkoterminowe), czyli z uwzględnieniem długu i kapitału własnego razem. Dane pochodzą z Yahoo Finance. Nie jest pokazywany dla banków i ubezpieczycieli, których bilanse nie mają takiego podziału."
       }
-    }
+    },
+    "commoditiesNote": "Kontrakty terminowe o najbliższym terminie wygaśnięcia, z Yahoo Finance, z opóźnieniem. Każda cena jest w jednostce podanej obok nazwy: bbl = baryłka, oz = uncja trojańska (31,1 g), lb = funt (0,454 kg), bu = buszel (około 27 kg soi lub pszenicy, 25 kg kukurydzy), t = tona, MMBtu = milion brytyjskich jednostek ciepła, US¢ = centy amerykańskie."
+  },
+  "MarketNews": {
+    "unavailable": "Nagłówki są obecnie niedostępne.",
+    "noMatch": "Żadne nagłówki nie pasują do tych filtrów.",
+    "onlyTable": "Tylko spółki z tabeli",
+    "clearFilters": "Wyczyść filtry",
+    "sourcesLabel": "Źródła",
+    "footnote": "Nagłówki z: {sources}; linki otwierają oryginalną stronę."
   },
   "TradingViewWidget": {
     "fullScreen": "Pełny ekran",

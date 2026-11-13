@@ -7,7 +7,9 @@ import Panel from "@/components/Panel";
 import IndexPulse, { PulseSkeleton } from "@/components/IndexPulse";
 import { LocalizedDataFreshness } from "@/components/DataFreshness";
 import MarketSwitcher from "@/components/MarketSwitcher";
+import MarketNews from "@/components/MarketNews";
 import YahooQuotesTable, { YahooMovers } from "@/components/YahooQuotes";
+import YahooHeatmap from "@/components/YahooHeatmap";
 import {
     CRYPTO_HEATMAP_CONFIG,
     STOCK_HEATMAP_CONFIG,
@@ -44,6 +46,8 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
         : market.heatmap === 'crypto'
             ? { script: 'crypto-coins-heatmap.js', config: { ...CRYPTO_HEATMAP_CONFIG, locale }, title: t('cryptoHeatmapTitle') }
             : null;
+    // Our own map for Yahoo-priced markets, which TradingView's heatmap widgets don't cover
+    const ownHeatmap = market.heatmap === 'yahoo';
 
     return (
         <>
@@ -100,8 +104,15 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                             <TradingViewWidget scriptUrl={`${scriptUrl}market-quotes.js`} config={marketQuotesConfig(groups, locale)} height={560} />
                         </Panel>
                     )}
-                    <Panel title={t('storiesTitle')} sub={t('storiesSub')} className={heatmap ? '' : 'xl:col-span-2'}>
-                        <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />
+                    {ownHeatmap && (
+                        <Panel title={t('marketHeatmapTitle', { market: name })} sub={t('heatmapSub')}>
+                            <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><YahooHeatmap market={market} locale={locale} /></Suspense>
+                        </Panel>
+                    )}
+                    <Panel title={t('storiesTitle')} sub={t('storiesSub')} className={heatmap || ownHeatmap ? '' : 'xl:col-span-2'}>
+                        {market.newsFeeds
+                            ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
+                            : <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />}
                     </Panel>
                 </div>
             </div>

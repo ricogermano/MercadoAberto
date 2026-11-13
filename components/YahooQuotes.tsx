@@ -7,10 +7,18 @@ import YahooQuotesSortable from '@/components/YahooQuotesSortable';
 import { getYahooDailyQuotes, getYahooFundamentals } from '@/lib/actions/yahoo.actions';
 import { getUserWatchlist } from '@/lib/actions/watchlist.actions';
 import { yahooAppSymbol } from '@/lib/yahoo';
-import type { Market } from '@/lib/markets';
+import { commodityCode, type Market } from '@/lib/markets';
 import { toMessageKey } from '@/i18n/config';
 
 type GroupKey = keyof Messages['Markets']['groups'];
+type CommodityKey = keyof Messages['Markets']['commodities'];
+type MarketsT = Awaited<ReturnType<typeof getTranslations<'Markets'>>>;
+
+// Commodities are named in the reader's language; companies keep the name from the market list
+const displayName = (tm: MarketsT, symbol: string, name: string) => {
+    const code = commodityCode(symbol) as CommodityKey | null;
+    return code && tm.has(`commodities.${code}`) ? tm(`commodities.${code}`) : name;
+};
 
 const symbolsOf = (market: Market) => [...new Set(market.groups.flatMap((g) => g.symbols.map(([s]) => s)))];
 
@@ -40,7 +48,8 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
                 tvSymbol,
                 watching: watched.has(yahooAppSymbol(tvSymbol) ?? ''),
                 appSymbol: yahooAppSymbol(tvSymbol),
-                name,
+                name: displayName(tm, tvSymbol, name),
+                unit: market.units?.[tvSymbol] ?? null,
                 price: q?.price ?? null,
                 change: q?.change ?? null,
                 changePercent: q?.changePercent ?? null,
@@ -54,7 +63,8 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
     }));
 
     const labels = {
-        company: th('company'),
+        // Commodities are not companies: the first column gets its own heading
+        company: market.units ? th('commodity') : th('company'),
         price: th('price'),
         change: th('change'),
         changePercent: t('changePercent'),
@@ -79,7 +89,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
     };
     const hasFundamentals = Object.keys(fundamentals).length > 0;
     const source = currency ? t('source', { currency }) : t('sourceNoCurrency');
-    const note = hasFundamentals ? `${source} ${t('fundamentalsNote')}` : source;
+    const note = market.units ? t('commoditiesNote') : hasFundamentals ? `${source} ${t('fundamentalsNote')}` : source;
 
     const help = Object.fromEntries(
         (['dy', 'pe', 'pb', 'roe', 'roce'] as const).map((k) => [k, { label: t('helpAbout', { column: labels[k] }), title: t(`help.${k}.title`), body: t(`help.${k}.body`) }]),
@@ -92,7 +102,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
 export async function YahooMovers({ market, count = 8 }: { market: Market; count?: number }) {
     const symbols = symbolsOf(market);
     const nameOf = Object.fromEntries(market.groups.flatMap((g) => g.symbols));
-    const [quotes, t] = await Promise.all([getYahooDailyQuotes(symbols), getTranslations('YahooQuotes')]);
+    const [quotes, t, tm] = await Promise.all([getYahooDailyQuotes(symbols), getTranslations('YahooQuotes'), getTranslations('Markets')]);
     const ranked = symbols
         .flatMap((symbol) => (quotes[symbol] ? [{ symbol, name: nameOf[symbol], quote: quotes[symbol] }] : []))
         .sort((a, b) => Math.abs(b.quote.changePercent) - Math.abs(a.quote.changePercent))
@@ -105,15 +115,20 @@ export async function YahooMovers({ market, count = 8 }: { market: Market; count
         <ul className="flex flex-col gap-1 p-1">
             {ranked.map(({ symbol, name, quote }) => {
                 const up = quote.changePercent >= 0;
+                const appSymbol = yahooAppSymbol(symbol);
+                // Commodities have no page of their own
+                const Row = ({ children }: { children: React.ReactNode }) => appSymbol
+                    ? <Link href={`/stocks/${appSymbol}`} className="flex items-center gap-3 rounded-[10px] px-3 py-2 transition-colors hover:bg-hover/60">{children}</Link>
+                    : <div className="flex items-center gap-3 rounded-[10px] px-3 py-2">{children}</div>;
                 return (
                     <li key={symbol}>
-                        <Link href={`/stocks/${yahooAppSymbol(symbol)}`} className="flex items-center gap-3 rounded-[10px] px-3 py-2 transition-colors hover:bg-hover/60">
+                        <Row>
                             <span className={up ? 'text-up' : 'text-down'}>
                                 {up ? <ArrowUpRight className="size-4" /> : <ArrowDownRight className="size-4" />}
                             </span>
                             <span className="min-w-0 flex-1">
-                                <span className="block truncate text-[13.5px] font-semibold">{name}</span>
-                                <span className="mono block text-[11.5px] text-faint">{symbol.split(':').pop()}</span>
+                                <span className="block truncate text-[13.5px] font-semibold">{displayName(tm, symbol, name)}</span>
+                                <span className="mono block text-[11.5px] text-faint">{market.units?.[symbol] ?? symbol.split(':').pop()}</span>
                             </span>
                             <span className="relative h-1.5 w-20 overflow-hidden rounded-full bg-hover">
                                 <span
@@ -122,7 +137,7 @@ export async function YahooMovers({ market, count = 8 }: { market: Market; count
                                 />
                             </span>
                             <ChangePill value={quote.changePercent} />
-                        </Link>
+                        </Row>
                     </li>
                 );
             })}

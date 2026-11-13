@@ -15,14 +15,14 @@ const ENGLISH: PulseTileLabels = { vsPrevClose: (change) => `${change} vs prev c
 
 // Pulse tile priced from Yahoo daily quotes. Used for Tadawul, whose TradingView quote widgets are blocked in free embeds,
 // and Warsaw, whose embeds are end of day only.
-export default function YahooPulseTile({ tvSymbol, label, quote, labels = ENGLISH, help }: { tvSymbol: string; label: string; quote: YahooDailyQuote | null; labels?: PulseTileLabels; help?: PulseTileHelp }) {
+export default function YahooPulseTile({ tvSymbol, label, quote, labels = ENGLISH, help, unit }: { tvSymbol: string; label: string; quote: YahooDailyQuote | null; labels?: PulseTileLabels; help?: PulseTileHelp; unit?: string }) {
     const appSymbol = yahooAppSymbol(tvSymbol);
     const body = (
         <>
             <div className="bento-head">
                 <span className="bento-ico"><LineChart /></span>
                 <span className="truncate">{label}</span>
-                <span className="mono ms-auto text-xs text-faint">{tvSymbol.split(':').pop()}</span>
+                <span className="mono ms-auto text-xs text-faint">{unit ?? tvSymbol.split(':').pop()}</span>
                 {/* Only on index tiles, which are not links */}
                 {help && !appSymbol && <HelpPopover {...help} />}
             </div>

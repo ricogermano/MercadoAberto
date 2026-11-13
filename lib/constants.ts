@@ -113,7 +113,7 @@ export const CRYPTO_HEATMAP_CONFIG = {
     isTransparent: true,
 };
 
-export const timelineConfig = (market: 'stock' | 'crypto' | 'forex', locale: Locale = 'en') => ({
+export const timelineConfig = (market: 'stock' | 'crypto' | 'forex' | 'futures', locale: Locale = 'en') => ({
     displayMode: 'regular',
     feedMode: 'market',
     colorTheme: 'dark',

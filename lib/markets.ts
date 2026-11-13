@@ -7,11 +7,12 @@
 //   - GPW (Warsaw) stocks, indices and charts render in embeds, but end of day only, so Polish tiles and tables use Yahoo's
 //     ~15-minute delayed quotes too.
 //   - B3 (Brazil) is not on Finnhub free; its tiles and tables use Yahoo's ~15-minute delayed quotes as well (.SA, ^BVSP).
+//   - Commodities are futures, which TradingView blocks in free embeds; Yahoo has the nearest-expiry contracts delayed (GC=F, BZ=F).
 // Adding a market = adding an entry here with symbols from an exchange that renders in embeds.
 
 import { isInternationalSymbol } from "@/lib/utils";
 
-export type MarketId = 'us' | 'in' | 'de' | 'ca' | 'au' | 'sa' | 'pl' | 'br' | 'crypto' | 'fx';
+export type MarketId = 'us' | 'in' | 'de' | 'ca' | 'au' | 'sa' | 'pl' | 'br' | 'cmd' | 'crypto' | 'fx';
 
 type Hours = { open: number; close: number }; // minutes of the local day
 
@@ -28,8 +29,13 @@ export type Market = {
     // Priced from Yahoo instead of TradingView: tiles, leaders and quotes are our own components
     yahoo?: true;
     groups: { title: string; symbols: [symbol: string, name: string][] }[];
-    heatmap?: 'stocks' | 'crypto';
-    news: 'stock' | 'crypto' | 'forex';
+    // 'stocks' and 'crypto' are TradingView's widgets; 'yahoo' is our own map, sized by Yahoo's market values
+    heatmap?: 'stocks' | 'crypto' | 'yahoo';
+    news: 'stock' | 'crypto' | 'forex' | 'futures';
+    // What each price is quoted in, per symbol, shown where a stock would show its ticker (commodities)
+    units?: Record<string, string>;
+    // Local news portals (RSS): when set, the dashboard lists their headlines instead of TradingView's news timeline
+    newsFeeds?: { name: string; url: string }[];
 };
 
 const hm = (h: number, m = 0) => h * 60 + m;
@@ -157,7 +163,39 @@ export const MARKETS: Market[] = [
             { title: 'Consumer & health', symbols: [['BMFBOVESPA:ABEV3', 'Ambev'], ['BMFBOVESPA:LREN3', 'Lojas Renner'], ['BMFBOVESPA:RADL3', 'RD Saúde'], ['BMFBOVESPA:RDOR3', "Rede D'Or"], ['BMFBOVESPA:VIVT3', 'Vivo'], ['BMFBOVESPA:TIMS3', 'TIM'], ['BMFBOVESPA:MGLU3', 'Magazine Luiza'], ['BMFBOVESPA:ASAI3', 'Assaí'], ['BMFBOVESPA:NATU3', 'Natura'], ['BMFBOVESPA:HAPV3', 'Hapvida']] },
             { title: 'Real estate', symbols: [['BMFBOVESPA:CYRE3', 'Cyrela'], ['BMFBOVESPA:MRVE3', 'MRV'], ['BMFBOVESPA:MULT3', 'Multiplan'], ['BMFBOVESPA:ALOS3', 'Allos']] },
         ],
-        news: 'stock',
+        heatmap: 'yahoo', news: 'stock',
+        newsFeeds: [
+            { name: 'InfoMoney', url: 'https://www.infomoney.com.br/feed/' },
+            { name: 'Valor Econômico', url: 'https://valor.globo.com/rss/valor' },
+            { name: 'Money Times', url: 'https://www.moneytimes.com.br/feed/' },
+            { name: 'Exame Invest', url: 'https://exame.com/invest/feed/' },
+            { name: 'Brazil Journal', url: 'https://braziljournal.com/feed/' },
+            { name: 'InvestNews', url: 'https://investnews.com.br/feed/' },
+            { name: 'NeoFeed', url: 'https://neofeed.com.br/feed/' },
+            { name: 'Seu Dinheiro', url: 'https://www.seudinheiro.com/feed/' },
+        ],
+    },
+    {
+        // Futures trade nearly around the clock on weekdays (CME Globex), close enough to the FX week.
+        // Yahoo's iron ore contract (TIO=F) stopped updating in 2021, so iron ore is left out.
+        id: 'cmd', name: 'Commodities', short: 'CMD', timeZone: 'America/New_York', hours: '24/5', feed: 'Delayed', yahoo: true,
+        pulse: [
+            { symbol: 'CMD:BZ', label: 'Brent crude' },
+            { symbol: 'CMD:GC', label: 'Gold' },
+            { symbol: 'CMD:HG', label: 'Copper' },
+            { symbol: 'CMD:ZS', label: 'Soybeans' },
+        ],
+        groups: [
+            { title: 'Energy', symbols: [['CMD:BZ', 'Brent crude'], ['CMD:CL', 'WTI crude'], ['CMD:NG', 'Natural gas']] },
+            { title: 'Metals', symbols: [['CMD:GC', 'Gold'], ['CMD:SI', 'Silver'], ['CMD:HG', 'Copper'], ['CMD:PL', 'Platinum'], ['CMD:PA', 'Palladium'], ['CMD:ALI', 'Aluminium']] },
+            { title: 'Agriculture', symbols: [['CMD:ZS', 'Soybeans'], ['CMD:ZC', 'Corn'], ['CMD:ZW', 'Wheat'], ['CMD:KC', 'Coffee (arabica)'], ['CMD:SB', 'Sugar'], ['CMD:CT', 'Cotton'], ['CMD:CC', 'Cocoa'], ['CMD:OJ', 'Orange juice'], ['CMD:LE', 'Live cattle (US)']] },
+        ],
+        news: 'futures',
+        units: {
+            'CMD:BZ': 'US$/bbl', 'CMD:CL': 'US$/bbl', 'CMD:NG': 'US$/MMBtu',
+            'CMD:GC': 'US$/oz', 'CMD:SI': 'US$/oz', 'CMD:HG': 'US$/lb', 'CMD:PL': 'US$/oz', 'CMD:PA': 'US$/oz', 'CMD:ALI': 'US$/t',
+            'CMD:ZS': 'US¢/bu', 'CMD:ZC': 'US¢/bu', 'CMD:ZW': 'US¢/bu', 'CMD:KC': 'US¢/lb', 'CMD:SB': 'US¢/lb', 'CMD:CT': 'US¢/lb', 'CMD:CC': 'US$/t', 'CMD:OJ': 'US¢/lb', 'CMD:LE': 'US¢/lb',
+        },
     },
     {
         id: 'crypto', name: 'Crypto', short: 'Crypto', timeZone: 'UTC', hours: '24/7', feed: 'Live',
@@ -191,6 +229,9 @@ export const MARKETS: Market[] = [
 
 export const DEFAULT_MARKET: MarketId = 'us';
 export const MARKET_COOKIE = 'openstock-market';
+
+// "CMD:GC" -> "GC", the key of a commodity's translated name in the messages (Markets.commodities); null for anything else
+export const commodityCode = (symbol: string) => (symbol.startsWith('CMD:') ? symbol.slice(4) : null);
 
 export const getMarket = (id?: string | null) => MARKETS.find((m) => m.id === id) ?? MARKETS[0];
 

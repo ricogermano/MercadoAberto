@@ -3,6 +3,8 @@
 // B3 (BMFBOVESPA, .SA) is not on Finnhub free at all; Yahoo has it ~15 minutes delayed.
 // Pure functions, covered by tests; the network call lives in lib/actions/yahoo.actions.ts.
 
+import { hasFinnhubCompanyData } from '@/lib/markets';
+
 type YahooExchange = { suffix: string; currency: string; ticker: RegExp; indices: Record<string, string> };
 
 // TradingView prefix -> Yahoo suffix, trading currency, the shape of a ticker, and index tickers with their Yahoo symbols
@@ -20,6 +22,8 @@ const INDEX_SYMBOLS = new Set(Object.values(YAHOO_EXCHANGES).flatMap((ex) => Obj
 export function normalizeYahooSymbol(symbol: string): string | null {
     const upper = (symbol || '').trim().toUpperCase();
     if (INDEX_SYMBOLS.has(upper)) return upper;
+    // Commodity futures: "CMD:GC" -> "GC=F", Yahoo's nearest-expiry contract
+    if (upper.startsWith('CMD:')) return /^[A-Z]{1,3}$/.test(upper.slice(4)) ? `${upper.slice(4)}=F` : null;
     for (const [prefix, ex] of Object.entries(YAHOO_EXCHANGES)) {
         const ticker = upper.startsWith(`${prefix}:`) ? upper.slice(prefix.length + 1)
             : upper.endsWith(`.${ex.suffix}`) ? upper.slice(0, -(ex.suffix.length + 1))
@@ -33,10 +37,10 @@ export function normalizeYahooSymbol(symbol: string): string | null {
 
 export const isYahooSymbol = (symbol: string) => normalizeYahooSymbol(symbol) !== null;
 
-// "TADAWUL:2222" -> "2222.SR", "GPW:PKN" -> "PKN.WA": the symbols our stock pages use. Indices have no stock page.
+// "TADAWUL:2222" -> "2222.SR", "GPW:PKN" -> "PKN.WA": the symbols our stock pages use. Indices and commodity futures have no stock page.
 export const yahooAppSymbol = (tvSymbol: string) => {
     const yahoo = normalizeYahooSymbol(tvSymbol);
-    return yahoo && !INDEX_SYMBOLS.has(yahoo) ? yahoo : null;
+    return yahoo && !INDEX_SYMBOLS.has(yahoo) && !yahoo.endsWith('=F') ? yahoo : null;
 };
 
 // The exchange's currency for a Yahoo symbol ("PKN.WA" -> "PLN"), for when Yahoo leaves meta.currency out
@@ -78,6 +82,15 @@ export function dailyQuoteFromChart(json: unknown, fallbackCurrency = 'USD'): Ya
         currency: result.meta?.currency || fallbackCurrency,
         name: result.meta?.longName || result.meta?.shortName || '',
     };
+}
+
+// The Yahoo symbol to look fundamentals up under: our Yahoo-priced listings as they are, plain US tickers with "." as "-"
+// (BRK.B -> BRK-B); crypto pairs, forex, indices and other exchanges have none.
+export function fundamentalsYahooSymbol(symbol: string): string | null {
+    const yahoo = yahooAppSymbol(symbol);
+    if (yahoo) return yahoo;
+    const upper = (symbol || '').trim().toUpperCase();
+    return upper && hasFinnhubCompanyData(upper) ? upper.replace('.', '-') : null;
 }
 
 export type YahooFundamentals = { pe: number | null; pb: number | null; roe: number | null; roce: number | null; dy: number | null };
@@ -150,6 +163,16 @@ export function fundamentalsFromTimeseries(json: unknown): YahooFundamentals | n
     // ROE = P/B / P/E: both ratios are currency-free, while Yahoo mixes USD and BRL in the statement fields
     const roe = pe !== null && pb !== null && pe > 0 && pb > 0 ? (pb / pe) * 100 : null;
     return { pe, pb, roe, roce, dy: null };
+}
+
+// Company market value from /ws/fundamentals-timeseries (type trailingMarketCap), in the listing's currency; null when Yahoo has none
+export const marketCapFromTimeseries = (json: unknown): number | null => latestRatio(json, 'trailingMarketCap');
+
+// Yahoo has no market value for B3 units (BPAC11, SANB11...), but the company's common share carries the value of the
+// whole company, so units look it up there ("BPAC11.SA" -> "BPAC3.SA"). null for everything else.
+export function marketCapFallbackSymbol(yahooSymbol: string): string | null {
+    const m = /^([A-Z]{4})11\.SA$/.exec((yahooSymbol || '').toUpperCase());
+    return m ? `${m[1]}3.SA` : null;
 }
 
 type YahooDividendChartJson = {

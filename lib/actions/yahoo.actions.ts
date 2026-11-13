@@ -1,7 +1,7 @@
 'use server';
 
 import { QUOTE_TTL_SECONDS } from '@/lib/market-data';
-import { dailyQuoteFromChart, dividendYieldFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency, type YahooDailyQuote, type YahooFundamentals } from '@/lib/yahoo';
+import { dailyQuoteFromChart, fundamentalsYahooSymbol, dividendYieldFromChart, fundamentalsFromTimeseries, marketCapFallbackSymbol, marketCapFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency, type YahooDailyQuote, type YahooFundamentals } from '@/lib/yahoo';
 
 // Daily Tadawul, Warsaw and B3 quotes from Yahoo Finance (free, no key, covers .SR, .WA and .SA), keyed by the symbol passed in.
 // One chart call per symbol (no batch endpoint without login) behind the shared quote cache (hourly in cached
@@ -29,37 +29,42 @@ export async function getYahooDailyQuotes(symbols: string[]): Promise<Record<str
     return Object.fromEntries(entries.filter(([, q]) => q)) as Record<string, YahooDailyQuote>;
 }
 
-// Trailing P/E, P/B, ROE, ROCE and dividend yield per symbol (indices skipped). Two requests per symbol (the fundamentals
-// timeseries and a 1-year monthly chart with dividend events), cached six hours since the figures change once a day.
-// The timeseries window is rounded to whole days so the URL is stable and Next's fetch cache can hit.
-export async function getYahooFundamentals(symbols: string[]): Promise<Record<string, YahooFundamentals>> {
+const YAHOO_BASE = 'https://query1.finance.yahoo.com';
+const FUNDAMENTAL_TYPES = 'trailingPeRatio,trailingPbRatio,trailingMarketCap,trailingEBIT,quarterlyTotalAssets,quarterlyCurrentLiabilities,annualEBIT,annualTotalAssets,annualCurrentLiabilities';
+
+// The fundamentals timeseries URL of one Yahoo symbol. The window is rounded to whole days so the URL is stable and Next's
+// fetch cache can hit; the indicators and the heatmap's market values share it, so they cost one request between them.
+function timeseriesUrl(yahooSymbol: string, types = FUNDAMENTAL_TYPES) {
     const day = 86_400;
     const today = Math.floor(Date.now() / 1000 / day) * day;
-    const period1 = today - 800 * day;
-    const period2 = today + day;
-    const base = 'https://query1.finance.yahoo.com';
-    // Each source has its own try/catch so one failing doesn't lose the other
-    const fetchJson = async (url: string, symbol: string) => {
-        try {
-            const res = await fetch(url, {
-                headers: { 'User-Agent': 'Mozilla/5.0' },
-                next: { revalidate: 21600 },
-                signal: AbortSignal.timeout(5000),
-            });
-            return res.ok ? await res.json() : null;
-        } catch (e) {
-            console.error('Yahoo fundamentals error', symbol, e);
-            return null;
-        }
-    };
+    return `${YAHOO_BASE}/ws/fundamentals-timeseries/v1/finance/timeseries/${encodeURIComponent(yahooSymbol)}?type=${types}&period1=${today - 800 * day}&period2=${today + day}`;
+}
+
+// Cached six hours since these figures change once a day; null on any failure so one source never loses the others
+async function fetchSlowJson(url: string, symbol: string): Promise<unknown> {
+    try {
+        const res = await fetch(url, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            next: { revalidate: 21600 },
+            signal: AbortSignal.timeout(5000),
+        });
+        return res.ok ? await res.json() : null;
+    } catch (e) {
+        console.error('Yahoo fundamentals error', symbol, e);
+        return null;
+    }
+}
+
+// Trailing P/E, P/B, ROE, ROCE and dividend yield per symbol (indices, crypto, forex and other exchanges skipped; plain US tickers included). Two requests per symbol (the fundamentals
+// timeseries and a 1-year monthly chart with dividend events), cached six hours since the figures change once a day.
+export async function getYahooFundamentals(symbols: string[]): Promise<Record<string, YahooFundamentals>> {
     const entries = await Promise.all(
         symbols.map(async (symbol) => {
-            const yahooSymbol = yahooAppSymbol(symbol);
+            const yahooSymbol = fundamentalsYahooSymbol(symbol);
             if (!yahooSymbol) return [symbol, null] as const;
-            const encoded = encodeURIComponent(yahooSymbol);
             const [series, chart] = await Promise.all([
-                fetchJson(`${base}/ws/fundamentals-timeseries/v1/finance/timeseries/${encoded}?type=trailingPeRatio,trailingPbRatio,trailingEBIT,quarterlyTotalAssets,quarterlyCurrentLiabilities,annualEBIT,annualTotalAssets,annualCurrentLiabilities&period1=${period1}&period2=${period2}`, symbol),
-                fetchJson(`${base}/v8/finance/chart/${encoded}?interval=1mo&range=1y&events=div`, symbol),
+                fetchSlowJson(timeseriesUrl(yahooSymbol), symbol),
+                fetchSlowJson(`${YAHOO_BASE}/v8/finance/chart/${encodeURIComponent(yahooSymbol)}?interval=1mo&range=1y&events=div`, symbol),
             ]);
             const fundamentals = series ? fundamentalsFromTimeseries(series) : null;
             const dy = chart ? dividendYieldFromChart(chart) : null;
@@ -68,4 +73,21 @@ export async function getYahooFundamentals(symbols: string[]): Promise<Record<st
         }),
     );
     return Object.fromEntries(entries.filter(([, f]) => f)) as Record<string, YahooFundamentals>;
+}
+
+// Company market value per Yahoo-priced stock, for sizing the heatmap. Same request as the indicators (a cache hit when the
+// quotes table is on the page); B3 units have none of their own and take one more request for the common share's.
+export async function getYahooMarketCaps(symbols: string[]): Promise<Record<string, number>> {
+    const entries = await Promise.all(
+        symbols.map(async (symbol) => {
+            const yahooSymbol = yahooAppSymbol(symbol);
+            if (!yahooSymbol) return [symbol, null] as const;
+            const own = marketCapFromTimeseries(await fetchSlowJson(timeseriesUrl(yahooSymbol), symbol));
+            if (own !== null) return [symbol, own] as const;
+            const fallback = marketCapFallbackSymbol(yahooSymbol);
+            if (!fallback) return [symbol, null] as const;
+            return [symbol, marketCapFromTimeseries(await fetchSlowJson(timeseriesUrl(fallback, 'trailingMarketCap'), symbol))] as const;
+        }),
+    );
+    return Object.fromEntries(entries.filter(([, cap]) => cap !== null && cap > 0)) as Record<string, number>;
 }

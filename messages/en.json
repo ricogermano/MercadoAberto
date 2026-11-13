@@ -59,7 +59,8 @@
       "crypto": "Crypto",
       "fx": "Forex",
       "pl": "Poland",
-      "br": "Brazil"
+      "br": "Brazil",
+      "cmd": "Commodities"
     },
     "feed": {
       "live": "Live",
@@ -87,12 +88,35 @@
       "consumerTech": "Consumer & tech",
       "utilitiesIndustry": "Utilities & industry",
       "utilities": "Utilities",
-      "realEstate": "Real estate"
+      "realEstate": "Real estate",
+      "metals": "Metals",
+      "agriculture": "Agriculture"
+    },
+    "commodities": {
+      "BZ": "Brent crude",
+      "CL": "WTI crude",
+      "NG": "Natural gas",
+      "GC": "Gold",
+      "SI": "Silver",
+      "HG": "Copper",
+      "PL": "Platinum",
+      "PA": "Palladium",
+      "ALI": "Aluminium",
+      "ZS": "Soybeans",
+      "ZC": "Corn",
+      "ZW": "Wheat",
+      "KC": "Coffee (arabica)",
+      "SB": "Sugar",
+      "CT": "Cotton",
+      "CC": "Cocoa",
+      "OJ": "Orange juice",
+      "LE": "Live cattle (US)"
     }
   },
   "WatchlistTable": {
     "headers": {
       "company": "Company",
+      "commodity": "Commodity",
       "price": "Price",
       "change": "Change",
       "marketCap": "Market cap",
@@ -244,6 +268,8 @@
     "stockHeatmapTitle": "S&P 500 heatmap",
     "cryptoHeatmapTitle": "Crypto heatmap",
     "heatmapSub": "Sized by market cap, coloured by today’s move",
+    "marketHeatmapTitle": "{market} heatmap",
+    "heatmapNote": "Market value and prices from Yahoo Finance; units use the value of the whole company. Select a block to open the stock.",
     "quotesTitle": "Quotes",
     "quotesSub": "{market} leaders by group",
     "storiesTitle": "Top stories",
@@ -320,7 +346,16 @@
         "title": "ROCE (return on capital employed)",
         "body": "Operating profit (EBIT) of the last twelve months as a percentage of capital employed (total assets minus current liabilities), so it considers debt and equity together. Figures come from Yahoo Finance. Not shown for banks and insurers, whose balance sheets do not have this split."
       }
-    }
+    },
+    "commoditiesNote": "Nearest-expiry futures contracts via Yahoo Finance, delayed. Each price is in the unit shown next to the name: bbl = barrel, oz = troy ounce (31.1 g), lb = pound (0.454 kg), bu = bushel (about 27 kg of soybeans or wheat, 25 kg of corn), t = tonne, MMBtu = million British thermal units, US¢ = US cents."
+  },
+  "MarketNews": {
+    "unavailable": "Headlines are unavailable right now.",
+    "noMatch": "No headlines match these filters.",
+    "onlyTable": "Only companies in the table",
+    "clearFilters": "Clear filters",
+    "sourcesLabel": "Sources",
+    "footnote": "Headlines from {sources}; links open the original site."
   },
   "TradingViewWidget": {
     "fullScreen": "Full screen",

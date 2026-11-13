@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareNullable, dividendYieldFromChart, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
+import { compareNullable, fundamentalsYahooSymbol, dividendYieldFromChart, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
 import { formatSymbolForTradingView, isChartEmbeddable } from '@/lib/utils';
 
 describe('Tadawul symbols', () => {
@@ -39,6 +39,18 @@ describe('B3 (Brazil) symbols', () => {
         expect(formatSymbolForTradingView('PETR4.SA')).toBe('BMFBOVESPA:PETR4');
         expect(isChartEmbeddable('BMFBOVESPA:PETR4')).toBe(true);
         expect(yahooCurrency('PETR4.SA')).toBe('BRL');
+    });
+});
+
+describe('Commodity futures', () => {
+    it('maps the CMD prefix to Yahoo futures, with no stock page', () => {
+        expect(normalizeYahooSymbol('CMD:GC')).toBe('GC=F');
+        expect(normalizeYahooSymbol('cmd:ali')).toBe('ALI=F');
+        expect(normalizeYahooSymbol('CMD:')).toBeNull();
+        expect(normalizeYahooSymbol('CMD:GOLD1')).toBeNull();
+        expect(normalizeYahooSymbol('GC=F')).toBeNull();
+        expect(yahooAppSymbol('CMD:GC')).toBeNull();
+        expect(fundamentalsYahooSymbol('CMD:GC')).toBeNull();
     });
 });
 
@@ -261,5 +273,22 @@ describe('dividendYieldFromChart', () => {
     it('ignores non-finite, negative and null amounts', () => {
         const divs = { 1: { amount: 2 }, 2: { amount: Number.NaN }, 3: { amount: -1 }, 4: null, 5: { amount: 'x' } };
         expect(dividendYieldFromChart(chart(100, divs))).toBeCloseTo(2);
+    });
+});
+
+describe('fundamentalsYahooSymbol', () => {
+    it('keeps Yahoo-priced listings and maps US tickers', () => {
+        expect(fundamentalsYahooSymbol('BMFBOVESPA:PETR4')).toBe('PETR4.SA');
+        expect(fundamentalsYahooSymbol('2222.SR')).toBe('2222.SR');
+        expect(fundamentalsYahooSymbol('AAPL')).toBe('AAPL');
+        expect(fundamentalsYahooSymbol('brk.b')).toBe('BRK-B');
+    });
+
+    it('has none for indices, crypto, forex and other exchanges', () => {
+        expect(fundamentalsYahooSymbol('BMFBOVESPA:IBOV')).toBeNull();
+        expect(fundamentalsYahooSymbol('BINANCE:BTCUSDT')).toBeNull();
+        expect(fundamentalsYahooSymbol('FX:EURUSD')).toBeNull();
+        expect(fundamentalsYahooSymbol('RELIANCE.NS')).toBeNull();
+        expect(fundamentalsYahooSymbol('')).toBeNull();
     });
 });

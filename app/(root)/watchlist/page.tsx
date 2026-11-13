@@ -5,6 +5,7 @@ import { getUserWatchlist } from '@/lib/actions/watchlist.actions';
 import { getUserAlerts } from '@/lib/actions/alert.actions';
 import { alertsEnabled } from '@/lib/market-data';
 import { getNews, getWatchlistData } from '@/lib/actions/finnhub.actions';
+import { getYahooFundamentals } from '@/lib/actions/yahoo.actions';
 import { getWatchlistLists } from '@/lib/actions/watchlist-lists.actions';
 import WatchlistTable from '@/components/watchlist/WatchlistTable';
 import AlertsPanel from '@/components/watchlist/AlertsPanel';
@@ -29,7 +30,8 @@ const RowsSkeleton = ({ rows = 4 }: { rows?: number }) => (
 );
 
 async function Symbols({ symbols, lists }: { symbols: string[]; lists: { id: string; name: string }[] }) {
-    return <WatchlistTable initialRows={await getWatchlistData(symbols)} lists={lists} />;
+    const [rows, fundamentals] = await Promise.all([getWatchlistData(symbols), getYahooFundamentals(symbols).catch(() => ({}))]);
+    return <WatchlistTable initialRows={rows} lists={lists} fundamentals={fundamentals} />;
 }
 
 async function News({ symbols }: { symbols: string[] }) {

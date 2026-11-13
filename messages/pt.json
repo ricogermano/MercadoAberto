@@ -59,7 +59,8 @@
       "crypto": "Cripto",
       "fx": "Câmbio",
       "pl": "Polônia",
-      "br": "Brasil"
+      "br": "Brasil",
+      "cmd": "Commodities"
     },
     "feed": {
       "live": "Ao vivo",
@@ -87,12 +88,35 @@
       "consumerTech": "Consumo e tecnologia",
       "utilitiesIndustry": "Utilidades e indústria",
       "utilities": "Utilidade pública",
-      "realEstate": "Imobiliário"
+      "realEstate": "Imobiliário",
+      "metals": "Metais",
+      "agriculture": "Agrícolas"
+    },
+    "commodities": {
+      "BZ": "Petróleo Brent",
+      "CL": "Petróleo WTI",
+      "NG": "Gás natural",
+      "GC": "Ouro",
+      "SI": "Prata",
+      "HG": "Cobre",
+      "PL": "Platina",
+      "PA": "Paládio",
+      "ALI": "Alumínio",
+      "ZS": "Soja",
+      "ZC": "Milho",
+      "ZW": "Trigo",
+      "KC": "Café arábica",
+      "SB": "Açúcar",
+      "CT": "Algodão",
+      "CC": "Cacau",
+      "OJ": "Suco de laranja",
+      "LE": "Boi gordo (EUA)"
     }
   },
   "WatchlistTable": {
     "headers": {
       "company": "Empresa",
+      "commodity": "Commodity",
       "price": "Preço",
       "change": "Variação",
       "marketCap": "Valor de mercado",
@@ -244,6 +268,8 @@
     "stockHeatmapTitle": "Mapa de calor do S&P 500",
     "cryptoHeatmapTitle": "Mapa de calor de cripto",
     "heatmapSub": "Tamanho pelo valor de mercado, cor pela variação de hoje",
+    "marketHeatmapTitle": "Mapa de calor: {market}",
+    "heatmapNote": "Valor de mercado e preços do Yahoo Finance; units usam o valor da empresa inteira. Clique em um bloco para abrir a ação.",
     "quotesTitle": "Cotações",
     "quotesSub": "Líderes de {market} por grupo",
     "storiesTitle": "Principais notícias",
@@ -320,7 +346,16 @@
         "title": "ROCE (retorno sobre o capital empregado)",
         "body": "Lucro operacional (EBIT) dos últimos doze meses como porcentagem do capital empregado (ativo total menos passivo circulante), considerando dívida e patrimônio juntos. Os dados vêm do Yahoo Finance. Não aparece para bancos e seguradoras, cujos balanços não têm essa divisão."
       }
-    }
+    },
+    "commoditiesNote": "Contratos futuros de vencimento mais próximo, via Yahoo Finance, com atraso. Cada preço está na unidade ao lado do nome: bbl = barril, oz = onça troy (31,1 g), lb = libra-peso (0,454 kg), bu = bushel (cerca de 27 kg de soja ou trigo, 25 kg de milho), t = tonelada, MMBtu = milhão de BTU (medida de energia do gás), US¢ = centavos de dólar."
+  },
+  "MarketNews": {
+    "unavailable": "As manchetes estão indisponíveis no momento.",
+    "noMatch": "Nenhuma manchete corresponde a estes filtros.",
+    "onlyTable": "Só empresas da tabela",
+    "clearFilters": "Limpar filtros",
+    "sourcesLabel": "Fontes",
+    "footnote": "Manchetes de {sources}; os links abrem o site original."
   },
   "TradingViewWidget": {
     "fullScreen": "Tela cheia",

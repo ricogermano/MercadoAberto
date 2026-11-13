@@ -6,7 +6,7 @@ import TradingViewWidget from "@/components/TradingViewWidget";
 import { getLiveQuotes } from "@/lib/actions/finnhub.actions";
 import { getYahooDailyQuotes } from "@/lib/actions/yahoo.actions";
 import { singleQuoteConfig } from "@/lib/constants";
-import { getMarket, type Market } from "@/lib/markets";
+import { commodityCode, getMarket, type Market } from "@/lib/markets";
 import type { Locale } from "@/i18n/config";
 
 const SINGLE_QUOTE = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
@@ -21,6 +21,12 @@ export default async function IndexPulse({ market = getMarket('us'), locale }: {
         const labels = t ? { vsPrevClose: (change: string) => t('vsPrevClose', { change }), unavailable: t('unavailable') } : undefined;
         // What each index tracks, for the tickers that have a description in the messages (the B3 ones)
         const th = locale ? await getTranslations({ locale, namespace: 'IndexHelp' }) : null;
+        // Commodity tiles are named in the reader's language
+        const tm = locale ? await getTranslations({ locale, namespace: 'Markets' }) : null;
+        const labelFor = (symbol: string, label: string) => {
+            const code = commodityCode(symbol) as keyof Messages['Markets']['commodities'] | null;
+            return tm && code && tm.has(`commodities.${code}`) ? tm(`commodities.${code}`) : label;
+        };
         const helpFor = (symbol: string, label: string) => {
             const key = symbol.split(':').pop() as keyof Messages['IndexHelp']['items'];
             if (!th || !th.has(`items.${key}.title`)) return undefined;
@@ -28,7 +34,7 @@ export default async function IndexPulse({ market = getMarket('us'), locale }: {
         };
         return (
             <div className="bento">
-                {market.pulse.map((tile) => <YahooPulseTile key={tile.symbol} tvSymbol={tile.symbol} label={tile.label} quote={yahoo[tile.symbol] ?? null} labels={labels} help={helpFor(tile.symbol, tile.label)} />)}
+                {market.pulse.map((tile) => <YahooPulseTile key={tile.symbol} tvSymbol={tile.symbol} label={labelFor(tile.symbol, tile.label)} unit={market.units?.[tile.symbol]} quote={yahoo[tile.symbol] ?? null} labels={labels} help={helpFor(tile.symbol, tile.label)} />)}
             </div>
         );
     }

@@ -12,6 +12,15 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Melhor no celular e no tema escuro',
+        items: [
+            'No iPhone, a tela não fica mais ampliada e cortada à direita depois de entrar.',
+            'No tema escuro, os quadros do TradingView (Pulso, Líderes, Cotações, Notícias) deixam de aparecer com fundo branco e letra apagada.',
+            'No celular, os quadros do Pulso ficam um por linha, com o nome inteiro.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Excluir a conta pelo Perfil',
         items: [
             'Na tela “Perfil” há agora o botão “Excluir minha conta”: ele apaga de vez o cadastro, as listas e os alertas.',

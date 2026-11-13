@@ -46,7 +46,7 @@ export default async function IndexPulse({ market = getMarket('us'), locale }: {
             {market.pulse.map((tile) => {
                 if (!tile.finnhub) {
                     return (
-                        <div key={tile.symbol} className="bento-tile p-1.5">
+                        <div key={tile.symbol} className="bento-tile pulse-tv p-1.5">
                             <TradingViewWidget scriptUrl={SINGLE_QUOTE} config={singleQuoteConfig(tile.symbol, locale)} height={112} />
                         </div>
                     );

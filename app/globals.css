@@ -550,6 +550,12 @@
         box-shadow: inset 0 1px 0 color-mix(in oklab, var(--tint) 5%, transparent);
     }
     @media (max-width: 1023px) { .bento-tile { grid-column: span 6; } }
+    /* TradingView's quote tile needs about 300px to show the name; two per row on a phone crops it.
+       One per row there, at the widget's own height instead of the taller desktop tile. */
+    @media (max-width: 639px) {
+        .bento-tile.pulse-tv { grid-column: span 12; }
+        .bento-tile.pulse-tv .tv-frame { height: 72px !important; }
+    }
 
     .bento-head {
         display: flex;
@@ -760,6 +766,9 @@
         width: 100% !important;
         background: transparent !important;
     }
+    /* TradingView's pages declare no color scheme (so: light). Under our dark theme the browser would
+       then paint the frame's backdrop opaque white, behind widgets drawn for a dark background. */
+    .tradingview-widget-container iframe { color-scheme: light; }
     .tradingview-widget-copyright {
         padding: 6px 0;
         font-size: 11px;
@@ -932,4 +941,10 @@ html[lang="ar"] body {
 html[dir="rtl"] .num,
 html[dir="rtl"] .mono {
     unicode-bidi: plaintext;
+}
+
+/* iOS zooms the page in when a field with text under 16px gets focus, and stays zoomed after sign-in:
+   every screen then looks cut off on the right. Our base size is 14px, so fields get 16px on touch screens. */
+@media (pointer: coarse) {
+    input, textarea, select { font-size: 16px !important; }
 }

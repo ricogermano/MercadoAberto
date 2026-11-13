@@ -1,21 +1,22 @@
 'use client';
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { MARKETS, MARKET_COOKIE, type MarketId } from "@/lib/markets";
+import { useLocale, useTranslations } from "next-intl";
+import { MARKET_COOKIE, marketsInTabOrder, type MarketId } from "@/lib/markets";
 import { cn } from "@/lib/utils";
 
 // Market chips for the dashboard. The choice is remembered in a cookie so the server renders it next time.
 export default function MarketSwitcher({ active, openIds }: { active: MarketId; openIds: MarketId[] }) {
     const t = useTranslations('MarketSwitcher');
     const tm = useTranslations('Markets');
+    const locale = useLocale();
     const remember = (id: MarketId) => {
         document.cookie = `${MARKET_COOKIE}=${id}; path=/; max-age=31536000; samesite=lax`;
     };
 
     return (
         <nav aria-label={t('label')} className="flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none]">
-            {MARKETS.map((m) => {
+            {marketsInTabOrder((id) => tm(`names.${id}`), locale).map((m) => {
                 const selected = m.id === active;
                 const open = openIds.includes(m.id);
                 return (

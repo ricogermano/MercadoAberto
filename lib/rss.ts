@@ -97,6 +97,12 @@ export function tagTickers(title: string, symbols: [tvSymbol: string, name: stri
 
 const normalisedTitle = (title: string) => title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 
+// True when the headline mentions one of the words or phrases, as whole words, ignoring case and accents ("Dólar" matches "dolar")
+export function matchesKeywords(title: string, keywords: string[]): boolean {
+    const text = ` ${normalisedTitle(title)} `;
+    return keywords.some((k) => text.includes(` ${normalisedTitle(k)} `));
+}
+
 // Merges the per-source items into one newest-first list: at most `perSource` newest items from each source (so the 100-item
 // feeds don't crowd out the others), dropping undated items, anything older than `maxAgeMs` or dated more than an hour ahead,
 // and duplicates by link or by normalised title; capped to `limit`.

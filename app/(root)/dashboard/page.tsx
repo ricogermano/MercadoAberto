@@ -109,8 +109,13 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                             <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><YahooHeatmap market={market} locale={locale} /></Suspense>
                         </Panel>
                     )}
-                    <Panel title={t('storiesTitle')} sub={t('storiesSub')} className={heatmap || ownHeatmap ? '' : 'xl:col-span-2'}>
-                        {market.newsFeeds
+                    {market.newsFeeds && market.newsKeywords && (
+                        <Panel title={t('storiesLocalTitle')} sub={t('storiesSub')}>
+                            <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
+                        </Panel>
+                    )}
+                    <Panel title={t(market.newsKeywords ? 'storiesWorldTitle' : 'storiesTitle')} sub={t('storiesSub')} className={heatmap || ownHeatmap || market.newsKeywords ? '' : 'xl:col-span-2'}>
+                        {market.newsFeeds && !market.newsKeywords
                             ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
                             : <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />}
                     </Panel>

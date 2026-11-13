@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { BookOpen, LayoutDashboard, LogOut, Search, Star } from "lucide-react";
+import { BookOpen, GraduationCap, Heart, LayoutDashboard, LogOut, Search, Sparkles, Star } from "lucide-react";
 import { openSearch } from "@/components/SearchCommand";
 import BrandLogo from "@/components/BrandLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import DonateDialog from "@/components/DonateDialog";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { donateLabels } from "@/lib/donate";
 import { signOut } from "@/lib/actions/auth.actions";
 import { cn } from "@/lib/utils";
 
@@ -16,11 +19,15 @@ type SidebarProps = {
 };
 
 const RESOURCES = [
+    { href: '/guide', label: 'guide', icon: GraduationCap },
+    { href: '/updates', label: 'updates', icon: Sparkles },
     { href: '/terms', label: 'terms', icon: BookOpen },
 ] as const;
 
 const Sidebar = ({ user, watchlist }: SidebarProps) => {
     const t = useTranslations('Sidebar');
+    const donate = donateLabels(useTranslations('Donate'));
+    const tTheme = useTranslations('Theme');
     const pathname = usePathname();
     const router = useRouter();
 
@@ -64,7 +71,8 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
                                     title={company}
                                     className={cn('side-item h-8 font-medium', pathname === `/stocks/${symbol}` && 'is-active')}
                                 >
-                                    <span className="mono w-14 shrink-0 text-[12.5px] font-semibold text-foreground">{symbol}</span>
+                                    {/* B3 tickers drop the ".SA" exchange suffix here; the column grows with the ticker so it never runs into the name */}
+                                    <span className="mono min-w-14 shrink-0 text-[12.5px] font-semibold text-foreground">{symbol.replace(/\.SA$/, '')}</span>
                                     {company !== symbol && <span className="truncate text-[12.5px] text-faint">{company}</span>}
                                 </Link>
                             </li>
@@ -79,11 +87,17 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
                         <Icon /> {t(`resources.${label}`)}
                     </Link>
                 ))}
+                <DonateDialog labels={donate}>
+                    <button type="button" className="side-item h-8 w-full text-start">
+                        <Heart /> {donate.button}
+                    </button>
+                </DonateDialog>
+                <ThemeSwitcher labels={{ label: tTheme('label'), auto: tTheme('auto'), light: tTheme('light'), dark: tTheme('dark') }} />
                 <LanguageSwitcher />
             </div>
 
             <div className="flex items-center gap-2.5 border-t border-line pt-3 px-1">
-                <Link href="/profile" className={cn('-m-1 flex min-w-0 flex-1 items-center gap-2.5 rounded-[10px] p-1 transition-colors hover:bg-white/5', pathname === '/profile' && 'bg-white/5')}>
+                <Link href="/profile" className={cn('-m-1 flex min-w-0 flex-1 items-center gap-2.5 rounded-[10px] p-1 transition-colors hover:bg-foreground/5', pathname === '/profile' && 'bg-foreground/5')}>
                     <span className="grid size-8 flex-none place-items-center rounded-full bg-brand-soft text-[13px] font-bold text-brand-ink">
                         {user.name?.[0]?.toUpperCase() ?? '?'}
                     </span>

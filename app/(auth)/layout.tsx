@@ -6,6 +6,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import BrandLogo from "@/components/BrandLogo";
 import HtmlLang from "@/components/HtmlLang";
 import LegalFooter from "@/components/LegalFooter";
+import { donateLabels } from "@/lib/donate";
 import {getSession} from "@/lib/better-auth/auth";
 import ProductPreview from "@/components/landing/ProductPreview";
 import { SocialProvidersProvider } from "@/components/forms/SocialAuthButtons";
@@ -19,6 +20,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
     const locale = await getLocale();
     const t = await getTranslations('AuthLayout');
     const tLegal = await getTranslations('UpdateBanner');
+    const tDonate = await getTranslations('Donate');
 
     // Same condition that enables the providers in lib/better-auth/auth.ts
     const socialProviders = [
@@ -37,7 +39,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
                 <div className="pb-6 lg:pb-8 flex-1">
                     <SocialProvidersProvider enabled={socialProviders}>{children}</SocialProvidersProvider>
                 </div>
-                <LegalFooter labels={{ disclaimer: tLegal('disclaimer'), sourceCode: tLegal('sourceCode'), basedOn: tLegal('basedOn') }} />
+                <LegalFooter labels={{ disclaimer: tLegal('disclaimer'), sourceCode: tLegal('sourceCode'), basedOn: tLegal('basedOn'), donate: donateLabels(tDonate) }} />
             </section>
             <section className="auth-right-section">
                 <div className="z-10 relative lg:mt-4 lg:mb-16">

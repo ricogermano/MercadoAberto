@@ -8,6 +8,7 @@ import TabBar from "@/components/shell/TabBar";
 import SearchCommand from "@/components/SearchCommand";
 import { cn } from "@/lib/utils";
 import LegalFooter from "@/components/LegalFooter";
+import { donateLabels } from "@/lib/donate";
 
 type AppShellProps = {
     user: User;
@@ -18,6 +19,7 @@ type AppShellProps = {
 
 const AppShell = ({ user, watchlist, initialStocks, children }: AppShellProps) => {
     const t = useTranslations('UpdateBanner');
+    const tDonate = useTranslations('Donate');
     const pathname = usePathname();
     const [navOpen, setNavOpen] = useState(false);
     const workspaceRef = useRef<HTMLElement>(null);
@@ -49,7 +51,7 @@ const AppShell = ({ user, watchlist, initialStocks, children }: AppShellProps) =
                     <main ref={workspaceRef} className={cn('workspace', pathname === '/dashboard' && 'is-first-tab')}>
                         <div className="workspace-inner">
                             {children}
-                            <LegalFooter labels={{ disclaimer: t('disclaimer'), sourceCode: t('sourceCode'), basedOn: t('basedOn') }} />
+                            <LegalFooter labels={{ disclaimer: t('disclaimer'), sourceCode: t('sourceCode'), basedOn: t('basedOn'), donate: donateLabels(tDonate) }} />
                         </div>
                     </main>
                 </div>

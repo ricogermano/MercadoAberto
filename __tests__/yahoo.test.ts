@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareNullable, fundamentalsYahooSymbol, dividendYieldFromChart, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
+import { EMPTY_FUNDAMENTALS, averageTurnoverFromChart, payoutFrom, compareNullable, fundamentalsYahooSymbol, dividendYieldFromChart, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
 import { formatSymbolForTradingView, isChartEmbeddable } from '@/lib/utils';
 
 describe('Tadawul symbols', () => {
@@ -130,9 +130,9 @@ describe('fundamentalsFromTimeseries', () => {
 
     it('leaves roe null for a negative or missing P/E but keeps P/B', () => {
         const neg = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)]), series('trailingPeRatio', [point('2026-01-01', -5)])] } };
-        expect(fundamentalsFromTimeseries(neg)).toEqual({ pe: -5, pb: 2, roe: null, roce: null, dy: null });
+        expect(fundamentalsFromTimeseries(neg)).toEqual({ ...EMPTY_FUNDAMENTALS, pe: -5, pb: 2 });
         const missing = { timeseries: { result: [series('trailingPbRatio', [point('2026-01-01', 2)])] } };
-        expect(fundamentalsFromTimeseries(missing)).toEqual({ pe: null, pb: 2, roe: null, roce: null, dy: null });
+        expect(fundamentalsFromTimeseries(missing)).toEqual({ ...EMPTY_FUNDAMENTALS, pb: 2 });
     });
 
     it('returns null without throwing for empty entries, null items and garbage', () => {
@@ -186,7 +186,7 @@ describe('fundamentalsFromTimeseries ROCE', () => {
             trailingEBIT: [item('2026-09-30', 5)],
             quarterlyTotalAssets: [item('2026-09-30', 100)],
         });
-        expect(fundamentalsFromTimeseries(json)).toEqual({ pe: 8, pb: 1.6, roe: 20, roce: null, dy: null });
+        expect(fundamentalsFromTimeseries(json)).toEqual({ ...EMPTY_FUNDAMENTALS, pe: 8, pb: 1.6, roe: 20 });
     });
 
     it('gives null roce when capital employed is zero or negative, and keeps a negative EBIT', () => {
@@ -290,5 +290,74 @@ describe('fundamentalsYahooSymbol', () => {
         expect(fundamentalsYahooSymbol('FX:EURUSD')).toBeNull();
         expect(fundamentalsYahooSymbol('RELIANCE.NS')).toBeNull();
         expect(fundamentalsYahooSymbol('')).toBeNull();
+    });
+});
+
+describe('new table indicators', () => {
+    const item = (asOfDate: string, raw: number, currencyCode = 'BRL') => ({ asOfDate, currencyCode, reportedValue: { raw } });
+    const build = (parts: Record<string, unknown[]>) => ({ timeseries: { result: Object.entries(parts).map(([type, items]) => series(type, items)) } });
+
+    it('reads EV/EBITDA and computes the net margin from same-period figures', () => {
+        const f = fundamentalsFromTimeseries(build({
+            trailingEnterprisesValueEBITDARatio: [point('2026-11-11', 3.06), point('2025-10-03', 3.7)],
+            trailingNetIncome: [item('2026-06-30', 25), item('2025-06-30', 10)],
+            trailingTotalRevenue: [item('2026-06-30', 100), item('2025-06-30', 80)],
+        }));
+        expect(f?.evEbitda).toBe(3.06);
+        expect(f?.netMargin).toBeCloseTo(25);
+    });
+
+    it('falls back to the fiscal year for the net margin when the trailing revenue is in another currency', () => {
+        const f = fundamentalsFromTimeseries(build({
+            trailingNetIncome: [item('2026-06-30', 25)],
+            trailingTotalRevenue: [item('2026-06-30', 100, 'USD')],
+            annualNetIncome: [item('2025-12-31', 10)],
+            annualTotalRevenue: [item('2025-12-31', 50)],
+        }));
+        expect(f?.netMargin).toBeCloseTo(20);
+    });
+
+    it('divides net debt by trailing EBITDA, and derives net debt from debt minus cash when Yahoo omits it', () => {
+        const reported = build({ trailingEBITDA: [item('2026-06-30', 50)], quarterlyNetDebt: [item('2026-06-30', 20), item('2026-03-31', 99)] });
+        expect(fundamentalsFromTimeseries(reported)?.netDebtEbitda).toBeCloseTo(0.4);
+        const netCash = build({
+            trailingEBITDA: [item('2026-09-30', 10)],
+            quarterlyTotalDebt: [item('2026-09-30', 4)],
+            quarterlyCashCashEquivalentsAndShortTermInvestments: [item('2026-09-30', 6)],
+        });
+        expect(fundamentalsFromTimeseries(netCash)?.netDebtEbitda).toBeCloseTo(-0.2);
+    });
+
+    it('gives no net debt / EBITDA without EBITDA (banks) or with a negative one', () => {
+        expect(fundamentalsFromTimeseries(build({ trailingPeRatio: [point('2026-11-11', 9)], quarterlyNetDebt: [item('2026-09-30', 20)] }))?.netDebtEbitda).toBeNull();
+        expect(fundamentalsFromTimeseries(build({ trailingPeRatio: [point('2026-11-11', 9)], trailingEBITDA: [item('2026-09-30', -5)], quarterlyNetDebt: [item('2026-09-30', 20)] }))?.netDebtEbitda).toBeNull();
+    });
+
+    it('annualises profit growth between the oldest and latest fiscal year of the same currency', () => {
+        const f = fundamentalsFromTimeseries(build({ annualNetIncome: [item('2025-12-31', 800), item('2022-12-31', 100), item('2021-12-31', 1, 'USD'), item('2023-12-31', 300)] }));
+        expect(f?.profitGrowth).toBeCloseTo(100, 0);
+    });
+
+    it('gives no profit growth from or to a loss, or with under two years of history', () => {
+        const pe = { trailingPeRatio: [point('2026-11-11', 9)] };
+        expect(fundamentalsFromTimeseries(build({ ...pe, annualNetIncome: [item('2022-12-31', -5), item('2025-12-31', 10)] }))?.profitGrowth).toBeNull();
+        expect(fundamentalsFromTimeseries(build({ ...pe, annualNetIncome: [item('2022-12-31', 5), item('2025-12-31', -10)] }))?.profitGrowth).toBeNull();
+        expect(fundamentalsFromTimeseries(build({ ...pe, annualNetIncome: [item('2024-12-31', 5), item('2025-12-31', 10)] }))?.profitGrowth).toBeNull();
+    });
+
+    it('computes payout as dividend yield times P/E, only with positive earnings', () => {
+        expect(payoutFrom(6, 5)).toBeCloseTo(30);
+        expect(payoutFrom(6, -5)).toBeNull();
+        expect(payoutFrom(null, 5)).toBeNull();
+        expect(payoutFrom(6, null)).toBeNull();
+    });
+
+    it('averages close x volume over the last sessions that have both', () => {
+        const chart = (close: (number | null)[], volume: (number | null)[]) => ({ chart: { result: [{ indicators: { quote: [{ close, volume }] } }] } });
+        expect(averageTurnoverFromChart(chart([10, 20, null, 30], [100, 100, 100, 200]), 2)).toBe(4000);
+        expect(averageTurnoverFromChart(chart([10, 20], [100, 300]))).toBe(3500);
+        expect(averageTurnoverFromChart(chart([10], [0]))).toBeNull();
+        expect(averageTurnoverFromChart(chart([], []))).toBeNull();
+        expect(averageTurnoverFromChart(null)).toBeNull();
     });
 });

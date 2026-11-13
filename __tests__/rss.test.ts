@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mergeNews, parseRss, tagTickers, type RssItem } from '@/lib/rss';
+import { matchesKeywords, mergeNews, parseRss, tagTickers, type RssItem } from '@/lib/rss';
 
 describe('parseRss', () => {
     it('reads RSS items with CDATA, entities, markup and RFC 822 dates', () => {
@@ -86,5 +86,18 @@ describe('mergeNews', () => {
         expect(mergeNews([{ source: 'A', items: many }], now, { perSource: 30, limit: 5 })).toHaveLength(5);
         const tagged = mergeNews([{ source: 'A', items: [item('PETR4 sobe', 'https://a/x', hoursAgo(1))], tickersOf: () => ['PETR4.SA'] }], now);
         expect(tagged[0].tickers).toEqual(['PETR4.SA']);
+    });
+});
+
+describe('matchesKeywords', () => {
+    const words = ['dólar', 'Banco Central', 'Fed', 'euro'];
+    it('ignores case and accents and matches phrases', () => {
+        expect(matchesKeywords('DOLAR fecha em alta', words)).toBe(true);
+        expect(matchesKeywords('Decisão do banco central: o que esperar', words)).toBe(true);
+    });
+    it('matches whole words only', () => {
+        expect(matchesKeywords('Federação critica medida', words)).toBe(false);
+        expect(matchesKeywords('Eurofarma compra rival', words)).toBe(false);
+        expect(matchesKeywords('Petrobras sobe 2%', words)).toBe(false);
     });
 });

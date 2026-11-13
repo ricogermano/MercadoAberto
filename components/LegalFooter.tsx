@@ -1,6 +1,8 @@
+import DonateDialog from '@/components/DonateDialog';
 import { SOURCE_URL, UPSTREAM_NAME, UPSTREAM_URL } from '@/lib/constants';
+import type { DonateLabels } from '@/lib/donate';
 
-export type LegalFooterLabels = { disclaimer: string; sourceCode: string; basedOn: string };
+export type LegalFooterLabels = { disclaimer: string; sourceCode: string; basedOn: string; donate: DonateLabels };
 
 // AGPL-3.0 asks for a link to this version's source and credit to the original authors;
 // the disclaimer keeps the indicators and rankings from reading as investment advice.
@@ -14,6 +16,10 @@ const LegalFooter = ({ labels }: { labels: LegalFooterLabels }) => (
                 {labels.basedOn}{' '}
                 <a href={UPSTREAM_URL} target="_blank" rel="noreferrer" className="underline hover:text-foreground">{UPSTREAM_NAME}</a>
             </span>
+            <span aria-hidden>·</span>
+            <DonateDialog labels={labels.donate}>
+                <button type="button" className="underline hover:text-foreground">{labels.donate.button}</button>
+            </DonateDialog>
         </p>
     </footer>
 );

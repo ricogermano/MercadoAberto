@@ -13,10 +13,12 @@ const STORAGE_KEY = 'openstock-tabs';
 const MAX_TABS = 12;
 
 // Message keys under TabBar.pages
-const PAGE_LABELS: Record<string, 'overview' | 'watchlist' | 'profile'> = {
+const PAGE_LABELS: Record<string, 'overview' | 'watchlist' | 'profile' | 'guide' | 'updates'> = {
     '/dashboard': 'overview',
     '/watchlist': 'watchlist',
     '/profile': 'profile',
+    '/guide': 'guide',
+    '/updates': 'updates',
 };
 
 // Pages become browser-style tabs; stock pages are labelled by their symbol.

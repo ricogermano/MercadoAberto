@@ -42,9 +42,11 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
                         {source}
                     </button>
                 ))}
-                <button type="button" className={chip(onlyTable)} aria-pressed={onlyTable} onClick={() => setOnlyTable((v) => !v)}>
-                    {t('onlyTable')}
-                </button>
+                {items.some((i) => i.tickers.length > 0) && (
+                    <button type="button" className={chip(onlyTable)} aria-pressed={onlyTable} onClick={() => setOnlyTable((v) => !v)}>
+                        {t('onlyTable')}
+                    </button>
+                )}
                 {/* Kept in the layout while no filter is active so the chips don't shift */}
                 <button
                     type="button"

@@ -80,6 +80,7 @@
       "consumerHealth": "Consumo e saúde",
       "energyMaterials": "Energia e materiais",
       "telecomConsumer": "Telecom e consumo",
+      "brazilianReal": "Real brasileiro",
       "majors": "Principais",
       "more": "Mais",
       "commodityFX": "Moedas de commodities",
@@ -285,6 +286,8 @@
     "heatmapNote": "Valor de mercado e preços do Yahoo Finance; units usam o valor da empresa inteira. Clique em um bloco para abrir a ação.",
     "quotesTitle": "Cotações",
     "quotesSub": "Líderes de {market} por grupo",
+    "storiesLocalTitle": "Notícias do Brasil",
+    "storiesWorldTitle": "Notícias internacionais",
     "storiesTitle": "Principais notícias",
     "storiesSub": "Mais recentes primeiro"
   },
@@ -333,7 +336,24 @@
     "roe": "ROE",
     "roce": "ROCE",
     "dy": "DY",
+    "evEbitda": "EV/EBITDA",
+    "netMargin": "Marg. líq.",
+    "netDebtEbitda": "Dív. líq./EBITDA",
+    "profitGrowth": "Cresc. lucro",
+    "payout": "Payout",
+    "liquidity": "Liquidez",
     "clearSort": "Limpar ordenação",
+    "removeSort": "Tirar {column} da ordenação",
+    "views": {
+      "label": "Visões da tabela",
+      "summary": "Resumo",
+      "valuation": "Preço",
+      "profitability": "Rentabilidade",
+      "debt": "Dívida e liquidez",
+      "custom": "Minha visão",
+      "columns": "Colunas",
+      "columnsHint": "Marque os indicadores que quer ver. A escolha vira a “Minha visão” e fica guardada neste navegador."
+    },
     "combinedHint": "Ranking combinado: as posições de cada empresa nas colunas escolhidas são somadas, com o menor total primeiro. Empresas sem algum valor ficam por último.",
     "sortBy": "Ordenar por {column}",
     "fundamentalsNote": "Indicadores do Yahoo Finance, últimos doze meses; toque em ? numa coluna para ver como é calculado.",
@@ -358,6 +378,30 @@
       "roce": {
         "title": "ROCE (retorno sobre o capital empregado)",
         "body": "Lucro operacional (EBIT) dos últimos doze meses como porcentagem do capital empregado (ativo total menos passivo circulante), considerando dívida e patrimônio juntos. Os dados vêm do Yahoo Finance. Não aparece para bancos e seguradoras, cujos balanços não têm essa divisão."
+      },
+      "evEbitda": {
+        "title": "EV/EBITDA (valor da firma sobre EBITDA)",
+        "body": "Valor de mercado mais a dívida líquida, dividido pelo EBITDA (lucro antes de juros, impostos, depreciação e amortização) dos últimos doze meses. Compara empresas com níveis de dívida diferentes. Os dados vêm do Yahoo Finance. Não aparece para bancos, que não têm EBITDA."
+      },
+      "netMargin": {
+        "title": "Margem líquida",
+        "body": "Lucro líquido dos últimos doze meses como porcentagem da receita: quanto sobra de cada 100 de receita. Os dados vêm do Yahoo Finance. Ganhos ou perdas pontuais distorcem o resultado, e em bancos a receita não é comparável à de outras empresas."
+      },
+      "netDebtEbitda": {
+        "title": "Dívida líquida / EBITDA",
+        "body": "Dívida menos caixa, dividida pelo EBITDA dos últimos doze meses: quantos anos de geração operacional pagariam a dívida. Negativo significa mais caixa do que dívida. Os dados vêm do Yahoo Finance, que não conta arrendamentos como dívida, então o número pode ficar abaixo do divulgado pela empresa. Não aparece para bancos."
+      },
+      "profitGrowth": {
+        "title": "Crescimento do lucro (3 anos)",
+        "body": "Crescimento médio anual do lucro líquido entre o exercício mais antigo e o mais recente disponíveis no Yahoo Finance (quatro exercícios, portanto três anos). Fica vazio se houver prejuízo em uma das pontas. Para empresas que o Yahoo reporta em dólar, o crescimento é em dólar. Resultados passados não indicam resultados futuros."
+      },
+      "payout": {
+        "title": "Payout (parcela do lucro distribuída)",
+        "body": "Dividendos dos últimos doze meses como porcentagem do lucro do mesmo período. Aqui é calculado como DY vezes P/L, com dados do Yahoo Finance. Acima de 100% a empresa distribuiu mais do que lucrou no período."
+      },
+      "liquidity": {
+        "title": "Liquidez diária",
+        "body": "Valor médio negociado por dia nos últimos 21 pregões (preço de fechamento vezes quantidade), na moeda da cotação. Os dados vêm do Yahoo Finance. K = mil, M = milhão, B = bilhão."
       }
     },
     "commoditiesNote": "Contratos futuros de vencimento mais próximo, via Yahoo Finance, com atraso. Cada preço está na unidade ao lado do nome: bbl = barril, oz = onça troy (31,1 g), lb = libra-peso (0,454 kg), bu = bushel (cerca de 27 kg de soja ou trigo, 25 kg de milho), t = tonelada, MMBtu = milhão de BTU (medida de energia do gás), US¢ = centavos de dólar. gal = galão americano (3,785 litros), st = tonelada curta (907 kg), cwt = 100 libras-peso (45,4 kg), mbf = mil pés de tábua (cerca de 2,36 m³ de madeira)."
@@ -464,6 +508,8 @@
     "watching": "Acompanhando",
     "watchingEmpty": "Marque uma ação com estrela para fixá-la aqui.",
     "resources": {
+      "guide": "Como usar",
+      "updates": "Novidades",
       "terms": "Termos"
     },
     "signOut": "Sair"
@@ -472,7 +518,9 @@
     "pages": {
       "overview": "Visão geral",
       "watchlist": "Lista de acompanhamento",
-      "profile": "Perfil"
+      "profile": "Perfil",
+      "guide": "Como usar",
+      "updates": "Novidades"
     },
     "openMenu": "Abrir menu",
     "closeTab": "Fechar {label}",
@@ -503,6 +551,21 @@
     "disclaimer": "Conteúdo informativo e educacional. Não é recomendação de investimento nem oferta de compra ou venda de qualquer ativo. Cotações com atraso e sujeitas a erro.",
     "sourceCode": "Código-fonte (AGPL-3.0)",
     "basedOn": "Baseado no"
+  },
+  "Theme": {
+    "label": "Tema",
+    "auto": "Automático",
+    "light": "Claro",
+    "dark": "Escuro"
+  },
+  "Donate": {
+    "button": "Apoie o projeto",
+    "title": "Apoie o MercadoAberto",
+    "body": "O MercadoAberto é gratuito e sem anúncios. Se ele é útil para você, uma contribuição de qualquer valor via Pix ajuda a pagar servidor e dados. É opcional e não libera nenhum recurso extra.",
+    "scan": "Abra o app do seu banco, escolha Pix e aponte a câmera para o código.",
+    "copy": "Copiar código Pix",
+    "copied": "Código copiado",
+    "recipient": "Recebedor"
   },
   "StockPage": {
     "sentimentTitle": "Sentimento",
@@ -685,5 +748,25 @@
     "retryHint": "“{list}” foi criada — toque no botão de novo para tentar adicionar {symbol}.",
     "retryAdd": "Tentar adicionar de novo",
     "createAndAdd": "Criar e adicionar"
+  },
+  "GuidePage": {
+    "metaTitle": "Como usar",
+    "title": "Como usar",
+    "sub": "Um passo a passo das telas do MercadoAberto e um glossário dos indicadores.",
+    "onlyPortuguese": "O passo a passo está disponível em português.",
+    "contents": "Nesta página",
+    "seeUpdates": "Ver novidades",
+    "glossaryTitle": "Glossário de indicadores",
+    "glossarySub": "O que cada coluna da tabela mede e como é calculada",
+    "indexesTitle": "Índices da B3",
+    "indexesSub": "Os quatro índices dos quadros no topo do painel do Brasil"
+  },
+  "UpdatesPage": {
+    "metaTitle": "Novidades",
+    "title": "Novidades",
+    "sub": "O que mudou no MercadoAberto, do mais recente para o mais antigo.",
+    "onlyPortuguese": "O histórico está disponível em português.",
+    "latest": "Mais recente",
+    "seeGuide": "Ver como usar"
   }
 }

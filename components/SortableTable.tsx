@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown, X } from 'lucide-react';
 import HelpPopover from '@/components/HelpPopover';
 
 // Shared by the Yahoo quotes table and the watchlist table: stackable sort criteria that combine into one rank-sum ranking
@@ -10,8 +10,9 @@ import HelpPopover from '@/components/HelpPopover';
 export type SortDir = 'asc' | 'desc';
 export type SortHelp = { label: string; title: string; body: string };
 
-// Lowest first for the valuation multiples, A-Z for names, highest first for everything else
-export const defaultSortDir = (key: string): SortDir => (key === 'name' || key === 'pe' || key === 'pb' ? 'asc' : 'desc');
+// Lowest first for the valuation multiples and for debt, A-Z for names, highest first for everything else
+const LOWEST_FIRST = new Set(['name', 'pe', 'pb', 'evEbitda', 'netDebtEbitda']);
+export const defaultSortDir = (key: string): SortDir => (LOWEST_FIRST.has(key) ? 'asc' : 'desc');
 
 export function useSortCriteria<K extends string>() {
     const [criteria, setCriteria] = useState<{ key: K; dir: SortDir }[]>([]);
@@ -26,8 +27,9 @@ export function useSortCriteria<K extends string>() {
             }),
         [],
     );
+    const remove = useCallback((key: K) => setCriteria((cur) => cur.filter((c) => c.key !== key)), []);
     const clear = useCallback(() => setCriteria([]), []);
-    return { criteria, onSort, clear, combined: criteria.length > 1 };
+    return { criteria, onSort, remove, clear, combined: criteria.length > 1 };
 }
 
 export function SortableTh<K extends string>({
@@ -70,20 +72,56 @@ export function SortableTh<K extends string>({
     );
 }
 
-// Always rendered so the table doesn't jump when a sort starts; the button is hidden while unsorted
-export function SortBar({ hint, clearLabel, active, onClear }: { hint: string | null; clearLabel: string; active: boolean; onClear: () => void }) {
+// Above the table: one removable tag per sort criterion (a criterion can sit in a column the current view hides, so the tags
+// are the only place that always shows what the ranking is made of), the "clear" button, and the combined-ranking hint.
+// Always rendered so the table doesn't jump when a sort starts.
+export function SortBar<K extends string>({
+    hint,
+    clearLabel,
+    criteria,
+    labelOf,
+    removeLabel,
+    onRemove,
+    onClear,
+}: {
+    hint: string | null;
+    clearLabel: string;
+    criteria: { key: K; dir: SortDir }[];
+    labelOf: (key: K) => string;
+    removeLabel: (column: string) => string;
+    onRemove: (key: K) => void;
+    onClear: () => void;
+}) {
+    const active = criteria.length > 0;
     return (
-        <div className="flex min-h-6 items-start justify-between gap-3 px-3">
-            <span className="text-[11.5px] text-faint">{hint ?? ''}</span>
-            <button
-                type="button"
-                onClick={onClear}
-                className={`shrink-0 text-[11.5px] text-faint hover:text-brand-ink ${active ? '' : 'invisible'}`}
-                tabIndex={active ? 0 : -1}
-                aria-hidden={!active}
-            >
-                {clearLabel}
-            </button>
+        <div className="min-h-7 px-3 pb-1">
+            <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-1.5">
+                    {criteria.map((c, i) => {
+                        const Icon = c.dir === 'asc' ? ArrowUp : ArrowDown;
+                        return (
+                            <span key={c.key} className="pill is-brand h-6 gap-1 ps-2 pe-1">
+                                {criteria.length > 1 && <span className="num text-[10.5px]">{i + 1}</span>}
+                                {labelOf(c.key)}
+                                <Icon aria-hidden />
+                                <button type="button" onClick={() => onRemove(c.key)} aria-label={removeLabel(labelOf(c.key))} className="grid size-4 cursor-pointer place-items-center rounded-full hover:bg-hover">
+                                    <X aria-hidden />
+                                </button>
+                            </span>
+                        );
+                    })}
+                </div>
+                <button
+                    type="button"
+                    onClick={onClear}
+                    className={`shrink-0 cursor-pointer pt-1 text-[11.5px] text-faint hover:text-brand-ink ${active ? '' : 'invisible'}`}
+                    tabIndex={active ? 0 : -1}
+                    aria-hidden={!active}
+                >
+                    {clearLabel}
+                </button>
+            </div>
+            {hint && <p className="pt-1 text-[11.5px] text-faint">{hint}</p>}
         </div>
     );
 }

@@ -80,6 +80,7 @@
       "consumerHealth": "Consumer & health",
       "energyMaterials": "Energy & materials",
       "telecomConsumer": "Telecom & consumer",
+      "brazilianReal": "Brazilian real",
       "majors": "Majors",
       "more": "More",
       "commodityFX": "Commodity FX",
@@ -285,6 +286,8 @@
     "heatmapNote": "Market value and prices from Yahoo Finance; units use the value of the whole company. Select a block to open the stock.",
     "quotesTitle": "Quotes",
     "quotesSub": "{market} leaders by group",
+    "storiesLocalTitle": "Brazilian headlines",
+    "storiesWorldTitle": "International headlines",
     "storiesTitle": "Top stories",
     "storiesSub": "Newest first"
   },
@@ -333,7 +336,24 @@
     "roe": "ROE",
     "roce": "ROCE",
     "dy": "DY",
+    "evEbitda": "EV/EBITDA",
+    "netMargin": "Net margin",
+    "netDebtEbitda": "Net debt/EBITDA",
+    "profitGrowth": "Profit growth",
+    "payout": "Payout",
+    "liquidity": "Liquidity",
     "clearSort": "Clear sorting",
+    "removeSort": "Remove {column} from sorting",
+    "views": {
+      "label": "Table views",
+      "summary": "Summary",
+      "valuation": "Valuation",
+      "profitability": "Profitability",
+      "debt": "Debt and liquidity",
+      "custom": "My view",
+      "columns": "Columns",
+      "columnsHint": "Tick the indicators you want to see. Your pick becomes “My view” and is kept in this browser."
+    },
     "combinedHint": "Combined ranking: each company's positions in the selected columns are added up, lowest total first. Companies missing a value go last.",
     "sortBy": "Sort by {column}",
     "fundamentalsNote": "Indicators from Yahoo Finance, trailing twelve months; tap ? on a column for how it is computed.",
@@ -358,6 +378,30 @@
       "roce": {
         "title": "ROCE (return on capital employed)",
         "body": "Operating profit (EBIT) of the last twelve months as a percentage of capital employed (total assets minus current liabilities), so it considers debt and equity together. Figures come from Yahoo Finance. Not shown for banks and insurers, whose balance sheets do not have this split."
+      },
+      "evEbitda": {
+        "title": "EV/EBITDA (enterprise value to EBITDA)",
+        "body": "Market value plus net debt, divided by EBITDA (earnings before interest, taxes, depreciation and amortisation) of the last twelve months. It compares companies with different debt levels. Figures come from Yahoo Finance. Not shown for banks, which have no EBITDA."
+      },
+      "netMargin": {
+        "title": "Net margin",
+        "body": "Net income of the last twelve months as a percentage of revenue: what is left of every 100 of revenue. Figures come from Yahoo Finance. One-off gains or losses distort it, and bank revenue is not comparable with other companies."
+      },
+      "netDebtEbitda": {
+        "title": "Net debt / EBITDA",
+        "body": "Debt minus cash, divided by EBITDA of the last twelve months: how many years of operating cash generation would repay the debt. Negative means more cash than debt. Figures come from Yahoo Finance, which does not count leases as debt, so the number can be lower than the one the company reports. Not shown for banks."
+      },
+      "profitGrowth": {
+        "title": "Profit growth (3 years)",
+        "body": "Average yearly growth of net income between the oldest and the latest fiscal year available on Yahoo Finance (four fiscal years, so three years). Empty when either end is a loss. For companies Yahoo reports in dollars, the growth is in dollars. Past results do not indicate future results."
+      },
+      "payout": {
+        "title": "Payout (share of profit distributed)",
+        "body": "Dividends of the last twelve months as a percentage of earnings of the same period. Here it is computed as DY times P/L, from Yahoo Finance figures. Above 100% the company paid out more than it earned in the period."
+      },
+      "liquidity": {
+        "title": "Daily liquidity",
+        "body": "Average value traded per day over the last 21 sessions (closing price times shares traded), in the quote currency. Figures come from Yahoo Finance. K = thousand, M = million, B = billion."
       }
     },
     "commoditiesNote": "Nearest-expiry futures contracts via Yahoo Finance, delayed. Each price is in the unit shown next to the name: bbl = barrel, oz = troy ounce (31.1 g), lb = pound (0.454 kg), bu = bushel (about 27 kg of soybeans or wheat, 25 kg of corn), t = tonne, MMBtu = million British thermal units, US¢ = US cents. gal = US gallon (3.785 litres), st = short ton (907 kg), cwt = hundredweight (45.4 kg), mbf = thousand board feet (about 2.36 m³ of lumber)."
@@ -464,6 +508,8 @@
     "watching": "Watching",
     "watchingEmpty": "Star a stock to pin it here.",
     "resources": {
+      "guide": "How to use",
+      "updates": "What's new",
       "terms": "Terms"
     },
     "signOut": "Sign out"
@@ -472,7 +518,9 @@
     "pages": {
       "overview": "Overview",
       "watchlist": "Watchlist",
-      "profile": "Profile"
+      "profile": "Profile",
+      "guide": "How to use",
+      "updates": "What's new"
     },
     "openMenu": "Open menu",
     "closeTab": "Close {label}",
@@ -503,6 +551,21 @@
     "disclaimer": "Informational and educational content. Not investment advice or a recommendation to buy or sell any asset. Quotes are delayed and may contain errors.",
     "sourceCode": "Source code (AGPL-3.0)",
     "basedOn": "Based on"
+  },
+  "Theme": {
+    "label": "Theme",
+    "auto": "Automatic",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "Donate": {
+    "button": "Support the project",
+    "title": "Support MercadoAberto",
+    "body": "MercadoAberto is free and has no ads. If it is useful to you, a contribution of any amount by Pix (Brazilian instant payment) helps pay for hosting and data. It is optional and unlocks no extra features.",
+    "scan": "Open your bank app, choose Pix and point the camera at the code.",
+    "copy": "Copy Pix code",
+    "copied": "Code copied",
+    "recipient": "Recipient"
   },
   "StockPage": {
     "sentimentTitle": "Sentiment",
@@ -685,5 +748,25 @@
     "retryHint": "“{list}” was created — press the button again to retry adding {symbol}.",
     "retryAdd": "Retry add",
     "createAndAdd": "Create and add"
+  },
+  "GuidePage": {
+    "metaTitle": "How to use",
+    "title": "How to use",
+    "sub": "A walkthrough of the MercadoAberto screens and a glossary of the indicators.",
+    "onlyPortuguese": "The walkthrough is available in Portuguese.",
+    "contents": "On this page",
+    "seeUpdates": "See what's new",
+    "glossaryTitle": "Indicator glossary",
+    "glossarySub": "What each column of the table measures and how it is calculated",
+    "indexesTitle": "B3 indexes",
+    "indexesSub": "The four indexes on the tiles at the top of the Brazil dashboard"
+  },
+  "UpdatesPage": {
+    "metaTitle": "What's new",
+    "title": "What's new",
+    "sub": "What changed in MercadoAberto, newest first.",
+    "onlyPortuguese": "The history is available in Portuguese.",
+    "latest": "Latest",
+    "seeGuide": "See how to use"
   }
 }

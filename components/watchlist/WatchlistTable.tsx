@@ -11,24 +11,25 @@ import ChangePill from "@/components/ChangePill";
 import PriceFlash from "@/components/PriceFlash";
 import { useLiveQuotes } from "@/hooks/useLiveQuotes";
 import { SearchButton } from "@/components/SearchCommand";
-import { SortBar, SortableTh, useSortCriteria, type SortHelp } from "@/components/SortableTable";
+import { SortBar, SortableTh, useSortCriteria } from "@/components/SortableTable";
+import { INDICATORS, IndicatorViewBar, formatIndicator, useIndicatorText, useIndicatorView, type IndicatorKey } from "@/components/IndicatorViews";
 import { formatNumber, formatPrice } from "@/lib/utils";
 import { hasFinnhubQuotes } from "@/lib/markets";
-import { rankByCriteria, type YahooFundamentals } from "@/lib/yahoo";
+import { EMPTY_FUNDAMENTALS, rankByCriteria, type YahooFundamentals } from "@/lib/yahoo";
 import type { getWatchlistData } from "@/lib/actions/finnhub.actions";
 
 type Row = Awaited<ReturnType<typeof getWatchlistData>>[number];
-type SortKey = 'name' | 'price' | 'changePercent' | 'change' | 'marketCap' | 'dy' | 'pe' | 'pb' | 'roe' | 'roce';
-const INDICATORS = ['dy', 'pe', 'pb', 'roe', 'roce'] as const;
-const pct = (v: number | null | undefined) => (v == null ? '—' : `${v.toFixed(1)}%`);
-const num2 = (v: number | null | undefined) => (v == null ? '—' : v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+type BaseKey = 'name' | 'price' | 'changePercent' | 'change' | 'marketCap';
+type SortKey = BaseKey | IndicatorKey;
 const SUGGESTIONS = ['AAPL', 'NVDA', 'MSFT', 'TSLA', 'AMZN'];
 
 export default function WatchlistTable({ initialRows, lists = [], fundamentals = {} }: { initialRows: Row[]; lists?: { id: string; name: string }[]; fundamentals?: Record<string, YahooFundamentals> }) {
     const t = useTranslations('WatchlistTableRow');
     const th = useTranslations('WatchlistTable.headers');
     const ty = useTranslations('YahooQuotes');
-    const { criteria, onSort, clear, combined } = useSortCriteria<SortKey>();
+    const { criteria, onSort, remove, clear, combined } = useSortCriteria<SortKey>();
+    const { view, keys, select, toggle } = useIndicatorView('watchlist-indicator-view');
+    const indicatorText = useIndicatorText();
     const [baseRows, setBaseRows] = useState(initialRows);
     const live = useLiveQuotes(baseRows.map((r) => r.symbol));
 
@@ -42,19 +43,14 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
 
     // Sorting works on the live values; a symbol without a quote has no price, change or market cap to rank
     const sortRows = rows.map((row) => {
-        const f = fundamentals[row.symbol];
         return {
+            ...(fundamentals[row.symbol] ?? EMPTY_FUNDAMENTALS),
             row,
             name: row.name,
             price: row.price || null,
             change: row.price ? row.change : null,
             changePercent: row.price ? row.changePercent : null,
             marketCap: row.marketCap || null,
-            dy: f?.dy ?? null,
-            pe: f?.pe ?? null,
-            pb: f?.pb ?? null,
-            roe: f?.roe ?? null,
-            roce: f?.roce ?? null,
         };
     });
     const shown = criteria.length > 0 ? rankByCriteria(sortRows, criteria) : sortRows.map((r) => ({ row: r, position: null as number | null }));
@@ -76,35 +72,44 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
         );
     }
 
-    const columns: [SortKey, string, boolean][] = [
-        ['name', th('company'), false],
-        ['price', th('price'), true],
-        ['changePercent', t('today'), true],
-        ['change', th('change'), true],
-        ['marketCap', th('marketCap'), true],
-        ...(showIndicators ? INDICATORS.map((k) => [k, ty(k), true] as [SortKey, string, boolean]) : []),
+    // Day change in currency and market value only where there is room: the summary view, or a list without indicators
+    const showExtras = !showIndicators || view === 'summary';
+    const shownIndicators = showIndicators ? keys : [];
+    const baseLabels: Record<BaseKey, string> = { name: th('company'), price: th('price'), changePercent: t('today'), change: th('change'), marketCap: th('marketCap') };
+    const labelOf = (key: SortKey) => indicatorText.label(key) ?? baseLabels[key as BaseKey];
+    const columns: [SortKey, boolean][] = [
+        ['name', false],
+        ['price', true],
+        ['changePercent', true],
+        ...(showExtras ? ([['change', true], ['marketCap', true]] as [SortKey, boolean][]) : []),
+        ...shownIndicators.map((k) => [k, true] as [SortKey, boolean]),
     ];
-    const helpFor = (key: SortKey): SortHelp | undefined =>
-        (INDICATORS as readonly string[]).includes(key)
-            ? { label: ty('helpAbout', { column: ty(key as (typeof INDICATORS)[number]) }), title: ty(`help.${key as (typeof INDICATORS)[number]}.title`), body: ty(`help.${key as (typeof INDICATORS)[number]}.body`) }
-            : undefined;
 
     return (
         <div className="overflow-x-auto rounded-[14px]">
-            <SortBar hint={combined ? ty('combinedHint') : null} clearLabel={ty('clearSort')} active={criteria.length > 0} onClear={clear} />
+            {showIndicators && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} />}
+            <SortBar
+                hint={combined ? ty('combinedHint') : null}
+                clearLabel={ty('clearSort')}
+                criteria={criteria}
+                labelOf={labelOf}
+                removeLabel={(column) => ty('removeSort', { column })}
+                onRemove={remove}
+                onClear={clear}
+            />
             <table className="data-table">
                 <thead>
                     <tr>
                         {combined && <th>#</th>}
-                        {columns.map(([key, label, numeric]) => (
+                        {columns.map(([key, numeric]) => (
                             <SortableTh
                                 key={key}
                                 id={key}
-                                label={label}
-                                sortLabel={ty('sortBy', { column: label })}
+                                label={labelOf(key)}
+                                sortLabel={ty('sortBy', { column: labelOf(key) })}
                                 criteria={criteria}
                                 onSort={onSort}
-                                help={helpFor(key)}
+                                help={indicatorText.help(key)}
                                 className={numeric ? 'is-num' : undefined}
                             />
                         ))}
@@ -132,17 +137,15 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                                 <PriceFlash value={row.price} className="px-1">{row.price ? formatPrice(row.price, row.currency) : '—'}</PriceFlash>
                             </td>
                             <td className="is-num"><ChangePill value={row.price ? row.changePercent : null} /></td>
-                            <td className="is-num text-muted-foreground">{row.price ? `${row.change > 0 ? '+' : ''}${row.change.toFixed(2)}` : '—'}</td>
-                            <td className="is-num text-muted-foreground">{row.marketCap ? formatNumber(row.marketCap) : '—'}</td>
-                            {showIndicators && (
+                            {showExtras && (
                                 <>
-                                    <td className="is-num text-muted-foreground">{pct(f.dy)}</td>
-                                    <td className="is-num text-muted-foreground">{num2(f.pe)}</td>
-                                    <td className="is-num text-muted-foreground">{num2(f.pb)}</td>
-                                    <td className="is-num text-muted-foreground">{pct(f.roe)}</td>
-                                    <td className="is-num text-muted-foreground">{pct(f.roce)}</td>
+                                    <td className="is-num text-muted-foreground">{row.price ? `${row.change > 0 ? '+' : ''}${row.change.toFixed(2)}` : '—'}</td>
+                                    <td className="is-num text-muted-foreground">{row.marketCap ? formatNumber(row.marketCap) : '—'}</td>
                                 </>
                             )}
+                            {shownIndicators.map((k) => (
+                                <td key={k} className="is-num text-muted-foreground">{formatIndicator(k, f[k])}</td>
+                            ))}
                             <td>
                                 <div className="flex items-center justify-end gap-1">
                                     <AddToListMenu symbol={row.symbol} company={row.name} lists={lists} />

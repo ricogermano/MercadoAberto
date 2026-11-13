@@ -4,7 +4,7 @@ import { isPublicPath } from '@/lib/public-paths';
 
 export async function middleware(request: NextRequest) {
     // Marketing, public ticker and comparison pages, robots.txt and sitemap.xml.
-    // The signed-in app (/stocks, /dashboard, /watchlist, /profile) still requires a session cookie.
+    // The signed-in app (/stocks, /dashboard, /watchlist, /profile, /guide, /updates) still requires a session cookie.
     if (isPublicPath(request.nextUrl.pathname)) return NextResponse.next();
 
     const sessionCookie = getSessionCookie(request);
@@ -20,5 +20,5 @@ export async function middleware(request: NextRequest) {
 // Only the signed-in app. Running on every public page, prefetch and crawler hit was a paid invocation each,
 // and app/(root)/layout.tsx checks the session anyway. A new private route needs adding here.
 export const config = {
-    matcher: ['/dashboard/:path*', '/watchlist/:path*', '/profile/:path*', '/stocks/:path*'],
+    matcher: ['/dashboard/:path*', '/watchlist/:path*', '/profile/:path*', '/stocks/:path*', '/guide', '/updates'],
 };

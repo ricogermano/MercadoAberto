@@ -12,12 +12,20 @@ const FULL_SCALE = 3;
 const SECTOR_LABEL = 18; // px
 const LEGEND = [-3, -2, -1, 0, 1, 2, 3];
 
-// Diverging scale: a neutral grey at 0%, towards green for gains and red for losses. The mix stops short of the full
-// up/down colour so the light label text stays readable on every block.
+// Diverging scale: a neutral grey at 0%, then a saturated green for gains and red for losses that brightens with the
+// move. The scale has its own endpoints (not --up/--down mixed into grey, which looked washed out); the brightest
+// step stays dark enough for the white label text.
+const HEAT = {
+    up: ['oklch(0.43 0.13 150)', 'oklch(0.66 0.23 146)'],
+    down: ['oklch(0.43 0.15 25)', 'oklch(0.60 0.245 27)'],
+} as const;
+
 export function heatColor(changePercent: number): string {
     const strength = Math.min(1, Math.abs(changePercent) / FULL_SCALE);
-    if (!Number.isFinite(changePercent) || strength < 0.02) return 'var(--hover)';
-    return `color-mix(in oklab, var(${changePercent > 0 ? '--up' : '--down'}) ${Math.round(12 + strength * 50)}%, var(--hover))`;
+    if (!Number.isFinite(changePercent) || strength < 0.02) return 'oklch(0.32 0.008 95)';
+    const [low, high] = HEAT[changePercent > 0 ? 'up' : 'down'];
+    // Eased, so an ordinary 0.5%–1% day already shows clear colour instead of sitting near the dark end
+    return `color-mix(in oklab, ${high} ${Math.round(strength ** 0.65 * 100)}%, ${low})`;
 }
 
 const signed = (value: number, digits = 2) => `${value > 0 ? '+' : value < 0 ? '−' : ''}${Math.abs(value).toFixed(digits)}%`;
@@ -68,7 +76,7 @@ export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSect
                         <section key={sector.title} aria-label={sector.title} className="contents">
                             {labelled && (
                                 <h3
-                                    className="absolute truncate px-1.5 text-[11px] font-semibold uppercase tracking-wide text-faint"
+                                    className="absolute truncate px-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
                                     style={{ ...place(rect.x, rect.y, rect.w, SECTOR_LABEL), lineHeight: `${SECTOR_LABEL}px` }}
                                 >
                                     {sector.title}
@@ -85,11 +93,11 @@ export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSect
                                         href={cell.href}
                                         title={`${cell.name} (${cell.ticker}) · ${change} · ${cell.detail}`}
                                         aria-label={`${cell.name} ${change}`}
-                                        className="absolute flex flex-col items-center justify-center overflow-hidden rounded-[3px] border border-card text-center leading-tight text-text transition-[filter] hover:brightness-125 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-text"
+                                        className="absolute flex flex-col items-center justify-center overflow-hidden rounded-[3px] border border-card text-center leading-tight text-white [text-shadow:0_1px_2px_oklch(0_0_0/0.45)] transition-[filter] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-text"
                                         style={{ ...place(rect.x + r.x, top + r.y, r.w, r.h), background: heatColor(cell.changePercent), fontSize }}
                                     >
                                         {showTicker && <span className="mono font-semibold">{cell.ticker}</span>}
-                                        {showChange && <span className="mono opacity-90" style={{ fontSize: Math.max(10, fontSize * 0.78) }}>{change}</span>}
+                                        {showChange && <span className="mono font-medium" style={{ fontSize: Math.max(10, fontSize * 0.78) }}>{change}</span>}
                                     </Link>
                                 );
                             })}
@@ -99,10 +107,10 @@ export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSect
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-1">
-                <p className="min-w-0 flex-1 basis-64 text-[11.5px] text-faint">{note}</p>
+                <p className="min-w-0 flex-1 basis-64 text-[11.5px] text-muted-foreground">{note}</p>
                 <ul className="flex gap-0.5" dir="ltr" aria-hidden="true">
                     {LEGEND.map((step) => (
-                        <li key={step} className="mono rounded-[3px] px-1.5 py-0.5 text-[10.5px] text-text" style={{ background: heatColor(step) }}>
+                        <li key={step} className="mono rounded-[3px] px-1.5 py-0.5 text-[10.5px] font-medium text-white" style={{ background: heatColor(step) }}>
                             {signed(step, 0)}
                         </li>
                     ))}

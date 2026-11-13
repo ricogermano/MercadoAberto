@@ -93,7 +93,21 @@ export function fundamentalsYahooSymbol(symbol: string): string | null {
     return upper && hasFinnhubCompanyData(upper) ? upper.replace('.', '-') : null;
 }
 
-export type YahooFundamentals = { pe: number | null; pb: number | null; roe: number | null; roce: number | null; dy: number | null };
+export type YahooFundamentals = {
+    pe: number | null;
+    pb: number | null;
+    roe: number | null;
+    roce: number | null;
+    dy: number | null;
+    evEbitda: number | null;
+    netMargin: number | null;
+    netDebtEbitda: number | null;
+    profitGrowth: number | null;
+    payout: number | null;
+    liquidity: number | null;
+};
+
+export const EMPTY_FUNDAMENTALS: YahooFundamentals = { pe: null, pb: null, roe: null, roce: null, dy: null, evEbitda: null, netMargin: null, netDebtEbitda: null, profitGrowth: null, payout: null, liquidity: null };
 
 type YahooTimeseriesJson = {
     timeseries?: {
@@ -154,16 +168,71 @@ function roceFrom(json: unknown): number | null {
     return null;
 }
 
-// P/E, P/B, ROE and ROCE from /ws/fundamentals-timeseries; null when Yahoo has none (units such as BPAC11 come back empty)
+const latestOf = (json: unknown, type: string): DatedValue | undefined => seriesOf(json, type).sort((a, b) => b.date.localeCompare(a.date))[0];
+const sameAs = (ref: DatedValue) => (v: DatedValue) => v.date === ref.date && v.currency === ref.currency;
+
+// Net margin % = net income / revenue of the same period and currency; trailing twelve months first, then the last fiscal year
+function netMarginFrom(json: unknown): number | null {
+    for (const [incomeType, revenueType] of [
+        ['trailingNetIncome', 'trailingTotalRevenue'],
+        ['annualNetIncome', 'annualTotalRevenue'],
+    ]) {
+        const income = latestOf(json, incomeType);
+        const revenue = income && seriesOf(json, revenueType).find(sameAs(income));
+        if (income && revenue && revenue.raw > 0) return (income.raw / revenue.raw) * 100;
+    }
+    return null;
+}
+
+// Net debt / EBITDA, both of the same date and currency: trailing EBITDA against the latest quarter's balance sheet, then annual
+// figures. Yahoo leaves NetDebt out for companies with more cash than debt, so it falls back to total debt minus cash (a negative
+// result means net cash). Banks have no EBITDA and get null, as does a company with negative EBITDA.
+function netDebtEbitdaFrom(json: unknown): number | null {
+    for (const [ebitdaType, period] of [
+        ['trailingEBITDA', 'quarterly'],
+        ['annualEBITDA', 'annual'],
+    ]) {
+        const ebitda = latestOf(json, ebitdaType);
+        if (!ebitda || ebitda.raw <= 0) continue;
+        const at = (type: string) => seriesOf(json, `${period}${type}`).find(sameAs(ebitda));
+        const debt = at('TotalDebt');
+        const cash = at('CashCashEquivalentsAndShortTermInvestments') ?? at('CashAndCashEquivalents');
+        const netDebt = at('NetDebt')?.raw ?? (debt && cash ? debt.raw - cash.raw : null);
+        if (netDebt !== null) return netDebt / ebitda.raw;
+    }
+    return null;
+}
+
+// Annualised net income growth % between the oldest and the latest fiscal year Yahoo has in the same currency (it serves four
+// years, so three years of growth). null under two years apart or when either year is a loss: a rate from or to a loss means nothing.
+function profitGrowthFrom(json: unknown): number | null {
+    const years = seriesOf(json, 'annualNetIncome').sort((a, b) => a.date.localeCompare(b.date));
+    const last = years[years.length - 1];
+    const first = last && years.find((y) => y.currency === last.currency);
+    if (!last || !first || first.raw <= 0 || last.raw <= 0) return null;
+    const span = (Date.parse(last.date) - Date.parse(first.date)) / (365.25 * 86_400_000);
+    if (!Number.isFinite(span) || span < 1.9) return null;
+    return (Math.pow(last.raw / first.raw, 1 / span) - 1) * 100;
+}
+
+// P/E, P/B, EV/EBITDA, ROE, ROCE, net margin, net debt / EBITDA and profit growth from /ws/fundamentals-timeseries; null when
+// Yahoo has none of them. The chart-based figures (dy, payout, liquidity) are filled in by the caller.
 export function fundamentalsFromTimeseries(json: unknown): YahooFundamentals | null {
     const pe = latestRatio(json, 'trailingPeRatio');
     const pb = latestRatio(json, 'trailingPbRatio');
+    const evEbitda = latestRatio(json, 'trailingEnterprisesValueEBITDARatio');
     const roce = roceFrom(json);
-    if (pe === null && pb === null && roce === null) return null;
+    const netMargin = netMarginFrom(json);
+    const netDebtEbitda = netDebtEbitdaFrom(json);
+    const profitGrowth = profitGrowthFrom(json);
+    if ([pe, pb, evEbitda, roce, netMargin, netDebtEbitda, profitGrowth].every((v) => v === null)) return null;
     // ROE = P/B / P/E: both ratios are currency-free, while Yahoo mixes USD and BRL in the statement fields
     const roe = pe !== null && pb !== null && pe > 0 && pb > 0 ? (pb / pe) * 100 : null;
-    return { pe, pb, roe, roce, dy: null };
+    return { ...EMPTY_FUNDAMENTALS, pe, pb, roe, roce, evEbitda, netMargin, netDebtEbitda, profitGrowth };
 }
+
+// Payout % = dividend yield x P/E (dividends / price x price / earnings), so it needs no currency; null without positive earnings
+export const payoutFrom = (dy: number | null, pe: number | null): number | null => (dy !== null && pe !== null && pe > 0 ? dy * pe : null);
 
 // Company market value from /ws/fundamentals-timeseries (type trailingMarketCap), in the listing's currency; null when Yahoo has none
 export const marketCapFromTimeseries = (json: unknown): number | null => latestRatio(json, 'trailingMarketCap');
@@ -191,6 +260,24 @@ export function dividendYieldFromChart(json: unknown): number | null {
         if (typeof amount === 'number' && Number.isFinite(amount) && amount > 0) paid += amount;
     }
     return (paid / price) * 100;
+}
+
+type YahooVolumeChartJson = { chart?: { result?: Array<{ indicators?: { quote?: Array<{ close?: (number | null)[]; volume?: (number | null)[] }> } }> } };
+
+// Average daily traded value (close x volume, in the listing's currency) over the chart's last `days` sessions that have both;
+// null when there is none or nothing traded.
+export function averageTurnoverFromChart(json: unknown, days = 21): number | null {
+    const quote = (json as YahooVolumeChartJson)?.chart?.result?.[0]?.indicators?.quote?.[0];
+    const closes = quote?.close ?? [];
+    const volumes = quote?.volume ?? [];
+    const traded: number[] = [];
+    for (let i = closes.length - 1; i >= 0 && traded.length < days; i--) {
+        const close = closes[i];
+        const volume = volumes[i];
+        if (typeof close === 'number' && typeof volume === 'number' && Number.isFinite(close) && Number.isFinite(volume)) traded.push(close * volume);
+    }
+    const total = traded.reduce((sum, v) => sum + v, 0);
+    return traded.length > 0 && total > 0 ? total / traded.length : null;
 }
 
 // Orders rows for a sortable column: nulls always last in both directions, strings A-Z / Z-A, numbers by value

@@ -6,7 +6,7 @@ import ChangePill from '@/components/ChangePill';
 import YahooQuotesSortable from '@/components/YahooQuotesSortable';
 import { getYahooDailyQuotes, getYahooFundamentals } from '@/lib/actions/yahoo.actions';
 import { getUserWatchlist } from '@/lib/actions/watchlist.actions';
-import { yahooAppSymbol } from '@/lib/yahoo';
+import { EMPTY_FUNDAMENTALS, yahooAppSymbol } from '@/lib/yahoo';
 import { commodityCode, type Market } from '@/lib/markets';
 import { toMessageKey } from '@/i18n/config';
 
@@ -43,7 +43,6 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
         title: tm(`groups.${toMessageKey(group.title) as GroupKey}`),
         rows: group.symbols.map(([tvSymbol, name]) => {
             const q = quotes[tvSymbol];
-            const f = fundamentals[tvSymbol];
             return {
                 tvSymbol,
                 watching: watched.has(yahooAppSymbol(tvSymbol) ?? ''),
@@ -53,11 +52,7 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
                 price: q?.price ?? null,
                 change: q?.change ?? null,
                 changePercent: q?.changePercent ?? null,
-                pe: f?.pe ?? null,
-                pb: f?.pb ?? null,
-                roe: f?.roe ?? null,
-                roce: f?.roce ?? null,
-                dy: f?.dy ?? null,
+                ...(fundamentals[tvSymbol] ?? EMPTY_FUNDAMENTALS),
             };
         }),
     }));
@@ -68,34 +63,14 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
         price: th('price'),
         change: th('change'),
         changePercent: t('changePercent'),
-        pe: t('pe'),
-        pb: t('pb'),
-        roe: t('roe'),
-        roce: t('roce'),
-        dy: t('dy'),
         clearSort: t('clearSort'),
         combinedHint: t('combinedHint'),
-    };
-    const sortByTemplate = {
-        name: t('sortBy', { column: labels.company }),
-        price: t('sortBy', { column: labels.price }),
-        change: t('sortBy', { column: labels.change }),
-        changePercent: t('sortBy', { column: labels.changePercent }),
-        pe: t('sortBy', { column: labels.pe }),
-        pb: t('sortBy', { column: labels.pb }),
-        roe: t('sortBy', { column: labels.roe }),
-        roce: t('sortBy', { column: labels.roce }),
-        dy: t('sortBy', { column: labels.dy }),
     };
     const hasFundamentals = Object.keys(fundamentals).length > 0;
     const source = currency ? t('source', { currency }) : t('sourceNoCurrency');
     const note = market.units ? t('commoditiesNote') : hasFundamentals ? `${source} ${t('fundamentalsNote')}` : source;
 
-    const help = Object.fromEntries(
-        (['dy', 'pe', 'pb', 'roe', 'roce'] as const).map((k) => [k, { label: t('helpAbout', { column: labels[k] }), title: t(`help.${k}.title`), body: t(`help.${k}.body`) }]),
-    ) as Record<'dy' | 'pe' | 'pb' | 'roe' | 'roce', { label: string; title: string; body: string }>;
-
-    return <YahooQuotesSortable groups={groups} labels={labels} sortByTemplate={sortByTemplate} help={help} note={note} watchLabel={tw('title')} />;
+    return <YahooQuotesSortable groups={groups} labels={labels} note={note} watchLabel={tw('title')} />;
 }
 
 // Today's biggest movers across the same groups, ranked by day change %

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import ThemeWatcher from "@/components/ThemeWatcher";
+import { THEME_SCRIPT } from "@/lib/theme";
 import { Plus_Jakarta_Sans, IBM_Plex_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import {Toaster} from "@/components/ui/sonner";
@@ -39,6 +41,8 @@ export default function RootLayout({
             <body
                 className={`${jakarta.variable} ${arabic.variable} ${plexMono.variable} font-sans antialiased`}
             >
+                <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+                <ThemeWatcher />
                 {children}
                 <Toaster/>
                 <Analytics />

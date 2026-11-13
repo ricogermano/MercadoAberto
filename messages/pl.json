@@ -80,6 +80,7 @@
       "consumerHealth": "Konsumpcja i zdrowie",
       "energyMaterials": "Energetyka i surowce",
       "telecomConsumer": "Telekomunikacja i konsumpcja",
+      "brazilianReal": "Real brazylijski",
       "majors": "Główne",
       "more": "Więcej",
       "commodityFX": "Waluty surowcowe",
@@ -283,6 +284,8 @@
     "heatmapNote": "Kapitalizacja i ceny z Yahoo Finance; dla unitów przyjęto wartość całej spółki. Wybierz blok, aby otworzyć spółkę.",
     "quotesTitle": "Notowania",
     "quotesSub": "Liderzy według grup · {market}",
+    "storiesLocalTitle": "Wiadomości z Brazylii",
+    "storiesWorldTitle": "Wiadomości międzynarodowe",
     "storiesTitle": "Najważniejsze wiadomości",
     "storiesSub": "Najnowsze na początku",
     "sub": "{market} · {status, select, open {rynek otwarty} other {rynek zamknięty}} · {feed, select, live {dane na żywo} delayed {dane opóźnione} other {dane na koniec dnia}}",
@@ -333,7 +336,24 @@
     "roe": "ROE",
     "roce": "ROCE",
     "dy": "DY",
+    "evEbitda": "EV/EBITDA",
+    "netMargin": "Marża netto",
+    "netDebtEbitda": "Dług netto/EBITDA",
+    "profitGrowth": "Wzrost zysku",
+    "payout": "Payout",
+    "liquidity": "Płynność",
     "clearSort": "Wyczyść sortowanie",
+    "removeSort": "Usuń {column} z sortowania",
+    "views": {
+      "label": "Widoki tabeli",
+      "summary": "Podsumowanie",
+      "valuation": "Wycena",
+      "profitability": "Rentowność",
+      "debt": "Dług i płynność",
+      "custom": "Mój widok",
+      "columns": "Kolumny",
+      "columnsHint": "Zaznacz wskaźniki, które chcesz widzieć. Wybór staje się „Moim widokiem” i jest zapisywany w tej przeglądarce."
+    },
     "combinedHint": "Ranking łączony: pozycje spółki w wybranych kolumnach są sumowane, najniższa suma jest pierwsza. Spółki bez wartości trafiają na koniec.",
     "sortBy": "Sortuj według: {column}",
     "fundamentalsNote": "Wskaźniki z Yahoo Finance, ostatnie dwanaście miesięcy; stuknij ? przy kolumnie, aby zobaczyć sposób obliczenia.",
@@ -358,6 +378,30 @@
       "roce": {
         "title": "ROCE (zwrot z zaangażowanego kapitału)",
         "body": "Zysk operacyjny (EBIT) z ostatnich dwunastu miesięcy jako procent zaangażowanego kapitału (aktywa ogółem minus zobowiązania krótkoterminowe), czyli z uwzględnieniem długu i kapitału własnego razem. Dane pochodzą z Yahoo Finance. Nie jest pokazywany dla banków i ubezpieczycieli, których bilanse nie mają takiego podziału."
+      },
+      "evEbitda": {
+        "title": "EV/EBITDA (wartość przedsiębiorstwa do EBITDA)",
+        "body": "Wartość rynkowa plus dług netto, podzielone przez EBITDA (zysk przed odsetkami, podatkami i amortyzacją) z ostatnich dwunastu miesięcy. Pozwala porównywać spółki o różnym zadłużeniu. Dane pochodzą z Yahoo Finance. Nie jest pokazywany dla banków, które nie mają EBITDA."
+      },
+      "netMargin": {
+        "title": "Marża netto",
+        "body": "Zysk netto z ostatnich dwunastu miesięcy jako procent przychodów: ile zostaje z każdych 100 przychodu. Dane pochodzą z Yahoo Finance. Jednorazowe zyski lub straty zniekształcają wynik, a przychody banków nie są porównywalne z innymi spółkami."
+      },
+      "netDebtEbitda": {
+        "title": "Dług netto / EBITDA",
+        "body": "Dług pomniejszony o gotówkę, podzielony przez EBITDA z ostatnich dwunastu miesięcy: ile lat działalności operacyjnej spłaciłoby dług. Wartość ujemna oznacza więcej gotówki niż długu. Dane pochodzą z Yahoo Finance, które nie wlicza leasingu do długu, więc wynik może być niższy od podawanego przez spółkę. Nie jest pokazywany dla banków."
+      },
+      "profitGrowth": {
+        "title": "Wzrost zysku (3 lata)",
+        "body": "Średni roczny wzrost zysku netto między najstarszym a najnowszym rokiem obrotowym dostępnym w Yahoo Finance (cztery lata obrotowe, czyli trzy lata). Puste, gdy na jednym z końców jest strata. Dla spółek raportowanych przez Yahoo w dolarach wzrost jest liczony w dolarach. Wyniki z przeszłości nie wskazują przyszłych wyników."
+      },
+      "payout": {
+        "title": "Payout (część zysku wypłacona)",
+        "body": "Dywidendy z ostatnich dwunastu miesięcy jako procent zysku z tego samego okresu. Tutaj liczony jako DY razy P/L, na danych z Yahoo Finance. Powyżej 100% spółka wypłaciła więcej, niż zarobiła w tym okresie."
+      },
+      "liquidity": {
+        "title": "Dzienna płynność",
+        "body": "Średnia wartość obrotu dziennie z ostatnich 21 sesji (cena zamknięcia razy wolumen), w walucie notowania. Dane pochodzą z Yahoo Finance. K = tysiąc, M = milion, B = miliard."
       }
     },
     "commoditiesNote": "Kontrakty terminowe o najbliższym terminie wygaśnięcia, z Yahoo Finance, z opóźnieniem. Każda cena jest w jednostce podanej obok nazwy: bbl = baryłka, oz = uncja trojańska (31,1 g), lb = funt (0,454 kg), bu = buszel (około 27 kg soi lub pszenicy, 25 kg kukurydzy), t = tona, MMBtu = milion brytyjskich jednostek ciepła, US¢ = centy amerykańskie. gal = galon amerykański (3,785 litra), st = tona krótka (907 kg), cwt = cetnar amerykański (45,4 kg), mbf = tysiąc stóp deskowych (około 2,36 m³ tarcicy)."
@@ -464,6 +508,8 @@
     "watching": "Obserwowane",
     "watchingEmpty": "Oznacz akcję gwiazdką, żeby ją tu przypiąć.",
     "resources": {
+      "guide": "Jak korzystać",
+      "updates": "Nowości",
       "terms": "Regulamin"
     },
     "signOut": "Wyloguj się"
@@ -472,7 +518,9 @@
     "pages": {
       "overview": "Przegląd",
       "watchlist": "Obserwowane",
-      "profile": "Profil"
+      "profile": "Profil",
+      "guide": "Jak korzystać",
+      "updates": "Nowości"
     },
     "openMenu": "Otwórz menu",
     "closeTab": "Zamknij {label}",
@@ -503,6 +551,21 @@
     "disclaimer": "Treści informacyjne i edukacyjne. Nie stanowią porady inwestycyjnej ani rekomendacji kupna lub sprzedaży jakichkolwiek aktywów. Notowania są opóźnione i mogą zawierać błędy.",
     "sourceCode": "Kod źródłowy (AGPL-3.0)",
     "basedOn": "Na podstawie"
+  },
+  "Theme": {
+    "label": "Motyw",
+    "auto": "Automatyczny",
+    "light": "Jasny",
+    "dark": "Ciemny"
+  },
+  "Donate": {
+    "button": "Wesprzyj projekt",
+    "title": "Wesprzyj MercadoAberto",
+    "body": "MercadoAberto jest darmowy i bez reklam. Jeśli jest dla Ciebie przydatny, wpłata dowolnej kwoty przez Pix (brazylijskie płatności natychmiastowe) pomaga opłacić serwer i dane. Jest dobrowolna i nie odblokowuje żadnych dodatkowych funkcji.",
+    "scan": "Otwórz aplikację banku, wybierz Pix i skieruj aparat na kod.",
+    "copy": "Kopiuj kod Pix",
+    "copied": "Kod skopiowany",
+    "recipient": "Odbiorca"
   },
   "StockPage": {
     "sentimentTitle": "Nastrój",
@@ -685,5 +748,25 @@
     "retryHint": "Lista „{list}” została utworzona — kliknij przycisk jeszcze raz, żeby ponowić dodanie {symbol}.",
     "retryAdd": "Ponów dodanie",
     "createAndAdd": "Utwórz i dodaj"
+  },
+  "GuidePage": {
+    "metaTitle": "Jak korzystać",
+    "title": "Jak korzystać",
+    "sub": "Przewodnik po ekranach MercadoAberto i słowniczek wskaźników.",
+    "onlyPortuguese": "Przewodnik jest dostępny po portugalsku.",
+    "contents": "Na tej stronie",
+    "seeUpdates": "Zobacz nowości",
+    "glossaryTitle": "Słowniczek wskaźników",
+    "glossarySub": "Co mierzy każda kolumna tabeli i jak jest obliczana",
+    "indexesTitle": "Indeksy B3",
+    "indexesSub": "Cztery indeksy z kafelków u góry panelu Brazylii"
+  },
+  "UpdatesPage": {
+    "metaTitle": "Nowości",
+    "title": "Nowości",
+    "sub": "Co zmieniło się w MercadoAberto, od najnowszych.",
+    "onlyPortuguese": "Historia zmian jest dostępna po portugalsku.",
+    "latest": "Najnowsze",
+    "seeGuide": "Zobacz, jak korzystać"
   }
 }

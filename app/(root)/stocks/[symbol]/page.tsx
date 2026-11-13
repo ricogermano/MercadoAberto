@@ -34,7 +34,7 @@ async function DividendYield({ symbol }: { symbol: string }) {
     const [dividendYield, t] = await Promise.all([getStockMetrics(symbol), getTranslations('StockPage')]);
     return (
         <Panel title={t('dividendYieldTitle')}>
-            <p className="text-2xl font-semibold text-white">
+            <p className="text-2xl font-semibold text-foreground">
                 {dividendYield !== null ? `${dividendYield.toFixed(2)}%` : "—"}
             </p>
         </Panel>

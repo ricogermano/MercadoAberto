@@ -36,9 +36,24 @@ export type Market = {
     units?: Record<string, string>;
     // Local news portals (RSS): when set, the dashboard lists their headlines instead of TradingView's news timeline
     newsFeeds?: { name: string; url: string }[];
+    // With newsFeeds: keep only the headlines that mention one of these words (accents and case ignored), and show them
+    // beside TradingView's timeline instead of replacing it
+    newsKeywords?: string[];
 };
 
 const hm = (h: number, m = 0) => h * 60 + m;
+
+// Brazilian news portals (RSS), read by lib/actions/news.actions.ts
+const BR_NEWS_FEEDS = [
+    { name: 'InfoMoney', url: 'https://www.infomoney.com.br/feed/' },
+    { name: 'Valor Econômico', url: 'https://valor.globo.com/rss/valor' },
+    { name: 'Money Times', url: 'https://www.moneytimes.com.br/feed/' },
+    { name: 'Exame Invest', url: 'https://exame.com/invest/feed/' },
+    { name: 'Brazil Journal', url: 'https://braziljournal.com/feed/' },
+    { name: 'InvestNews', url: 'https://investnews.com.br/feed/' },
+    { name: 'NeoFeed', url: 'https://neofeed.com.br/feed/' },
+    { name: 'Seu Dinheiro', url: 'https://www.seudinheiro.com/feed/' },
+];
 
 export const MARKETS: Market[] = [
     {
@@ -164,16 +179,7 @@ export const MARKETS: Market[] = [
             { title: 'Real estate', symbols: [['BMFBOVESPA:CYRE3', 'Cyrela'], ['BMFBOVESPA:MRVE3', 'MRV'], ['BMFBOVESPA:MULT3', 'Multiplan'], ['BMFBOVESPA:ALOS3', 'Allos']] },
         ],
         heatmap: 'yahoo', news: 'stock',
-        newsFeeds: [
-            { name: 'InfoMoney', url: 'https://www.infomoney.com.br/feed/' },
-            { name: 'Valor Econômico', url: 'https://valor.globo.com/rss/valor' },
-            { name: 'Money Times', url: 'https://www.moneytimes.com.br/feed/' },
-            { name: 'Exame Invest', url: 'https://exame.com/invest/feed/' },
-            { name: 'Brazil Journal', url: 'https://braziljournal.com/feed/' },
-            { name: 'InvestNews', url: 'https://investnews.com.br/feed/' },
-            { name: 'NeoFeed', url: 'https://neofeed.com.br/feed/' },
-            { name: 'Seu Dinheiro', url: 'https://www.seudinheiro.com/feed/' },
-        ],
+        newsFeeds: BR_NEWS_FEEDS,
     },
     {
         // Futures trade nearly around the clock on weekdays (CME Globex), close enough to the FX week.
@@ -221,15 +227,28 @@ export const MARKETS: Market[] = [
             { symbol: 'FX:EURUSD', label: 'EUR / USD' },
             { symbol: 'FX:GBPUSD', label: 'GBP / USD' },
             { symbol: 'FX:USDJPY', label: 'USD / JPY' },
-            { symbol: 'FX:AUDUSD', label: 'AUD / USD' },
+            { symbol: 'FX_IDC:USDBRL', label: 'USD / BRL' },
         ],
         groups: [
+            { title: 'Brazilian real', symbols: [['FX_IDC:USDBRL', 'USD / BRL'], ['FX_IDC:EURBRL', 'EUR / BRL'], ['FX_IDC:GBPBRL', 'GBP / BRL'], ['FX_IDC:JPYBRL', 'JPY / BRL'], ['FX_IDC:CHFBRL', 'CHF / BRL'], ['FX_IDC:CNYBRL', 'CNY / BRL'], ['FX_IDC:ARSBRL', 'ARS / BRL']] },
             { title: 'Majors', symbols: [['FX:EURUSD', 'EUR / USD'], ['FX:GBPUSD', 'GBP / USD'], ['FX:USDJPY', 'USD / JPY'], ['FX:USDCHF', 'USD / CHF']] },
             { title: 'Commodity FX', symbols: [['FX:AUDUSD', 'AUD / USD'], ['FX:USDCAD', 'USD / CAD'], ['FX:NZDUSD', 'NZD / USD']] },
         ],
         news: 'forex',
+        newsFeeds: BR_NEWS_FEEDS,
+        newsKeywords: ['dólar', 'câmbio', 'cambial', 'euro', 'iene', 'libra', 'yuan', 'peso argentino', 'moeda', 'moedas', 'Ptax', 'DXY', 'Banco Central', 'Copom', 'Selic', 'Fed', 'Fomc', 'BCE', 'Treasuries', 'payroll'],
     },
 ];
+
+// Tab order on the dashboard: Brazil, United States, the other countries by their translated name, then the non-country tabs.
+const TABS_FIRST: MarketId[] = ['br', 'us'];
+const TABS_LAST: MarketId[] = ['cmd', 'fx', 'crypto'];
+export function marketsInTabOrder(nameOf: (id: MarketId) => string, locale?: string): Market[] {
+    const byId = (id: MarketId) => MARKETS.find((m) => m.id === id)!;
+    const middle = MARKETS.filter((m) => !TABS_FIRST.includes(m.id) && !TABS_LAST.includes(m.id))
+        .sort((a, b) => nameOf(a.id).localeCompare(nameOf(b.id), locale, { sensitivity: 'base' }));
+    return [...TABS_FIRST.map(byId), ...middle, ...TABS_LAST.map(byId)];
+}
 
 export const DEFAULT_MARKET: MarketId = 'us';
 export const MARKET_COOKIE = 'openstock-market';

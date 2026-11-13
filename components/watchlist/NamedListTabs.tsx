@@ -66,7 +66,7 @@ export default function NamedListTabs({
     };
 
     return (
-        <div className="flex flex-wrap items-center gap-1.5 px-1 pb-1">
+        <div className="flex flex-wrap items-center gap-1.5 px-3 py-2.5">
             <Link href="/watchlist" className={cn('pill h-8', !activeId && 'is-up')}>
                 <Star className="size-3.5" /> {t('starred')} <span className="num">· {starredCount}</span>
             </Link>

@@ -501,8 +501,8 @@
     }
     .section-sub {
         margin-top: 1px;
-        font-size: 12.5px;
-        color: var(--faint);
+        font-size: 13px;
+        color: var(--muted); /* small text on the hatched frame: the faint tone was hard to read there */
     }
 
     .page-head {

@@ -3,6 +3,7 @@
 // B3 (BMFBOVESPA, .SA) is not on Finnhub free at all; Yahoo has it ~15 minutes delayed.
 // Pure functions, covered by tests; the network call lives in lib/actions/yahoo.actions.ts.
 
+import { median } from '@/lib/medians';
 import { hasFinnhubCompanyData } from '@/lib/markets';
 
 type YahooExchange = { suffix: string; currency: string; ticker: RegExp; indices: Record<string, string> };
@@ -105,9 +106,19 @@ export type YahooFundamentals = {
     profitGrowth: number | null;
     payout: number | null;
     liquidity: number | null;
+    // The company's own median of each indicator over its past fiscal years (see YahooMedians)
+    medians: YahooMedians;
 };
 
-export const EMPTY_FUNDAMENTALS: YahooFundamentals = { pe: null, pb: null, roe: null, roce: null, dy: null, evEbitda: null, netMargin: null, netDebtEbitda: null, profitGrowth: null, payout: null, liquidity: null };
+// Indicators that have a history worth a median: profit growth already spans the years, and liquidity is a snapshot
+export const MEDIAN_KEYS = ['dy', 'pe', 'pb', 'evEbitda', 'payout', 'roe', 'roce', 'netMargin', 'netDebtEbitda'] as const;
+export type MedianKey = (typeof MEDIAN_KEYS)[number];
+// Median of the fiscal years Yahoo serves (four) for the statement-based indicators, and of up to ten calendar years for the
+// dividend yield; null with fewer than three years
+export type YahooMedians = Record<MedianKey, number | null>;
+
+export const EMPTY_MEDIANS: YahooMedians = { dy: null, pe: null, pb: null, evEbitda: null, payout: null, roe: null, roce: null, netMargin: null, netDebtEbitda: null };
+export const EMPTY_FUNDAMENTALS: YahooFundamentals = { pe: null, pb: null, roe: null, roce: null, dy: null, evEbitda: null, netMargin: null, netDebtEbitda: null, profitGrowth: null, payout: null, liquidity: null, medians: EMPTY_MEDIANS };
 
 type YahooTimeseriesJson = {
     timeseries?: {
@@ -228,7 +239,86 @@ export function fundamentalsFromTimeseries(json: unknown): YahooFundamentals | n
     if ([pe, pb, evEbitda, roce, netMargin, netDebtEbitda, profitGrowth].every((v) => v === null)) return null;
     // ROE = P/B / P/E: both ratios are currency-free, while Yahoo mixes USD and BRL in the statement fields
     const roe = pe !== null && pb !== null && pe > 0 && pb > 0 ? (pb / pe) * 100 : null;
-    return { ...EMPTY_FUNDAMENTALS, pe, pb, roe, roce, evEbitda, netMargin, netDebtEbitda, profitGrowth };
+    return { ...EMPTY_FUNDAMENTALS, pe, pb, roe, roce, evEbitda, netMargin, netDebtEbitda, profitGrowth, medians: mediansFromTimeseries(json) };
+}
+
+const yearOf = (date: string) => Number(date.slice(0, 4));
+const finite = (values: (number | null | undefined)[]) => values.filter((v): v is number => typeof v === 'number' && Number.isFinite(v));
+
+// Each fiscal year's P/E from the annual ratio series, by year; the payout history pairs them with that year's dividend yield
+function annualPeByYear(json: unknown): Map<number, number> {
+    return new Map(seriesOf(json, 'annualPeRatio').map((v) => [yearOf(v.date), v.raw]));
+}
+
+// Medians of the fiscal years in the timeseries, each year computed the same way as today's figure (same date and currency).
+// The dividend yield and payout medians need the long chart and are filled in by the caller.
+export function mediansFromTimeseries(json: unknown): YahooMedians {
+    const values = (type: string) => seriesOf(json, type).map((v) => v.raw);
+    const pbByDate = new Map(seriesOf(json, 'annualPbRatio').map((v) => [v.date, v.raw]));
+    const roe = seriesOf(json, 'annualPeRatio').map((pe) => {
+        const pb = pbByDate.get(pe.date);
+        return pb !== undefined && pe.raw > 0 && pb > 0 ? (pb / pe.raw) * 100 : null;
+    });
+    const roce = seriesOf(json, 'annualEBIT').map((ebit) => {
+        const assets = seriesOf(json, 'annualTotalAssets').find(sameAs(ebit));
+        const liabilities = seriesOf(json, 'annualCurrentLiabilities').find(sameAs(ebit));
+        const capital = assets && liabilities ? assets.raw - liabilities.raw : 0;
+        return capital > 0 ? (ebit.raw / capital) * 100 : null;
+    });
+    const netMargin = seriesOf(json, 'annualNetIncome').map((income) => {
+        const revenue = seriesOf(json, 'annualTotalRevenue').find(sameAs(income));
+        return revenue && revenue.raw > 0 ? (income.raw / revenue.raw) * 100 : null;
+    });
+    const netDebtEbitda = seriesOf(json, 'annualEBITDA').map((ebitda) => {
+        if (ebitda.raw <= 0) return null;
+        const at = (type: string) => seriesOf(json, `annual${type}`).find(sameAs(ebitda));
+        const debt = at('TotalDebt');
+        const cash = at('CashCashEquivalentsAndShortTermInvestments') ?? at('CashAndCashEquivalents');
+        const netDebt = at('NetDebt')?.raw ?? (debt && cash ? debt.raw - cash.raw : null);
+        return netDebt !== null ? netDebt / ebitda.raw : null;
+    });
+    return {
+        ...EMPTY_MEDIANS,
+        pe: median(values('annualPeRatio')),
+        pb: median(values('annualPbRatio')),
+        evEbitda: median(values('annualEnterprisesValueEBITDARatio')),
+        roe: median(roe),
+        roce: median(roce),
+        netMargin: median(netMargin),
+        netDebtEbitda: median(netDebtEbitda),
+    };
+}
+
+type YahooLongChartJson = {
+    chart?: { result?: Array<{ timestamp?: number[]; indicators?: { quote?: Array<{ close?: (number | null)[] }> }; events?: { dividends?: Record<string, { amount?: number; date?: number } | null> } }> };
+};
+
+// Dividend yield % of each complete calendar year in a long weekly chart: dividends paid in the year / the year's last close.
+// The first year of the chart (usually cut short) and the current one are left out; a year without dividends counts as 0.
+export function yearlyDividendYieldsFromChart(json: unknown): Map<number, number> {
+    const result = (json as YahooLongChartJson)?.chart?.result?.[0];
+    const timestamps = result?.timestamp ?? [];
+    const closes = result?.indicators?.quote?.[0]?.close ?? [];
+    const yearAt = (seconds: number) => new Date(seconds * 1000).getUTCFullYear();
+    const lastClose = new Map<number, number>();
+    timestamps.forEach((ts, i) => {
+        const close = closes[i];
+        if (typeof close === 'number' && Number.isFinite(close) && close > 0) lastClose.set(yearAt(ts), close);
+    });
+    const paid = new Map<number, number>();
+    for (const d of Object.values(result?.events?.dividends ?? {})) {
+        if (typeof d?.amount !== 'number' || typeof d?.date !== 'number' || !Number.isFinite(d.amount) || d.amount <= 0) continue;
+        paid.set(yearAt(d.date), (paid.get(yearAt(d.date)) ?? 0) + d.amount);
+    }
+    const years = [...lastClose.keys()].sort((a, b) => a - b).slice(1, -1);
+    return new Map(years.map((year) => [year, ((paid.get(year) ?? 0) / lastClose.get(year)!) * 100]));
+}
+
+// The dividend yield median (up to ten years) and the payout median (yield x P/E of the fiscal years that have both)
+export function dividendMedians(yields: Map<number, number>, timeseries: unknown): Pick<YahooMedians, 'dy' | 'payout'> {
+    const pe = annualPeByYear(timeseries);
+    const payouts = [...yields].map(([year, dy]) => payoutFrom(dy, pe.get(year) ?? null));
+    return { dy: median([...yields.values()]), payout: median(finite(payouts)) };
 }
 
 // Payout % = dividend yield x P/E (dividends / price x price / earnings), so it needs no currency; null without positive earnings

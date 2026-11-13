@@ -1,7 +1,7 @@
-// Medians of the indicators across a group of companies (a sector, or the whole table), and which side of the median a
-// value sits on. A comparison aid for the quotes table, never a signal: the wording around it must stay descriptive.
+// The median of a company's own past values of an indicator, and which side of it today's value sits on.
+// A comparison aid for the tables, never a signal: the wording around it must stay descriptive.
 
-// Fewer values than this say little about a sector: no median is shown
+// Fewer past values than this say little: no median is shown
 export const MIN_FOR_MEDIAN = 3;
 
 export function median(values: (number | null | undefined)[]): number | null {
@@ -9,10 +9,6 @@ export function median(values: (number | null | undefined)[]): number | null {
     if (sorted.length < MIN_FOR_MEDIAN) return null;
     const mid = sorted.length >> 1;
     return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-}
-
-export function mediansOf<K extends string>(rows: Partial<Record<K, number | null>>[], keys: readonly K[]): Record<K, number | null> {
-    return Object.fromEntries(keys.map((key) => [key, median(rows.map((r) => r[key]))])) as Record<K, number | null>;
 }
 
 export type MedianSide = 'better' | 'worse' | null;

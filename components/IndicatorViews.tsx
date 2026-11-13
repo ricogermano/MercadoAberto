@@ -5,7 +5,8 @@ import { SlidersHorizontal } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { SortHelp } from '@/components/SortableTable';
-import type { YahooFundamentals } from '@/lib/yahoo';
+import { MEDIAN_KEYS, type MedianKey, type YahooFundamentals, type YahooMedians } from '@/lib/yahoo';
+import { medianSide } from '@/lib/medians';
 
 // Shared by the Yahoo quotes table and the watchlist table: eleven indicators are too many columns to show at once, so the
 // tables show one "view" (a themed handful of them) at a time, or the reader's own pick, remembered in the browser.
@@ -34,6 +35,15 @@ export function formatIndicator(key: IndicatorKey, value: number | null | undefi
     return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// Indicators whose column is followed by the company's own median of past years
+export const hasMedian = (key: IndicatorKey): key is IndicatorKey & MedianKey => (MEDIAN_KEYS as readonly string[]).includes(key);
+export const medianValue = (key: IndicatorKey, medians: YahooMedians): number | null => (hasMedian(key) ? medians[key] : null);
+// Colour of today's value by the side of the company's own median it sits on; '' when there is nothing to compare
+export function medianTone(key: IndicatorKey, value: number | null | undefined, medians: YahooMedians): string {
+    const side = hasMedian(key) ? medianSide(key, value, medians[key]) : null;
+    return side === 'better' ? 'text-up' : side === 'worse' ? 'text-down' : '';
+}
+
 const isIndicator = (k: unknown): k is IndicatorKey => (INDICATORS as readonly unknown[]).includes(k);
 
 // The chosen view and the indicator columns it shows. Starts on the summary (also what the server renders) and then picks up
@@ -41,38 +51,42 @@ const isIndicator = (k: unknown): k is IndicatorKey => (INDICATORS as readonly u
 export function useIndicatorView(storageKey: string) {
     const [view, setView] = useState<IndicatorView>('summary');
     const [custom, setCustom] = useState<IndicatorKey[]>([...PRESETS.summary]);
+    const [medians, setMedians] = useState(true);
 
     useEffect(() => {
         try {
-            const saved = JSON.parse(localStorage.getItem(storageKey) ?? 'null') as { view?: unknown; custom?: unknown } | null;
+            const saved = JSON.parse(localStorage.getItem(storageKey) ?? 'null') as { view?: unknown; custom?: unknown; medians?: unknown } | null;
             if (!saved) return;
             if (Array.isArray(saved.custom)) setCustom(INDICATORS.filter((k) => (saved.custom as unknown[]).includes(k)));
             if (saved.view === 'custom' || PRESET_NAMES.includes(saved.view as Preset)) setView(saved.view as IndicatorView);
+            if (saved.medians === false) setMedians(false);
         } catch {}
     }, [storageKey]);
 
     const save = useCallback(
-        (nextView: IndicatorView, nextCustom: IndicatorKey[]) => {
+        (nextView: IndicatorView, nextCustom: IndicatorKey[], nextMedians: boolean) => {
             setView(nextView);
             setCustom(nextCustom);
+            setMedians(nextMedians);
             try {
-                localStorage.setItem(storageKey, JSON.stringify({ view: nextView, custom: nextCustom }));
+                localStorage.setItem(storageKey, JSON.stringify({ view: nextView, custom: nextCustom, medians: nextMedians }));
             } catch {}
         },
         [storageKey],
     );
 
     const keys: readonly IndicatorKey[] = view === 'custom' ? custom : PRESETS[view];
-    const select = useCallback((next: IndicatorView) => save(next, custom), [save, custom]);
+    const select = useCallback((next: IndicatorView) => save(next, custom, medians), [save, custom, medians]);
+    const toggleMedians = useCallback(() => save(view, custom, !medians), [save, view, custom, medians]);
     // Ticking a column starts a custom view from whatever is on screen
     const toggle = useCallback(
         (key: IndicatorKey) => {
             const has = keys.includes(key);
-            save('custom', INDICATORS.filter((k) => (k === key ? !has : keys.includes(k))));
+            save('custom', INDICATORS.filter((k) => (k === key ? !has : keys.includes(k))), medians);
         },
-        [save, keys],
+        [save, keys, medians],
     );
-    return { view, keys, select, toggle };
+    return { view, keys, select, toggle, medians, toggleMedians };
 }
 
 // Column titles and "?" explanations of the indicators, in the reader's language
@@ -85,7 +99,21 @@ export function useIndicatorText() {
 }
 
 // The row of view buttons above a table, with the column picker at the end
-export function IndicatorViewBar({ view, keys, onSelect, onToggle }: { view: IndicatorView; keys: readonly IndicatorKey[]; onSelect: (view: IndicatorView) => void; onToggle: (key: IndicatorKey) => void }) {
+export function IndicatorViewBar({
+    view,
+    keys,
+    onSelect,
+    onToggle,
+    medians,
+    onToggleMedians,
+}: {
+    view: IndicatorView;
+    keys: readonly IndicatorKey[];
+    onSelect: (view: IndicatorView) => void;
+    onToggle: (key: IndicatorKey) => void;
+    medians: boolean;
+    onToggleMedians: () => void;
+}) {
     const t = useTranslations('YahooQuotes');
     return (
         <div className="flex flex-wrap items-center gap-1.5 px-3 pt-2 pb-2" role="group" aria-label={t('views.label')}>
@@ -118,6 +146,10 @@ export function IndicatorViewBar({ view, keys, onSelect, onToggle }: { view: Ind
                             </li>
                         ))}
                     </ul>
+                    <label className="mt-3 flex cursor-pointer items-center gap-2 border-t border-line/60 pt-3">
+                        <input type="checkbox" className="accent-[var(--brand)]" checked={medians} onChange={onToggleMedians} />
+                        {t('views.medians')}
+                    </label>
                 </PopoverContent>
             </Popover>
         </div>

@@ -12,11 +12,11 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
-        title: 'Mediana do setor ao lado dos indicadores',
+        title: 'Mediana histórica ao lado de cada indicador',
         items: [
-            'Na tabela de cotações, a linha de cada setor mostra a mediana de cada indicador (o valor do meio entre as empresas do setor).',
-            'Cada indicador fica verde ou vermelho conforme o lado da mediana em que está. É só uma comparação, não uma recomendação.',
-            'Com a tabela ordenada, a comparação passa a ser com a mediana de todas as empresas, mostrada na primeira linha.',
+            'Nas tabelas de cotações e da lista de acompanhamento, cada indicador ganhou ao lado a coluna “Med.”: a mediana da própria empresa nos últimos quatro exercícios (no DY, em até dez anos).',
+            'O número de hoje fica verde ou vermelho conforme o lado da própria mediana em que está. É só uma comparação com o passado, não uma recomendação.',
+            'Para esconder as medianas, abra “Colunas” e desmarque “Mostrar medianas”.',
         ],
     },
     {

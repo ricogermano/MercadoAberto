@@ -375,15 +375,15 @@
       "debt": "Dívida e liquidez",
       "custom": "Minha visão",
       "columns": "Colunas",
+      "medians": "Mostrar medianas",
       "columnsHint": "Marque os indicadores que quer ver. A escolha vira a “Minha visão” e fica guardada neste navegador."
     },
     "combinedHint": "Ranking combinado: as posições de cada empresa nas colunas escolhidas são somadas, com o menor total primeiro. Empresas sem algum valor ficam por último.",
     "sortBy": "Ordenar por {column}",
     "fundamentalsNote": "Indicadores do Yahoo Finance, últimos doze meses; toque em ? numa coluna para ver como é calculado.",
-    "allCompanies": "Todas as empresas",
-    "medianSector": "Mediana do setor",
-    "medianAll": "Mediana da tabela",
-    "medianNote": "A linha de cada setor mostra a mediana dos indicadores (o valor do meio, com pelo menos três empresas); com a tabela ordenada, a mediana é a de todas as empresas. Verde e vermelho indicam só de que lado da mediana o número está: é uma comparação, não uma recomendação.",
+    "medianShort": "Med.",
+    "medianTitle": "Mediana da própria empresa nos últimos exercícios",
+    "medianNote": "“Med.” é a mediana (valor do meio) do indicador da própria empresa nos últimos quatro exercícios; no DY, em até dez anos. Verde e vermelho indicam só de que lado da própria mediana o número de hoje está: é uma comparação com o passado, não uma recomendação.",
     "helpAbout": "O que é {column}?",
     "help": {
       "dy": {

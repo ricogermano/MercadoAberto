@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell, Search, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -12,7 +12,7 @@ import PriceFlash from "@/components/PriceFlash";
 import { useLiveQuotes } from "@/hooks/useLiveQuotes";
 import { SearchButton } from "@/components/SearchCommand";
 import { SortBar, SortableTh, useSortCriteria } from "@/components/SortableTable";
-import { INDICATORS, IndicatorViewBar, formatIndicator, useIndicatorText, useIndicatorView, type IndicatorKey } from "@/components/IndicatorViews";
+import { INDICATORS, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from "@/components/IndicatorViews";
 import { formatNumber, formatPrice } from "@/lib/utils";
 import { hasFinnhubQuotes } from "@/lib/markets";
 import { EMPTY_FUNDAMENTALS, rankByCriteria, type YahooFundamentals } from "@/lib/yahoo";
@@ -28,7 +28,7 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
     const th = useTranslations('WatchlistTable.headers');
     const ty = useTranslations('YahooQuotes');
     const { criteria, onSort, remove, clear, combined } = useSortCriteria<SortKey>();
-    const { view, keys, select, toggle } = useIndicatorView('watchlist-indicator-view');
+    const { view, keys, select, toggle, medians, toggleMedians } = useIndicatorView('watchlist-indicator-view');
     const indicatorText = useIndicatorText();
     const [baseRows, setBaseRows] = useState(initialRows);
     const live = useLiveQuotes(baseRows.map((r) => r.symbol));
@@ -85,9 +85,12 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
         ...shownIndicators.map((k) => [k, true] as [SortKey, boolean]),
     ];
 
+    // Each indicator that has a history is followed by a narrow column with the company's own median of past years
+    const withMedian = (key: SortKey): key is IndicatorKey => medians && showIndicators && (INDICATORS as readonly string[]).includes(key) && hasMedian(key as IndicatorKey);
+
     return (
         <div className="overflow-x-auto rounded-[14px]">
-            {showIndicators && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} />}
+            {showIndicators && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} medians={medians} onToggleMedians={toggleMedians} />}
             <SortBar
                 hint={combined ? ty('combinedHint') : null}
                 clearLabel={ty('clearSort')}
@@ -102,8 +105,8 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                     <tr>
                         {combined && <th>#</th>}
                         {columns.map(([key, numeric]) => (
+                            <Fragment key={key}>
                             <SortableTh
-                                key={key}
                                 id={key}
                                 label={labelOf(key)}
                                 sortLabel={ty('sortBy', { column: labelOf(key) })}
@@ -112,6 +115,8 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                                 help={indicatorText.help(key)}
                                 className={numeric ? 'is-num' : undefined}
                             />
+                            {withMedian(key) && <th className="is-num !ps-0 text-[11.5px] !font-normal" title={ty('medianTitle')}>{ty('medianShort')}</th>}
+                            </Fragment>
                         ))}
                         <th className="w-[88px]"><span className="sr-only">{th('action')}</span></th>
                     </tr>
@@ -144,7 +149,10 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                                 </>
                             )}
                             {shownIndicators.map((k) => (
-                                <td key={k} className="is-num text-muted-foreground">{formatIndicator(k, f[k])}</td>
+                                <Fragment key={k}>
+                                    <td className={`is-num ${(medians && medianTone(k, f[k], f.medians)) || 'text-muted-foreground'}`}>{formatIndicator(k, f[k])}</td>
+                                    {withMedian(k) && <td className="is-num !ps-0 text-[12px] text-faint">{formatIndicator(k, medianValue(k, f.medians))}</td>}
+                                </Fragment>
                             ))}
                             <td>
                                 <div className="flex items-center justify-end gap-1">

@@ -375,15 +375,15 @@
       "debt": "Debt and liquidity",
       "custom": "My view",
       "columns": "Columns",
+      "medians": "Show medians",
       "columnsHint": "Tick the indicators you want to see. Your pick becomes “My view” and is kept in this browser."
     },
     "combinedHint": "Combined ranking: each company's positions in the selected columns are added up, lowest total first. Companies missing a value go last.",
     "sortBy": "Sort by {column}",
     "fundamentalsNote": "Indicators from Yahoo Finance, trailing twelve months; tap ? on a column for how it is computed.",
-    "allCompanies": "All companies",
-    "medianSector": "Sector median",
-    "medianAll": "Table median",
-    "medianNote": "Each sector line shows the median of the indicators (the middle value, with at least three companies); once the table is sorted, the median is that of all companies. Green and red only show which side of the median a number is on: a comparison, not a recommendation.",
+    "medianShort": "Med.",
+    "medianTitle": "The company's own median over its past fiscal years",
+    "medianNote": "“Med.” is the median (middle value) of the company's own indicator over its last four fiscal years; for DY, up to ten years. Green and red only show which side of its own median today's number is on: a comparison with the past, not a recommendation.",
     "helpAbout": "What is {column}?",
     "help": {
       "dy": {

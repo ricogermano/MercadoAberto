@@ -1,7 +1,7 @@
 'use server';
 
 import { QUOTE_TTL_SECONDS } from '@/lib/market-data';
-import { EMPTY_FUNDAMENTALS, averageTurnoverFromChart, payoutFrom, dailyQuoteFromChart, fundamentalsYahooSymbol, dividendYieldFromChart, fundamentalsFromTimeseries, marketCapFallbackSymbol, marketCapFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency, type YahooDailyQuote, type YahooFundamentals } from '@/lib/yahoo';
+import { EMPTY_FUNDAMENTALS, dividendMedians, yearlyDividendYieldsFromChart, averageTurnoverFromChart, payoutFrom, dailyQuoteFromChart, fundamentalsYahooSymbol, dividendYieldFromChart, fundamentalsFromTimeseries, marketCapFallbackSymbol, marketCapFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency, type YahooDailyQuote, type YahooFundamentals } from '@/lib/yahoo';
 
 // Daily Tadawul, Warsaw and B3 quotes from Yahoo Finance (free, no key, covers .SR, .WA and .SA), keyed by the symbol passed in.
 // One chart call per symbol (no batch endpoint without login) behind the shared quote cache (hourly in cached
@@ -37,6 +37,8 @@ const FUNDAMENTAL_TYPES = [
     'trailingEBITDA', 'annualEBITDA', 'quarterlyNetDebt', 'annualNetDebt', 'quarterlyTotalDebt', 'annualTotalDebt',
     'quarterlyCashCashEquivalentsAndShortTermInvestments', 'annualCashCashEquivalentsAndShortTermInvestments',
     'quarterlyCashAndCashEquivalents', 'annualCashAndCashEquivalents',
+    // Past fiscal years of the ratios, for each company's own medians
+    'annualPeRatio', 'annualPbRatio', 'annualEnterprisesValueEBITDARatio',
 ].join(',');
 
 // The fundamentals timeseries URL of one Yahoo symbol. The window reaches back four fiscal years (for profit growth) and is rounded to whole days so the URL is stable and Next's
@@ -62,24 +64,28 @@ async function fetchSlowJson(url: string, symbol: string): Promise<unknown> {
     }
 }
 
-// The table indicators per symbol (indices, crypto, forex and other exchanges skipped; plain US tickers included). Two requests
-// per symbol (the fundamentals timeseries and a 1-year daily chart with dividend events, which gives the dividend yield and the
+// The table indicators per symbol (indices, crypto, forex and other exchanges skipped; plain US tickers included). Three requests
+// per symbol (the fundamentals timeseries, a 10-year weekly chart for the medians and a 1-year daily chart with dividend events, which gives the dividend yield and the
 // average daily traded value), cached six hours since the figures change once a day.
 export async function getYahooFundamentals(symbols: string[]): Promise<Record<string, YahooFundamentals>> {
     const entries = await Promise.all(
         symbols.map(async (symbol) => {
             const yahooSymbol = fundamentalsYahooSymbol(symbol);
             if (!yahooSymbol) return [symbol, null] as const;
-            const [series, chart] = await Promise.all([
+            const [series, chart, longChart] = await Promise.all([
                 fetchSlowJson(timeseriesUrl(yahooSymbol), symbol),
                 fetchSlowJson(`${YAHOO_BASE}/v8/finance/chart/${encodeURIComponent(yahooSymbol)}?interval=1d&range=1y&events=div`, symbol),
+                // Ten years of weekly closes and dividends, for the dividend yield and payout medians (weekly, not monthly: Yahoo
+                // caps the dividend events at the number of bars, which cuts the recent years of a monthly payer)
+                fetchSlowJson(`${YAHOO_BASE}/v8/finance/chart/${encodeURIComponent(yahooSymbol)}?interval=1wk&range=10y&events=div`, symbol),
             ]);
             const fundamentals = series ? fundamentalsFromTimeseries(series) : null;
             const dy = chart ? dividendYieldFromChart(chart) : null;
             const liquidity = chart ? averageTurnoverFromChart(chart) : null;
             if (!fundamentals && dy === null && liquidity === null) return [symbol, null] as const;
             const base = fundamentals ?? EMPTY_FUNDAMENTALS;
-            return [symbol, { ...base, dy, liquidity, payout: payoutFrom(dy, base.pe) }] as const;
+            const medians = { ...base.medians, ...(longChart ? dividendMedians(yearlyDividendYieldsFromChart(longChart), series) : {}) };
+            return [symbol, { ...base, dy, liquidity, payout: payoutFrom(dy, base.pe), medians }] as const;
         }),
     );
     return Object.fromEntries(entries.filter(([, f]) => f)) as Record<string, YahooFundamentals>;

@@ -375,15 +375,15 @@
       "debt": "Dług i płynność",
       "custom": "Mój widok",
       "columns": "Kolumny",
+      "medians": "Pokaż mediany",
       "columnsHint": "Zaznacz wskaźniki, które chcesz widzieć. Wybór staje się „Moim widokiem” i jest zapisywany w tej przeglądarce."
     },
     "combinedHint": "Ranking łączony: pozycje spółki w wybranych kolumnach są sumowane, najniższa suma jest pierwsza. Spółki bez wartości trafiają na koniec.",
     "sortBy": "Sortuj według: {column}",
     "fundamentalsNote": "Wskaźniki z Yahoo Finance, ostatnie dwanaście miesięcy; stuknij ? przy kolumnie, aby zobaczyć sposób obliczenia.",
-    "allCompanies": "Wszystkie spółki",
-    "medianSector": "Mediana sektora",
-    "medianAll": "Mediana tabeli",
-    "medianNote": "Wiersz każdego sektora pokazuje medianę wskaźników (wartość środkową, przy co najmniej trzech spółkach); po posortowaniu tabeli mediana dotyczy wszystkich spółek. Zielony i czerwony pokazują tylko, po której stronie mediany jest liczba: to porównanie, nie rekomendacja.",
+    "medianShort": "Med.",
+    "medianTitle": "Mediana samej spółki z ostatnich lat obrotowych",
+    "medianNote": "„Med.” to mediana (wartość środkowa) wskaźnika samej spółki z ostatnich czterech lat obrotowych; dla DY do dziesięciu lat. Zielony i czerwony pokazują tylko, po której stronie własnej mediany jest dzisiejsza liczba: to porównanie z przeszłością, nie rekomendacja.",
     "helpAbout": "Co to jest {column}?",
     "help": {
       "dy": {

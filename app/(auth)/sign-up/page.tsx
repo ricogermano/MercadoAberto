@@ -32,7 +32,7 @@ const SignUp = () => {
             fullName: '',
             email: '',
             password: '',
-            country: 'IN',
+            country: 'BR',
             investmentGoals: 'Growth',
             riskTolerance: 'Medium',
             preferredIndustry: 'Technology'

@@ -27,7 +27,7 @@ export function useFullScreen() {
 export const FULL_SCREEN_FRAME = 'fixed inset-3 z-50 rounded-xl bg-card shadow-[0_0_0_4px_var(--frame),0_24px_60px_oklch(0_0_0/0.6)]';
 
 export function FullScreenBackdrop({ onClose }: { onClose: () => void }) {
-    return <div className="fixed inset-0 z-50 bg-page/70 backdrop-blur-[3px]" onClick={onClose} />;
+    return <div className="scrim fixed inset-0 z-50 bg-page/70 backdrop-blur-[3px]" onClick={onClose} />;
 }
 
 export function FullScreenButton({ expanded, onToggle, className }: { expanded: boolean; onToggle: () => void; className?: string }) {

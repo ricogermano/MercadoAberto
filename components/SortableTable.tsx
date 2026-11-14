@@ -40,6 +40,7 @@ export function SortableTh<K extends string>({
     onSort,
     help,
     before,
+    colSpan,
     className,
 }: {
     id: K;
@@ -50,14 +51,15 @@ export function SortableTh<K extends string>({
     help?: SortHelp;
     // Something small ahead of the title, in the same header cell (the quotes table's search box)
     before?: React.ReactNode;
+    colSpan?: number;
     className?: string;
 }) {
     const index = criteria.findIndex((c) => c.key === id);
     const active = index >= 0 ? criteria[index].dir : null;
     const Icon = active === 'asc' ? ArrowUp : active === 'desc' ? ArrowDown : ChevronsUpDown;
     return (
-        <th className={className} aria-sort={index !== 0 ? 'none' : active === 'asc' ? 'ascending' : 'descending'}>
-            <div className={`inline-flex items-center whitespace-nowrap ${before ? 'gap-2' : 'gap-1'}`}>
+        <th colSpan={colSpan} className={className} aria-sort={index !== 0 ? 'none' : active === 'asc' ? 'ascending' : 'descending'}>
+            <div className="inline-flex items-center gap-1 whitespace-nowrap">
                 {before}
                 <button
                     type="button"

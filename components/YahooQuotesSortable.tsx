@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useLayoutEffect, useRef, useState } from 'react';
+import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ListFilter, Search, X } from 'lucide-react';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -168,30 +168,21 @@ export default function YahooQuotesSortable({
             )}
         </span>
     );
-    // Lives in the header cell of the company column, ahead of its title, centred in the room between the table's edge and
-    // that title (the star column and, in a ranking, the position column). Measured, since those widths vary.
-    const searchRef = useRef<HTMLSpanElement>(null);
-    const [searchShift, setSearchShift] = useState(0);
-    useLayoutEffect(() => {
-        const el = searchRef.current;
-        const table = el?.closest('table');
-        if (!el || !table) return;
-        const box = el.getBoundingClientRect();
-        const edge = table.getBoundingClientRect();
-        const rtl = getComputedStyle(table).direction === 'rtl';
-        // Room before the box where it would sit unshifted; 8px is the gap it keeps to the title
-        const room = (rtl ? edge.right - box.right : box.left - edge.left) + searchShift;
-        const next = Math.max(0, Math.round((room - 8) / 2));
-        if (next !== searchShift) setSearchShift(next);
-    }, [combined, searchShift]);
+    // Sits ahead of the company title, in one header cell that also spans the star column (and a ranking's position column).
+    // The same margin on both sides centres it between the table's edge and that title, with nothing underneath it.
     const searchBox = (
-        <span ref={searchRef} className="relative inline-flex items-center font-normal" style={{ marginInlineStart: -searchShift, marginInlineEnd: searchShift }}>
+        <span className="relative ms-4 me-5 inline-flex items-center font-normal">
             <Search className="pointer-events-none absolute start-1.5 size-3 text-faint" aria-hidden />
             <input
                 type="text"
                 role="searchbox"
                 enterKeyHint="search"
                 autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                data-1p-ignore
+                data-lpignore="true"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t('search')}
@@ -239,9 +230,6 @@ export default function YahooQuotesSortable({
                 {/* With the whole screen to scroll, the header row stays in view */}
                 <thead className={expanded ? '[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card' : ''}>
                     <tr className="text-start text-faint">
-                        <th className="w-8 p-0" aria-label={watchLabel} />
-                        {/* The search box is centred over this column and the star's, so the "#" is for screen readers only */}
-                        {combined && <th className="px-3 py-2 font-medium"><span className="sr-only">#</span></th>}
                         {columns.map((c) => (
                             <Fragment key={c.key}>
                             <SortableTh
@@ -252,7 +240,8 @@ export default function YahooQuotesSortable({
                                 onSort={onSort}
                                 help={indicatorText.help(c.key)}
                                 before={c.key === 'name' ? searchBox : undefined}
-                                className={`px-3 py-2 font-medium ${c.numeric ? 'whitespace-nowrap text-end' : ''}`}
+                                colSpan={c.key === 'name' ? (combined ? 3 : 2) : undefined}
+                                className={`${c.key === 'name' ? 'ps-2 pe-3 text-start' : 'px-3'} py-2 font-medium ${c.numeric ? 'whitespace-nowrap text-end' : ''}`}
                             />
                             {withMedian(c.key) && <th className="whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] font-normal" title={t('medianTitle')}>{t('medianShort')}</th>}
                             </Fragment>

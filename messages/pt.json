@@ -489,6 +489,7 @@
   },
   "Emails": {
     "common": {
+      "linkFallback": "Se o botão não abrir, copie este endereço e cole no navegador:",
       "logoAlt": "Logo do MercadoAberto",
       "unsubscribe": "Cancelar inscrição",
       "visitOpenstock": "Visitar o MercadoAberto"

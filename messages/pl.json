@@ -489,6 +489,7 @@
   },
   "Emails": {
     "common": {
+      "linkFallback": "Jeśli przycisk nie działa, skopiuj ten adres i wklej go w przeglądarce:",
       "logoAlt": "Logo MercadoAberto",
       "unsubscribe": "Wypisz się",
       "visitOpenstock": "Odwiedź MercadoAberto"

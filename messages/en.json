@@ -489,6 +489,7 @@
   },
   "Emails": {
     "common": {
+      "linkFallback": "If the button does not open, copy this address and paste it into your browser:",
       "logoAlt": "MercadoAberto Logo",
       "unsubscribe": "Unsubscribe",
       "visitOpenstock": "Visit MercadoAberto"

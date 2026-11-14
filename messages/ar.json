@@ -489,6 +489,7 @@
   },
   "Emails": {
     "common": {
+      "linkFallback": "إذا لم يعمل الزر، انسخ هذا العنوان والصقه في المتصفح:",
       "logoAlt": "شعار MercadoAberto",
       "unsubscribe": "إلغاء الاشتراك",
       "visitOpenstock": "زر MercadoAberto"

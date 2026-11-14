@@ -298,6 +298,9 @@
   "Dashboard": {
     "title": "Markets",
     "sub": "{market} · {status, select, open {open now} other {closed now}} · {feed, select, live {live data} delayed {delayed data} other {end of day data}}",
+    "navLabel": "Sections on this page",
+    "navHeatmap": "Heatmap",
+    "navNews": "News",
     "pulseTitle": "Pulse",
     "pulseSubFinnhub": "Our shared quotes via Finnhub",
     "pulseSubYahoo": "Delayed quotes via Yahoo Finance",

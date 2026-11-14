@@ -297,6 +297,9 @@
   },
   "Dashboard": {
     "title": "Rynki",
+    "navLabel": "Sekcje strony",
+    "navHeatmap": "Mapa cieplna",
+    "navNews": "Wiadomości",
     "pulseTitle": "Puls",
     "pulseSubFinnhub": "Wspólne notowania z Finnhub",
     "pulseSubYahoo": "Opóźnione notowania z serwisu Yahoo Finance",

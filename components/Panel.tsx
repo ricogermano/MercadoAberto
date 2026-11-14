@@ -2,6 +2,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 type PanelProps = {
+    /** Anchor target for the page's section index */
+    id?: string;
     title?: string;
     sub?: React.ReactNode;
     action?: React.ReactNode;
@@ -11,8 +13,8 @@ type PanelProps = {
 };
 
 // Concentric hatch shell: a recessed hatched frame holding one raised card.
-const Panel = ({ title, sub, action, className, bodyClassName, children }: PanelProps) => (
-    <section className={cn('hatch', className)}>
+const Panel = ({ id, title, sub, action, className, bodyClassName, children }: PanelProps) => (
+    <section id={id} className={cn('hatch', className)}>
         {title && (
             <div className="section-head">
                 <div className="min-w-0">

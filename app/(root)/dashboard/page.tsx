@@ -7,6 +7,7 @@ import Panel from "@/components/Panel";
 import IndexPulse, { PulseSkeleton } from "@/components/IndexPulse";
 import { LocalizedDataFreshness } from "@/components/DataFreshness";
 import MarketSwitcher from "@/components/MarketSwitcher";
+import SectionIndex from "@/components/SectionIndex";
 import MarketNews from "@/components/MarketNews";
 import YahooQuotesTable, { YahooMovers } from "@/components/YahooQuotes";
 import YahooHeatmap from "@/components/YahooHeatmap";
@@ -50,6 +51,15 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
     const ownHeatmap = market.heatmap === 'yahoo';
     // Yahoo-priced stock markets show valuation indicators beside the prices; commodities and TradingView tables don't
     const quotesTitle = market.yahoo && !market.units ? t('quotesIndicatorsTitle') : t('quotesTitle');
+    // Jump links, in the order the sections appear for this market
+    const moversLink = { id: 'variacoes', label: market.yahoo ? t('moversTitle') : t('leadersTitle') };
+    const heatmapLink = { id: 'mapa', label: t('navHeatmap') };
+    const quotesLink = { id: 'cotacoes', label: heatmap ? t('quotesTitle') : quotesTitle };
+    const sections = [
+        { id: 'geral', label: t('pulseTitle') },
+        ...(ownHeatmap ? [heatmapLink, moversLink, quotesLink] : heatmap ? [moversLink, heatmapLink, quotesLink] : [moversLink, quotesLink]),
+        { id: 'noticias', label: t('navNews') },
+    ];
 
     return (
         <>
@@ -62,7 +72,9 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
 
             <MarketSwitcher active={market.id} openIds={MARKETS.filter((m) => isMarketOpen(m)).map((m) => m.id)} />
 
-            <section className="hatch">
+            <SectionIndex label={t('navLabel')} items={sections} />
+
+            <section id="geral" className="hatch">
                 <div className="section-head">
                     <div>
                         <h2 className="section-title">{t('pulseTitle')}</h2>
@@ -80,17 +92,17 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                 // Map first with the movers beside it, then the full-width quotes table and the news
                 <div key={market.id} className="flex flex-col gap-3">
                     <div className="grid gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-                        <Panel title={t('marketHeatmapTitle', { market: name })} sub={t('heatmapSub')}>
+                        <Panel id="mapa" title={t('marketHeatmapTitle', { market: name })} sub={t('heatmapSub')}>
                             <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><YahooHeatmap market={market} locale={locale} /></Suspense>
                         </Panel>
-                        <Panel title={t('moversTitle')} sub={t('moversSub')}>
+                        <Panel id="variacoes" title={t('moversTitle')} sub={t('moversSub')}>
                             <YahooMovers market={market} count={10} />
                         </Panel>
                     </div>
-                    <Panel title={quotesTitle} sub={t('quotesSub', { market: name })}>
+                    <Panel id="cotacoes" title={quotesTitle} sub={t('quotesSub', { market: name })}>
                         <YahooQuotesTable market={market} />
                     </Panel>
-                    <Panel title={t('storiesTitle')} sub={t('storiesSub')}>
+                    <Panel id="noticias" title={t('storiesTitle')} sub={t('storiesSub')}>
                         {market.newsFeeds
                             ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
                             : <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />}
@@ -100,20 +112,20 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
             <div key={market.id} className="flex flex-col gap-3">
                 <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
                     {market.yahoo ? (
-                        <Panel title={t('moversTitle')} sub={t('moversSub')}>
+                        <Panel id="variacoes" title={t('moversTitle')} sub={t('moversSub')}>
                             <YahooMovers market={market} />
                         </Panel>
                     ) : (
-                        <Panel title={t('leadersTitle')} sub={t('leadersSub')}>
+                        <Panel id="variacoes" title={t('leadersTitle')} sub={t('leadersSub')}>
                             <TradingViewWidget scriptUrl={`${scriptUrl}market-overview.js`} config={marketOverviewConfig(groups, locale)} height={560} />
                         </Panel>
                     )}
                     {heatmap ? (
-                        <Panel title={heatmap.title} sub={t('heatmapSub')}>
+                        <Panel id="mapa" title={heatmap.title} sub={t('heatmapSub')}>
                             <TradingViewWidget scriptUrl={`${scriptUrl}${heatmap.script}`} config={heatmap.config} height={560} allowExpand labels={expandLabels} />
                         </Panel>
                     ) : (
-                        <Panel title={quotesTitle} sub={t('quotesSub', { market: name })}>
+                        <Panel id="cotacoes" title={quotesTitle} sub={t('quotesSub', { market: name })}>
                             {market.yahoo
                                 ? <YahooQuotesTable market={market} />
                                 : <TradingViewWidget scriptUrl={`${scriptUrl}market-quotes.js`} config={marketQuotesConfig(groups, locale)} height={560} />}
@@ -123,16 +135,16 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
 
                 <div className="grid gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
                     {heatmap && (
-                        <Panel title={t('quotesTitle')} sub={t('quotesSub', { market: name })}>
+                        <Panel id="cotacoes" title={t('quotesTitle')} sub={t('quotesSub', { market: name })}>
                             <TradingViewWidget scriptUrl={`${scriptUrl}market-quotes.js`} config={marketQuotesConfig(groups, locale)} height={560} />
                         </Panel>
                     )}
                     {market.newsFeeds && market.newsKeywords && (
-                        <Panel title={t('storiesLocalTitle')} sub={t('storiesSub')}>
+                        <Panel id="noticias" title={t('storiesLocalTitle')} sub={t('storiesSub')}>
                             <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
                         </Panel>
                     )}
-                    <Panel title={t(market.newsKeywords ? 'storiesWorldTitle' : 'storiesTitle')} sub={t('storiesSub')} className={heatmap || market.newsKeywords ? '' : 'xl:col-span-2'}>
+                    <Panel id={market.newsKeywords ? undefined : 'noticias'} title={t(market.newsKeywords ? 'storiesWorldTitle' : 'storiesTitle')} sub={t('storiesSub')} className={heatmap || market.newsKeywords ? '' : 'xl:col-span-2'}>
                         {market.newsFeeds && !market.newsKeywords
                             ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
                             : <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />}

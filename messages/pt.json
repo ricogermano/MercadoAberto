@@ -298,7 +298,10 @@
   "Dashboard": {
     "title": "Mercados",
     "sub": "{market} · {status, select, open {aberto agora} other {fechado agora}} · {feed, select, live {dados ao vivo} delayed {dados com atraso} other {dados de fechamento}}",
-    "pulseTitle": "Pulso",
+    "navLabel": "Seções da página",
+    "navHeatmap": "Mapa de calor",
+    "navNews": "Notícias",
+    "pulseTitle": "Geral",
     "pulseSubFinnhub": "Nossas cotações compartilhadas via Finnhub",
     "pulseSubYahoo": "Cotações com atraso via Yahoo Finance",
     "pulseSubTradingView": "{feed, select, live {Cotações ao vivo via TradingView} delayed {Cotações com atraso via TradingView} other {Cotações de fechamento via TradingView}}",

@@ -298,6 +298,9 @@
   "Dashboard": {
     "title": "السوق",
     "sub": "{market} · {status, select, open {مفتوح الآن} other {مغلق الآن}} · {feed, select, live {بيانات مباشرة} delayed {بيانات متأخرة} other {بيانات إغلاق اليوم}}",
+    "navLabel": "أقسام الصفحة",
+    "navHeatmap": "الخريطة الحرارية",
+    "navNews": "الأخبار",
     "pulseTitle": "النبض",
     "pulseSubFinnhub": "أسعارنا المشتركة عبر Finnhub",
     "pulseSubYahoo": "أسعار متأخرة عبر Yahoo Finance",

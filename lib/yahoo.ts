@@ -404,3 +404,18 @@ export function rankByCriteria<T>(rows: T[], criteria: SortCriterion<T>[]): { ro
 }
 
 const isFiniteValue = (v: number | string | null | undefined) => v != null && (typeof v !== 'number' || Number.isFinite(v));
+
+// Runs `fn` over `items` with at most `limit` running at once, keeping the input order. Yahoo has no batch endpoint, so a
+// 100-stock market would otherwise fire hundreds of requests in the same instant and risk a 429 or a pile of timeouts.
+export async function mapWithLimit<T, R>(items: readonly T[], limit: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
+    const results = new Array<R>(items.length);
+    let next = 0;
+    const worker = async () => {
+        while (next < items.length) {
+            const index = next++;
+            results[index] = await fn(items[index], index);
+        }
+    };
+    await Promise.all(Array.from({ length: Math.max(1, Math.min(limit, items.length)) }, worker));
+    return results;
+}

@@ -12,6 +12,15 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Mais de cem ações na aba Brasil',
+        items: [
+            'A lista do Brasil passou de 51 para 106 ações, com as mais negociadas da B3: entraram, por exemplo, Eneva, Copasa, Sanepar, JBS, Minerva, SLC Agrícola, Cury, Direcional, Fleury, Hypera, Smart Fit e Banrisul.',
+            'Os setores foram reorganizados em nove: Bancos e seguros; Petróleo e gás; Materiais básicos (mineração, siderurgia, papel e química); Utilidade pública; Indústria; Agronegócio e alimentos; Consumo; Saúde e educação; Imobiliário.',
+            'O mapa de calor, as maiores variações do dia e a tabela de cotações e indicadores já usam a lista nova.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Números no padrão brasileiro e telas mais fáceis de ler e tocar',
         items: [
             'Preços, variações e indicadores aparecem no padrão brasileiro: vírgula nos centavos e ponto no milhar (172.457,77). Valores grandes vêm abreviados como “mi”, “bi” e “tri”. Em inglês o app segue o padrão americano.',

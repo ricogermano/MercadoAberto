@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EMPTY_FUNDAMENTALS, averageTurnoverFromChart, payoutFrom, compareNullable, fundamentalsYahooSymbol, dividendYieldFromChart, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
+import { mapWithLimit, EMPTY_FUNDAMENTALS, averageTurnoverFromChart, payoutFrom, compareNullable, fundamentalsYahooSymbol, dividendYieldFromChart, rankByCriteria, dailyQuoteFromChart, fundamentalsFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
 import { formatSymbolForTradingView, isChartEmbeddable } from '@/lib/utils';
 
 describe('Tadawul symbols', () => {
@@ -359,5 +359,32 @@ describe('new table indicators', () => {
         expect(averageTurnoverFromChart(chart([10], [0]))).toBeNull();
         expect(averageTurnoverFromChart(chart([], []))).toBeNull();
         expect(averageTurnoverFromChart(null)).toBeNull();
+    });
+});
+
+describe('mapWithLimit', () => {
+    it('keeps the order and never runs more than the limit at once', async () => {
+        let running = 0;
+        let peak = 0;
+        const out = await mapWithLimit([5, 1, 4, 2, 3, 0, 6], 3, async (n) => {
+            peak = Math.max(peak, ++running);
+            await new Promise((r) => setTimeout(r, n));
+            running--;
+            return n * 2;
+        });
+        expect(out).toEqual([10, 2, 8, 4, 6, 0, 12]);
+        expect(peak).toBe(3);
+        expect(await mapWithLimit([], 4, async (n: number) => n)).toEqual([]);
+    });
+});
+
+describe('Brazil list', () => {
+    it('has about a hundred distinct stocks that all map to Yahoo, BDRs included', async () => {
+        const { getMarket } = await import('@/lib/markets');
+        const symbols = getMarket('br').groups.flatMap((g) => g.symbols.map(([s]) => s));
+        expect(new Set(symbols).size).toBe(symbols.length);
+        expect(symbols.length).toBeGreaterThanOrEqual(100);
+        for (const s of symbols) expect(normalizeYahooSymbol(s)).toMatch(/^[A-Z0-9]{4}\d{1,2}\.SA$/);
+        expect(normalizeYahooSymbol('BMFBOVESPA:JBSS32')).toBe('JBSS32.SA');
     });
 });

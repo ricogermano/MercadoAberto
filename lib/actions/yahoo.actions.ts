@@ -1,14 +1,17 @@
 'use server';
 
 import { QUOTE_TTL_SECONDS } from '@/lib/market-data';
-import { EMPTY_FUNDAMENTALS, dividendMedians, yearlyDividendYieldsFromChart, averageTurnoverFromChart, payoutFrom, dailyQuoteFromChart, fundamentalsYahooSymbol, dividendYieldFromChart, fundamentalsFromTimeseries, marketCapFallbackSymbol, marketCapFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency, type YahooDailyQuote, type YahooFundamentals } from '@/lib/yahoo';
+import { EMPTY_FUNDAMENTALS, dividendMedians, yearlyDividendYieldsFromChart, averageTurnoverFromChart, payoutFrom, dailyQuoteFromChart, fundamentalsYahooSymbol, dividendYieldFromChart, fundamentalsFromTimeseries, marketCapFallbackSymbol, marketCapFromTimeseries, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency, mapWithLimit, type YahooDailyQuote, type YahooFundamentals } from '@/lib/yahoo';
+
+// Symbols fetched at the same time: enough to fill a 100-stock table in a couple of seconds, few enough not to look like a flood to Yahoo
+const QUOTE_CONCURRENCY = 16;
+const SLOW_CONCURRENCY = 10; // each symbol here is up to three requests
 
 // Daily Tadawul, Warsaw and B3 quotes from Yahoo Finance (free, no key, covers .SR, .WA and .SA), keyed by the symbol passed in.
 // One chart call per symbol (no batch endpoint without login) behind the shared quote cache (hourly in cached
-// mode, 5 minutes in realtime), so a Saudi, Polish or Brazilian dashboard costs ~17-24 requests per refresh, not per user.
+// mode, 5 minutes in realtime), so a Saudi, Polish or Brazilian dashboard costs one request per listed stock per refresh, not per user.
 export async function getYahooDailyQuotes(symbols: string[]): Promise<Record<string, YahooDailyQuote>> {
-    const entries = await Promise.all(
-        symbols.map(async (symbol) => {
+    const entries = await mapWithLimit(symbols, QUOTE_CONCURRENCY, async (symbol) => {
             const yahooSymbol = normalizeYahooSymbol(symbol);
             if (!yahooSymbol) return [symbol, null] as const;
             try {
@@ -24,8 +27,7 @@ export async function getYahooDailyQuotes(symbols: string[]): Promise<Record<str
                 console.error('Yahoo daily quote error', symbol, e);
                 return [symbol, null] as const;
             }
-        }),
-    );
+    });
     return Object.fromEntries(entries.filter(([, q]) => q)) as Record<string, YahooDailyQuote>;
 }
 
@@ -68,8 +70,7 @@ async function fetchSlowJson(url: string, symbol: string): Promise<unknown> {
 // per symbol (the fundamentals timeseries, a 10-year weekly chart for the medians and a 1-year daily chart with dividend events, which gives the dividend yield and the
 // average daily traded value), cached six hours since the figures change once a day.
 export async function getYahooFundamentals(symbols: string[]): Promise<Record<string, YahooFundamentals>> {
-    const entries = await Promise.all(
-        symbols.map(async (symbol) => {
+    const entries = await mapWithLimit(symbols, SLOW_CONCURRENCY, async (symbol) => {
             const yahooSymbol = fundamentalsYahooSymbol(symbol);
             if (!yahooSymbol) return [symbol, null] as const;
             const [series, chart, longChart] = await Promise.all([
@@ -86,16 +87,14 @@ export async function getYahooFundamentals(symbols: string[]): Promise<Record<st
             const base = fundamentals ?? EMPTY_FUNDAMENTALS;
             const medians = { ...base.medians, ...(longChart ? dividendMedians(yearlyDividendYieldsFromChart(longChart), series) : {}) };
             return [symbol, { ...base, dy, liquidity, payout: payoutFrom(dy, base.pe), medians }] as const;
-        }),
-    );
+    });
     return Object.fromEntries(entries.filter(([, f]) => f)) as Record<string, YahooFundamentals>;
 }
 
 // Company market value per Yahoo-priced stock, for sizing the heatmap. Same request as the indicators (a cache hit when the
 // quotes table is on the page); B3 units have none of their own and take one more request for the common share's.
 export async function getYahooMarketCaps(symbols: string[]): Promise<Record<string, number>> {
-    const entries = await Promise.all(
-        symbols.map(async (symbol) => {
+    const entries = await mapWithLimit(symbols, SLOW_CONCURRENCY, async (symbol) => {
             const yahooSymbol = yahooAppSymbol(symbol);
             if (!yahooSymbol) return [symbol, null] as const;
             const own = marketCapFromTimeseries(await fetchSlowJson(timeseriesUrl(yahooSymbol), symbol));
@@ -103,7 +102,6 @@ export async function getYahooMarketCaps(symbols: string[]): Promise<Record<stri
             const fallback = marketCapFallbackSymbol(yahooSymbol);
             if (!fallback) return [symbol, null] as const;
             return [symbol, marketCapFromTimeseries(await fetchSlowJson(timeseriesUrl(fallback, 'trailingMarketCap'), symbol))] as const;
-        }),
-    );
+    });
     return Object.fromEntries(entries.filter(([, cap]) => cap !== null && cap > 0)) as Record<string, number>;
 }

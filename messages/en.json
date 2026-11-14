@@ -477,7 +477,8 @@
     "accountDeleteFailed": "The account could not be deleted. Try again in a moment.",
     "accountDeleteWrongPassword": "Incorrect password.",
     "accountDeleteWrongEmail": "That email does not match this account.",
-    "accountDeleteSignInAgain": "For safety, sign out, sign in again and repeat the deletion."
+    "accountDeleteSignInAgain": "For safety, sign out, sign in again and repeat the deletion.",
+    "emailNotVerified": "Confirm your email to sign in. We sent you a new link."
   },
   "NewsSources": {
     "companyNews": "Company News",
@@ -535,6 +536,16 @@
       "calloutBodyBelow": "{symbol} dropped below your target price. This might be a good time to buy.",
       "cta": "View Dashboard",
       "footer": "You're receiving this because you subscribed to MercadoAberto news updates."
+    },
+    "verifyEmail": {
+      "subject": "Confirm your email for MercadoAberto",
+      "heading": "Confirm your email",
+      "greeting": "Hi {name},",
+      "greetingNoName": "Hi,",
+      "body": "One step left to activate your MercadoAberto account. Use the button below to confirm this email address is yours. The link is valid for 24 hours.",
+      "cta": "Confirm email",
+      "ignore": "If you didn't create an account, you can safely ignore this email.",
+      "text": "Confirm your email: {url}"
     }
   },
   "Sidebar": {
@@ -812,5 +823,17 @@
     "onlyPortuguese": "The history is available in Portuguese.",
     "latest": "Latest",
     "seeGuide": "See how to use"
+  },
+  "VerifyEmail": {
+    "title": "Check your email",
+    "bodyBefore": "We sent a confirmation link to",
+    "bodyAfter": ". Open it to activate your account and go to the dashboard.",
+    "hint": "The link is valid for 24 hours. If you can't find the message, look in your spam folder.",
+    "resend": "Resend email",
+    "resending": "Sending",
+    "resent": "Email sent again. Check your inbox.",
+    "resendFailed": "Couldn't resend the email",
+    "back": "Back",
+    "linkInvalid": "The confirmation link is invalid or has expired. Sign in with your email and password to get a new one."
   }
 }

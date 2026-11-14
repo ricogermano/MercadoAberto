@@ -477,7 +477,8 @@
     "accountDeleteFailed": "Não foi possível excluir a conta. Tente de novo em instantes.",
     "accountDeleteWrongPassword": "Senha incorreta.",
     "accountDeleteWrongEmail": "O e-mail não confere com o desta conta.",
-    "accountDeleteSignInAgain": "Por segurança, saia, entre de novo e repita a exclusão."
+    "accountDeleteSignInAgain": "Por segurança, saia, entre de novo e repita a exclusão.",
+    "emailNotVerified": "Confirme seu e-mail para entrar. Enviamos um novo link."
   },
   "NewsSources": {
     "companyNews": "Notícias da empresa",
@@ -535,6 +536,16 @@
       "calloutBodyBelow": "{symbol} caiu abaixo do seu preço-alvo.",
       "cta": "Ver painel",
       "footer": "Você está recebendo este e-mail porque se inscreveu nas atualizações do MercadoAberto."
+    },
+    "verifyEmail": {
+      "subject": "Confirme seu e-mail no MercadoAberto",
+      "heading": "Confirme seu e-mail",
+      "greeting": "Olá, {name},",
+      "greetingNoName": "Olá,",
+      "body": "Falta um passo para ativar sua conta no MercadoAberto. Use o botão abaixo para confirmar que este e-mail é seu. O link vale por 24 horas.",
+      "cta": "Confirmar e-mail",
+      "ignore": "Se você não criou uma conta, pode ignorar este e-mail com segurança.",
+      "text": "Confirme seu e-mail: {url}"
     }
   },
   "Sidebar": {
@@ -812,5 +823,17 @@
     "onlyPortuguese": "O histórico está disponível em português.",
     "latest": "Mais recente",
     "seeGuide": "Ver como usar"
+  },
+  "VerifyEmail": {
+    "title": "Confira seu e-mail",
+    "bodyBefore": "Enviamos um link de confirmação para",
+    "bodyAfter": ". Abra o link para ativar a conta e entrar no painel.",
+    "hint": "O link vale por 24 horas. Se não achar a mensagem, olhe na caixa de spam.",
+    "resend": "Reenviar e-mail",
+    "resending": "Enviando",
+    "resent": "E-mail reenviado. Confira sua caixa de entrada.",
+    "resendFailed": "Não foi possível reenviar o e-mail",
+    "back": "Voltar",
+    "linkInvalid": "O link de confirmação é inválido ou expirou. Entre com seu e-mail e senha para receber um novo."
   }
 }

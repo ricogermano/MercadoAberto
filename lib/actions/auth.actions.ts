@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from "@/lib/better-auth/auth";
+import { auth, emailVerificationRequired } from "@/lib/better-auth/auth";
 import { inngest } from "@/lib/inngest/client";
 import { headers } from "next/headers";
 import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
@@ -10,6 +10,11 @@ import { getTranslations } from "next-intl/server";
 import { resolveLocale } from "@/i18n/locale";
 
 const isOption = (options: readonly { value: string }[], value: unknown) => options.some((o) => o.value === value);
+// Where the confirmation link lands: it signs the person in, and the auth layout sends a signed-in visitor on to
+// the dashboard. A bad or expired link arrives here with ?error=..., which the sign-in page explains.
+const VERIFY_CALLBACK_URL = '/sign-in';
+const isEmailNotVerified = (e: unknown) => (e as { body?: { code?: string } })?.body?.code === 'EMAIL_NOT_VERIFIED';
+
 const COUNTRY_CODES = new Set(countryList().getValues()); // the same list the sign-up country picker shows
 
 export const signUpWithEmail = async ({ email, password, fullName, country, investmentGoals, riskTolerance, preferredIndustry }: SignUpFormData) => {
@@ -27,7 +32,7 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
         return { success: false, error: t('tooManyAttempts') };
     }
     try {
-        const response = await auth.api.signUpEmail({ body: { email, password, name: fullName, country, investmentGoals, riskTolerance, preferredIndustry } })
+        const response = await auth.api.signUpEmail({ body: { email, password, name: fullName, country, investmentGoals, riskTolerance, preferredIndustry, callbackURL: VERIFY_CALLBACK_URL } })
 
         if (response) {
             try {
@@ -44,7 +49,8 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
             }
         }
 
-        return { success: true, data: response }
+        // With confirmation on there is no session yet: the form shows "check your email" instead of the dashboard
+        return { success: true, data: response, verificationRequired: emailVerificationRequired() }
     } catch (e) {
         console.log('Sign up failed', e)
         return { success: false, error: t('signUpFailed') }
@@ -59,7 +65,7 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
         return { success: false, error: t('tooManyAttempts') };
     }
     try {
-        const response = await auth.api.signInEmail({ body: { email, password } })
+        const response = await auth.api.signInEmail({ body: { email, password, callbackURL: VERIFY_CALLBACK_URL } })
 
         // Update lastActiveAt
         if (response) {
@@ -81,6 +87,8 @@ export const signInWithEmail = async ({ email, password }: SignInFormData) => {
 
         return { success: true, data: response }
     } catch (e) {
+        // Right password, unconfirmed email: better-auth has just sent a fresh link (sendOnSignIn)
+        if (isEmailNotVerified(e)) return { success: false, error: t('emailNotVerified'), verificationRequired: true };
         console.log('Sign in failed', e)
         return { success: false, error: t('signInFailed') }
     }
@@ -97,6 +105,22 @@ export const signInWithSocial = async (provider: 'google' | 'github') => {
         const t = await getTranslations('Errors');
         return { success: false, error: t('socialSignInUnavailable', { provider: provider === 'google' ? 'Google' : 'GitHub' }) }
     }
+}
+
+export const resendVerificationEmail = async ({ email }: { email: string }) => {
+    const t = await getTranslations('Errors');
+    // Every request sends a real email from our Gmail; unlimited requests could exhaust its daily quota
+    if (await isRateLimited(`verify:email:${String(email).trim().toLowerCase()}`, 3, 60 * 60)
+        || await isRateLimited(`verify:ip:${await clientIp()}`, 10, 60 * 60)) {
+        return { success: false, error: t('tooManyAttempts') };
+    }
+    try {
+        await auth.api.sendVerificationEmail({ body: { email, callbackURL: VERIFY_CALLBACK_URL } });
+    } catch (e) {
+        // Same answer whether or not the address has an account waiting, so this can't be used to probe for accounts
+        console.log('Verification email request failed', e)
+    }
+    return { success: true }
 }
 
 export const requestPasswordResetEmail =async ({ email }: { email: string }) => {

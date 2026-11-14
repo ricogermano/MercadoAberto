@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import SocialAuthButtons from "@/components/forms/SocialAuthButtons";
 import React from "react";
+import VerifyEmailNotice from "@/components/forms/VerifyEmailNotice";
 
 const SignUp = () => {
     const t = useTranslations('SignUp');
@@ -41,11 +42,17 @@ const SignUp = () => {
     },);
 
     const passwordValue = watch('password');
+    // Set once the account exists but still has to confirm its email
+    const [pendingEmail, setPendingEmail] = React.useState<string | null>(null);
 
     const onSubmit = async (data: SignUpFormData) => {
         try {
             const result = await signUpWithEmail(data);
             if (result.success) {
+                if (result.verificationRequired) {
+                    setPendingEmail(data.email);
+                    return;
+                }
                 router.push('/dashboard');
                 return;
             }
@@ -59,6 +66,8 @@ const SignUp = () => {
             })
         }
     }
+
+    if (pendingEmail) return <VerifyEmailNotice email={pendingEmail} onBack={() => setPendingEmail(null)} />;
 
     return (
         <>

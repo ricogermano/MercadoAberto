@@ -14,6 +14,10 @@ type EmailSendResult =
     | { status: 'skipped' }
     | { status: 'sent'; messageId: string };
 
+// Google shows an app password as four groups ("abcd efgh ijkl mnop") and a paste often carries the spaces or a
+// trailing line break along; the password itself never has whitespace, and SMTP login fails with it.
+const mailPassword = () => (process.env.NODEMAILER_PASSWORD ?? '').replace(/\s+/g, '');
+
 const hasEmailConfig = Boolean(process.env.NODEMAILER_EMAIL && process.env.NODEMAILER_PASSWORD);
 
 if (!hasEmailConfig) {
@@ -33,7 +37,7 @@ function getTransporter(): Transporter {
     if (isWorkersRuntime()) {
         return nodemailer.createTransport({
             service: 'gmail',
-            auth: { user: process.env.NODEMAILER_EMAIL!, pass: process.env.NODEMAILER_PASSWORD! },
+            auth: { user: process.env.NODEMAILER_EMAIL!, pass: mailPassword() },
         });
     }
     if (!transporterInstance) {
@@ -41,7 +45,7 @@ function getTransporter(): Transporter {
             service: 'gmail',
             auth: {
                 user: process.env.NODEMAILER_EMAIL!,
-                pass: process.env.NODEMAILER_PASSWORD!,
+                pass: mailPassword(),
             },
             // Keep the pool small because email volume is low in this app.
             pool: true,

@@ -11,6 +11,15 @@ export type UpdateEntry = {
 
 export const UPDATES: UpdateEntry[] = [
     {
+        date: '2026-11-14',
+        title: 'Confirmação de e-mail no cadastro',
+        items: [
+            'Ao criar a conta, você recebe um e-mail com um link de confirmação. A conta só entra no painel depois de abrir esse link, que vale por 24 horas.',
+            'Não recebeu ou o link venceu? Tente entrar com seu e-mail e senha: enviamos um link novo e a tela tem o botão “Reenviar e-mail”.',
+            'O e-mail de “Esqueceu a senha?” também passou a ser enviado.',
+        ],
+    },
+    {
         date: '2026-11-13',
         title: 'Mais de cem ações na aba Brasil',
         items: [

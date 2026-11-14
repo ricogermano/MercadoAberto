@@ -3,11 +3,17 @@ import {mongodbAdapter} from "better-auth/adapters/mongodb";
 import {connectToDatabase, isWorkersRuntime} from "@/database/mongoose";
 import {nextCookies} from "better-auth/next-js";
 import { headers } from "next/headers";
+import { after } from "next/server";
 import { cache } from "react";
 import { sendPasswordResetEmail } from "@/lib/nodemailer/reset-password";
+import { sendVerificationEmail } from "@/lib/nodemailer/verify-email";
 import { resolveLocale } from "@/i18n/locale";
 import { deleteUserData } from "@/lib/account-data";
 
+
+// New accounts confirm their email before the first sign-in. Only where a mailbox is configured:
+// without one nobody could ever receive the link (local development, self-hosting without email).
+export const emailVerificationRequired = () => Boolean(process.env.NODEMAILER_EMAIL && process.env.NODEMAILER_PASSWORD);
 
 type MongoDb = Parameters<typeof mongodbAdapter>[0];
 
@@ -34,7 +40,7 @@ const createAuth = (database: MongoDb) => betterAuth({
         emailAndPassword: {
             enabled: true,
             disableSignUp: false,
-            requireEmailVerification: false,
+            requireEmailVerification: emailVerificationRequired(),
             minPasswordLength: 8,
             maxPasswordLength: 128,
             autoSignIn: true,
@@ -43,14 +49,30 @@ const createAuth = (database: MongoDb) => betterAuth({
             sendResetPassword: async ({ user, url }) => {
                 // Read the cookie now, while the user's request is still in scope
                 const locale = await resolveLocale().catch(() => undefined);
-                void sendPasswordResetEmail({
+                // Sent after the response (a serverless function may be frozen once it responds, so a bare
+                // promise could be dropped) and not awaited, so the answer takes the same time with or without an account
+                after(() => sendPasswordResetEmail({
                     email: user.email,
                     name: user.name,
                     resetUrl: url,
                     locale,
                 }).catch((error) => {
-                    console.error('Failed to queue password reset email:', error);
-                });
+                    console.error('Failed to send password reset email:', error);
+                }));
+            },
+        },
+        emailVerification: {
+            // Signing in with the right password before confirming sends a fresh link
+            sendOnSignIn: true,
+            // Opening the link signs the person in: they already proved the password at sign-up
+            autoSignInAfterVerification: true,
+            expiresIn: 60 * 60 * 24,
+            // Awaited (better-auth awaits this callback too): a serverless function may be frozen once it responds.
+            // A failed send must not fail the sign-up; the person can ask for the link again.
+            sendVerificationEmail: async ({ user, url }) => {
+                const locale = await resolveLocale().catch(() => undefined);
+                await sendVerificationEmail({ email: user.email, name: user.name, verifyUrl: url, locale })
+                    .catch((error) => { console.error('Failed to send verification email:', error); });
             },
         },
         // Signed session cookie for 5 min: pages stop paying a MongoDB round trip per request.
@@ -58,7 +80,7 @@ const createAuth = (database: MongoDb) => betterAuth({
         session: {
             cookieCache: { enabled: true, maxAge: 5 * 60 },
         },
-        // No account linking. Sign-up doesn't verify emails, so linking a Google/GitHub identity to an
+        // No account linking. Sign-up only verifies emails where a mailbox is configured, so linking a Google/GitHub identity to an
         // existing account with the same email would let someone pre-register a victim's address and
         // later capture their social sign-in. This switch also blocks explicit linking (still true in 1.7);
         // when social sign-in ships, `disableImplicitLinking: true` keeps explicit linking and drops only the email match.

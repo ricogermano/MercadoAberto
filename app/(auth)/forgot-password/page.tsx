@@ -57,7 +57,7 @@ const ForgotPasswordPage = () => {
                 <InputField
                     name="email"
                     label={tFields('email')}
-                    placeholder="opendevsociety@cc.cc"
+                    placeholder="you@example.com"
                     register={register}
                     error={errors.email}
                     validation={{

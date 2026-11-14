@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SocialAuthButtons from "@/components/forms/SocialAuthButtons";
 import React from "react";
+import VerifyEmailNotice from "@/components/forms/VerifyEmailNotice";
 
 const SignIn = () => {
     const t = useTranslations('SignIn');
@@ -29,11 +30,25 @@ const SignIn = () => {
         mode: 'onBlur',
     });
 
+    const tVerify = useTranslations('VerifyEmail');
+    // Set when the password was right but the email is still unconfirmed
+    const [pendingEmail, setPendingEmail] = React.useState<string | null>(null);
+    // A confirmation link that is invalid or expired lands here with ?error=...
+    const [linkFailed, setLinkFailed] = React.useState(false);
+    React.useEffect(() => {
+        setLinkFailed(new URLSearchParams(window.location.search).has('error'));
+    }, []);
+
     const onSubmit = async (data: SignInFormData) => {
         try {
             const result = await signInWithEmail(data);
             if (result.success) {
                 router.push('/dashboard');
+                return;
+            }
+            if (result.verificationRequired) {
+                setLinkFailed(false);
+                setPendingEmail(data.email);
                 return;
             }
             toast.error(t('failed'), {
@@ -47,10 +62,18 @@ const SignIn = () => {
         }
     }
 
+    if (pendingEmail) return <VerifyEmailNotice email={pendingEmail} onBack={() => setPendingEmail(null)} />;
+
     return (
         <>
             <h1 className="form-title mb-2">{t('title')}</h1>
             <p className="mb-8 text-faint">{t('subtitle')}</p>
+
+            {linkFailed && (
+                <p role="alert" className="mb-6 rounded-lg border border-line px-4 py-3 text-sm leading-relaxed text-foreground/85">
+                    {tVerify('linkInvalid')}
+                </p>
+            )}
 
             <SocialAuthButtons />
 
@@ -58,7 +81,7 @@ const SignIn = () => {
                 <InputField
                     name="email"
                     label={tFields('email')}
-                    placeholder="opendevsociety@cc.cc"
+                    placeholder="you@example.com"
                     register={register}
                     error={errors.email}
                     validation={{

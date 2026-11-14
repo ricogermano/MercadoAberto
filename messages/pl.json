@@ -477,7 +477,8 @@
     "accountDeleteFailed": "Nie udało się usunąć konta. Spróbuj ponownie za chwilę.",
     "accountDeleteWrongPassword": "Nieprawidłowe hasło.",
     "accountDeleteWrongEmail": "Ten e-mail nie pasuje do tego konta.",
-    "accountDeleteSignInAgain": "Dla bezpieczeństwa wyloguj się, zaloguj ponownie i powtórz usuwanie."
+    "accountDeleteSignInAgain": "Dla bezpieczeństwa wyloguj się, zaloguj ponownie i powtórz usuwanie.",
+    "emailNotVerified": "Potwierdź adres e-mail, aby się zalogować. Wysłaliśmy nowy link."
   },
   "NewsSources": {
     "companyNews": "Aktualności firmy",
@@ -535,6 +536,16 @@
       "calloutBodyBelow": "{symbol} spadł poniżej twojej ceny docelowej. To może być dobry moment na zakup.",
       "cta": "Zobacz pulpit",
       "footer": "Dostajesz tę wiadomość, bo masz włączone alerty w MercadoAberto."
+    },
+    "verifyEmail": {
+      "subject": "Potwierdź adres e-mail w MercadoAberto",
+      "heading": "Potwierdź adres e-mail",
+      "greeting": "Cześć {name},",
+      "greetingNoName": "Cześć,",
+      "body": "Został jeden krok do aktywacji konta w MercadoAberto. Użyj przycisku poniżej, aby potwierdzić, że ten adres e-mail należy do Ciebie. Link jest ważny przez 24 godziny.",
+      "cta": "Potwierdź e-mail",
+      "ignore": "Jeśli nie zakładałeś konta, możesz zignorować tę wiadomość.",
+      "text": "Potwierdź adres e-mail: {url}"
     }
   },
   "Sidebar": {
@@ -812,5 +823,17 @@
     "onlyPortuguese": "Historia zmian jest dostępna po portugalsku.",
     "latest": "Najnowsze",
     "seeGuide": "Zobacz, jak korzystać"
+  },
+  "VerifyEmail": {
+    "title": "Sprawdź pocztę",
+    "bodyBefore": "Wysłaliśmy link potwierdzający na adres",
+    "bodyAfter": ". Otwórz go, aby aktywować konto i przejść do panelu.",
+    "hint": "Link jest ważny przez 24 godziny. Jeśli nie widzisz wiadomości, zajrzyj do folderu spam.",
+    "resend": "Wyślij ponownie",
+    "resending": "Wysyłanie",
+    "resent": "Wiadomość wysłana ponownie. Sprawdź skrzynkę odbiorczą.",
+    "resendFailed": "Nie udało się wysłać wiadomości ponownie",
+    "back": "Wróć",
+    "linkInvalid": "Link potwierdzający jest nieprawidłowy lub wygasł. Zaloguj się adresem e-mail i hasłem, aby otrzymać nowy."
   }
 }

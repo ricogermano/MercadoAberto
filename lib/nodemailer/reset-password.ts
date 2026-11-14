@@ -6,7 +6,7 @@ import { getEmailTranslator } from "@/lib/nodemailer/i18n";
 // Better Auth hands us an already-encoded URL (callbackURL=http%3A%2F%2F...).
 // encodeURI would turn those % into %25 and the link fails with INVALID_CALLBACKURL,
 // so only encode characters that are unsafe and leave existing escapes alone.
-const encodeUnsafeUrlChars = (url: string) =>
+export const encodeUnsafeUrlChars = (url: string) =>
     url.replace(/[^A-Za-z0-9\-._~:/?#[\]@!$&'()*+,;=%]/g, encodeURIComponent);
 
 export const sendPasswordResetEmail = async (

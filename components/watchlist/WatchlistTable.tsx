@@ -12,7 +12,7 @@ import PriceFlash from "@/components/PriceFlash";
 import { useLiveQuotes } from "@/hooks/useLiveQuotes";
 import { SearchButton } from "@/components/SearchCommand";
 import { SortBar, SortableTh, useSortCriteria } from "@/components/SortableTable";
-import { INDICATORS, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from "@/components/IndicatorViews";
+import { INDICATORS, IndicatorValue, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from "@/components/IndicatorViews";
 import { formatNumber, formatPrice } from "@/lib/utils";
 import { formatSigned } from "@/lib/format";
 import { hasFinnhubQuotes } from "@/lib/markets";
@@ -152,7 +152,7 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                             )}
                             {shownIndicators.map((k) => (
                                 <Fragment key={k}>
-                                    <td className={`is-num ${(medians && medianTone(k, f[k], f.medians)) || 'text-muted-foreground'}`}>{formatIndicator(k, f[k], locale)}</td>
+                                    <td className={`is-num ${(medians && medianTone(k, f[k], f.medians)) || 'text-muted-foreground'}`}><IndicatorValue k={k} value={f[k]} locale={locale} /></td>
                                     {withMedian(k) && <td className="is-num !ps-0 text-[12px] text-faint">{formatIndicator(k, medianValue(k, f.medians), locale)}</td>}
                                 </Fragment>
                             ))}

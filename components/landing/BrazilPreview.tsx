@@ -1,6 +1,7 @@
 import React from 'react';
 import { heatColor } from '@/lib/heat';
 import { formatDecimal, formatPercent } from '@/lib/format';
+import { EXTREME_PE, isExtreme } from '@/lib/medians';
 import { cn } from '@/lib/utils';
 import type { LandingData, LandingRow } from '@/lib/landing-data';
 import type { MedianKey } from '@/lib/yahoo';
@@ -98,7 +99,10 @@ function IndicatorCell({ row, column }: { row: LandingRow; column: Column }) {
     const median = row.fundamentals.medians[column.key];
     return (
         <td className={cn('px-2 py-2.5 text-right align-top', column.className)}>
-            <span className="mono block text-[13.5px] font-medium">{indicator(row.fundamentals[column.key], column.percent)}</span>
+            <span className="mono relative block text-[13.5px] font-medium">
+                {indicator(row.fundamentals[column.key], column.percent)}
+                {isExtreme(column.key, row.fundamentals[column.key]) && <span className="absolute -end-2 text-warn" aria-hidden>*</span>}
+            </span>
             <span className="mono block text-[11.5px] text-faint">{median === null ? '\u00a0' : `med. ${indicator(median, column.percent)}`}</span>
         </td>
     );
@@ -140,6 +144,12 @@ export function IndicatorsPreview({ data }: { data: LandingData }) {
                 </table>
             </div>
             <p className="px-1.5 pt-2 text-[12px] text-faint">“med.” é a mediana da própria empresa nos últimos exercícios.</p>
+            {/* No script on this page, so the app's caution popover becomes a footnote */}
+            {data.rows.some((row) => isExtreme('pe', row.fundamentals.pe)) && (
+                <p className="px-1.5 pt-1 text-[12px] text-faint">
+                    <span className="text-warn" aria-hidden>*</span> P/L acima de {EXTREME_PE} costuma vir de lucro muito baixo nos últimos 12 meses, e não só do preço da ação.
+                </p>
+            )}
         </AppFrame>
     );
 }

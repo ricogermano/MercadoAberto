@@ -107,3 +107,15 @@ describe('medians of a company from Yahoo', () => {
         expect(m.payout).toBe(38);
     });
 });
+
+describe('isExtreme', () => {
+    it('marks only a very high P/E', async () => {
+        const { isExtreme } = await import('@/lib/medians');
+        expect(isExtreme('pe', 70.3)).toBe(true);
+        expect(isExtreme('pe', 50)).toBe(true);
+        expect(isExtreme('pe', 34.4)).toBe(false);
+        expect(isExtreme('pe', -12)).toBe(false);
+        expect(isExtreme('pe', null)).toBe(false);
+        expect(isExtreme('evEbitda', 90)).toBe(false);
+    });
+});

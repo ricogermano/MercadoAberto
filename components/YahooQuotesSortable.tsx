@@ -1,15 +1,15 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ListFilter } from 'lucide-react';
+import { ChevronDown, ListFilter, Search, X } from 'lucide-react';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import ChangePill from '@/components/ChangePill';
 import WatchlistButton from '@/components/WatchlistButton';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatDecimal } from '@/lib/format';
 import { SortBar, SortableTh, useSortCriteria } from '@/components/SortableTable';
-import { INDICATORS, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from '@/components/IndicatorViews';
+import { INDICATORS, IndicatorValue, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from '@/components/IndicatorViews';
 import { rankByCriteria, type YahooFundamentals } from '@/lib/yahoo';
 import { FULL_SCREEN_FRAME, FullScreenBackdrop, FullScreenButton, useFullScreen } from '@/components/FullScreen';
 
@@ -39,6 +39,9 @@ type BaseKey = 'name' | 'price' | 'change' | 'changePercent';
 type SortKey = BaseKey | IndicatorKey;
 
 
+// Case- and accent-insensitive, so "itau" finds "Itaú"
+const plain = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
 export default function YahooQuotesSortable({
     groups,
     labels,
@@ -67,6 +70,11 @@ export default function YahooQuotesSortable({
     const shownGroups = filtering ? groups.filter((g) => sectors.includes(g.title)) : groups;
     const toggleSector = (title: string) => setSectors((cur) => (cur.includes(title) ? cur.filter((s) => s !== title) : [...cur, title]));
     const allRows = shownGroups.flatMap((g) => g.rows);
+    // Search by name or ticker. It only hides rows: a ranking keeps the positions of the whole (sector-filtered) table
+    const [query, setQuery] = useState('');
+    const needle = plain(query.trim());
+    const matches = (r: QuoteRow) => !needle || plain(r.name).includes(needle) || plain(r.appSymbol ?? r.tvSymbol).includes(needle);
+    const foundGroups = shownGroups.map((g) => ({ ...g, rows: g.rows.filter(matches) })).filter((g) => g.rows.length > 0);
     // Decided on the whole table, so the columns don't change with the filter
     const showFundamentals = groups.some((g) => g.rows.some((r) => INDICATORS.some((k) => r[k] != null)));
     // Day change in currency only where there is room for it: the summary view, or a table without indicators (commodities)
@@ -83,7 +91,8 @@ export default function YahooQuotesSortable({
         ...shownIndicators.map((key) => ({ key, numeric: true })),
     ];
 
-    const sorted = criteria.length > 0 ? rankByCriteria(allRows, criteria) : null;
+    const sorted = criteria.length > 0 ? rankByCriteria(allRows, criteria).filter(({ row }) => matches(row)) : null;
+    const nothingFound = needle !== '' && (sorted ? sorted.length === 0 : foundGroups.length === 0);
     // Each indicator that has a history is followed by a narrow column with the company's own median of past years
     const withMedian = (key: SortKey): key is IndicatorKey => medians && showFundamentals && (INDICATORS as readonly string[]).includes(key) && hasMedian(key as IndicatorKey);
     const colCount = columns.length + columns.filter((c) => withMedian(c.key)).length + 1 + (combined ? 1 : 0); // + the watchlist star
@@ -122,7 +131,7 @@ export default function YahooQuotesSortable({
             <td className="whitespace-nowrap px-3 py-2 text-end"><ChangePill value={r.changePercent} /></td>
             {shownIndicators.map((key) => (
                 <Fragment key={key}>
-                    <td className={`num whitespace-nowrap px-3 py-2 text-end ${medians ? medianTone(key, r[key], r.medians) : ''}`}>{formatIndicator(key, r[key], locale)}</td>
+                    <td className={`num whitespace-nowrap px-3 py-2 text-end ${medians ? medianTone(key, r[key], r.medians) : ''}`}><IndicatorValue k={key} value={r[key]} locale={locale} /></td>
                     {withMedian(key) && <td className="num whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] text-faint">{formatIndicator(key, medianValue(key, r.medians), locale)}</td>}
                 </Fragment>
             ))}
@@ -155,6 +164,43 @@ export default function YahooQuotesSortable({
             {filtering && (
                 <button type="button" onClick={() => setSectors([])} className="cursor-pointer text-[12px] text-faint hover:text-brand-ink">
                     {t('clearFilter')}
+                </button>
+            )}
+        </span>
+    );
+    // Lives in the header cell of the company column, ahead of its title, centred in the room between the table's edge and
+    // that title (the star column and, in a ranking, the position column). Measured, since those widths vary.
+    const searchRef = useRef<HTMLSpanElement>(null);
+    const [searchShift, setSearchShift] = useState(0);
+    useLayoutEffect(() => {
+        const el = searchRef.current;
+        const table = el?.closest('table');
+        if (!el || !table) return;
+        const box = el.getBoundingClientRect();
+        const edge = table.getBoundingClientRect();
+        const rtl = getComputedStyle(table).direction === 'rtl';
+        // Room before the box where it would sit unshifted; 8px is the gap it keeps to the title
+        const room = (rtl ? edge.right - box.right : box.left - edge.left) + searchShift;
+        const next = Math.max(0, Math.round((room - 8) / 2));
+        if (next !== searchShift) setSearchShift(next);
+    }, [combined, searchShift]);
+    const searchBox = (
+        <span ref={searchRef} className="relative inline-flex items-center font-normal" style={{ marginInlineStart: -searchShift, marginInlineEnd: searchShift }}>
+            <Search className="pointer-events-none absolute start-1.5 size-3 text-faint" aria-hidden />
+            <input
+                type="text"
+                role="searchbox"
+                enterKeyHint="search"
+                autoComplete="off"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={t('search')}
+                aria-label={t('searchLabel')}
+                className="h-6 w-28 rounded-md border border-border bg-transparent ps-6 pe-5 text-[12px] text-foreground placeholder:text-faint focus:border-[var(--brand)] focus:outline-none"
+            />
+            {query && (
+                <button type="button" onClick={() => setQuery('')} aria-label={t('clearSearch')} className="absolute end-1 cursor-pointer text-faint hover:text-brand-ink">
+                    <X className="size-3" aria-hidden />
                 </button>
             )}
         </span>
@@ -194,7 +240,8 @@ export default function YahooQuotesSortable({
                 <thead className={expanded ? '[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card' : ''}>
                     <tr className="text-start text-faint">
                         <th className="w-8 p-0" aria-label={watchLabel} />
-                        {combined && <th className="px-3 py-2 font-medium">#</th>}
+                        {/* The search box is centred over this column and the star's, so the "#" is for screen readers only */}
+                        {combined && <th className="px-3 py-2 font-medium"><span className="sr-only">#</span></th>}
                         {columns.map((c) => (
                             <Fragment key={c.key}>
                             <SortableTh
@@ -204,6 +251,7 @@ export default function YahooQuotesSortable({
                                 criteria={criteria}
                                 onSort={onSort}
                                 help={indicatorText.help(c.key)}
+                                before={c.key === 'name' ? searchBox : undefined}
                                 className={`px-3 py-2 font-medium ${c.numeric ? 'whitespace-nowrap text-end' : ''}`}
                             />
                             {withMedian(c.key) && <th className="whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] font-normal" title={t('medianTitle')}>{t('medianShort')}</th>}
@@ -211,14 +259,24 @@ export default function YahooQuotesSortable({
                         ))}
                     </tr>
                 </thead>
-                {sorted ? (
+                {nothingFound ? (
+                    <tbody>
+                        {sectorMenu && headingRow('', true)}
+                        <tr>
+                            <td colSpan={colCount} className="px-3 py-6 text-center text-muted-foreground">
+                                {t('noMatch', { query: query.trim() })}{' '}
+                                <button type="button" onClick={() => setQuery('')} className="cursor-pointer underline hover:text-brand-ink">{t('clearSearch')}</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                ) : sorted ? (
                     <tbody>
                         {/* A ranking has no group headings: this row names the groups being ranked and keeps the filter at hand */}
                         {sectorMenu && headingRow(filtering ? shownGroups.map((g) => g.title).join(' · ') : '', true)}
                         {sorted.map(({ row, position }) => renderRow(row, position))}
                     </tbody>
                 ) : (
-                    shownGroups.map((group, i) => (
+                    foundGroups.map((group, i) => (
                         <tbody key={group.title}>
                             {headingRow(group.title, i === 0)}
                             {group.rows.map((r) => renderRow(r))}

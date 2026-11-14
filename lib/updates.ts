@@ -12,6 +12,15 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-14',
+        title: 'Busca na tabela e aviso de P/L fora do comum',
+        items: [
+            'A tabela de cotações ganhou uma caixa de busca no cabeçalho, antes de “Empresa”: digite o nome ou o código (ITUB4, “vale”) para achar a empresa. O “x” limpa a busca. No ranking, a posição mostrada continua sendo a da tabela inteira.',
+            'Quando o P/L passa de 50, aparece um sinal de atenção ao lado do número. Toque nele para ler por que isso acontece: quase sempre é lucro muito baixo nos últimos 12 meses, e as fontes costumam divergir nesses casos.',
+            'A explicação do ranking combinado agora lembra que ele é só uma ordenação de indicadores, não uma recomendação.',
+        ],
+    },
+    {
+        date: '2026-11-14',
         title: 'Página inicial nova',
         items: [
             'A página de entrada do site agora mostra o painel de verdade: o mapa de calor da B3 e a tabela de indicadores com os números do dia, em vez de só texto.',

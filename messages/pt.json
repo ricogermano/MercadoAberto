@@ -379,6 +379,10 @@
     "filterGroups": "Grupos",
     "filterAll": "Todos",
     "clearFilter": "Limpar filtro",
+    "search": "Buscar",
+    "searchLabel": "Buscar empresa ou código",
+    "clearSearch": "Limpar busca",
+    "noMatch": "Nada encontrado para “{query}”.",
     "removeSort": "Tirar {column} da ordenação",
     "views": {
       "label": "Visões da tabela",
@@ -395,6 +399,7 @@
     "sortBy": "Ordenar por {column}",
     "fundamentalsNote": "Indicadores do Yahoo Finance, últimos doze meses; toque em ? numa coluna para ver como é calculado.",
     "medianShort": "Med.",
+    "extreme": { "pe": { "label": "Aviso sobre este P/L", "title": "P/L fora do comum", "body": "Um P/L acima de 50 quase sempre vem de lucro muito baixo nos últimos 12 meses (prejuízo recente, baixa contábil ou outro evento pontual), e não só do preço da ação. Nesses casos as fontes costumam mostrar números bem diferentes entre si. Compare com a mediana da empresa e olhe o lucro dos últimos anos antes de tirar conclusões." } },
     "medianTitle": "Mediana da própria empresa nos últimos exercícios",
     "medianNote": "“Med.” é a mediana (valor do meio) do indicador da própria empresa nos últimos quatro exercícios; no DY, em até dez anos. Verde e vermelho indicam só de que lado da própria mediana o número de hoje está: é uma comparação com o passado, não uma recomendação.",
     "helpAbout": "O que é {column}?",

@@ -379,6 +379,10 @@
     "filterGroups": "Groups",
     "filterAll": "All",
     "clearFilter": "Clear filter",
+    "search": "Search",
+    "searchLabel": "Search company or ticker",
+    "clearSearch": "Clear search",
+    "noMatch": "Nothing found for “{query}”.",
     "removeSort": "Remove {column} from sorting",
     "views": {
       "label": "Table views",
@@ -395,6 +399,7 @@
     "sortBy": "Sort by {column}",
     "fundamentalsNote": "Indicators from Yahoo Finance, trailing twelve months; tap ? on a column for how it is computed.",
     "medianShort": "Med.",
+    "extreme": { "pe": { "label": "Note about this P/E", "title": "Unusual P/E", "body": "A P/E above 50 almost always comes from a very small profit over the last 12 months (a recent loss, a write-down or another one-off), not only from the share price. In these cases sources often show quite different figures. Compare it with the company's own median and look at the profit of past years before drawing conclusions." } },
     "medianTitle": "The company's own median over its past fiscal years",
     "medianNote": "“Med.” is the median (middle value) of the company's own indicator over its last four fiscal years; for DY, up to ten years. Green and red only show which side of its own median today's number is on: a comparison with the past, not a recommendation.",
     "helpAbout": "What is {column}?",

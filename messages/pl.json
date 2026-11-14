@@ -379,6 +379,10 @@
     "filterGroups": "Grupy",
     "filterAll": "Wszystkie",
     "clearFilter": "Wyczyść filtr",
+    "search": "Szukaj",
+    "searchLabel": "Szukaj spółki lub symbolu",
+    "clearSearch": "Wyczyść wyszukiwanie",
+    "noMatch": "Brak wyników dla „{query}”.",
     "removeSort": "Usuń {column} z sortowania",
     "views": {
       "label": "Widoki tabeli",
@@ -395,6 +399,7 @@
     "sortBy": "Sortuj według: {column}",
     "fundamentalsNote": "Wskaźniki z Yahoo Finance, ostatnie dwanaście miesięcy; stuknij ? przy kolumnie, aby zobaczyć sposób obliczenia.",
     "medianShort": "Med.",
+    "extreme": { "pe": { "label": "Uwaga do tego C/Z", "title": "Nietypowe C/Z", "body": "C/Z powyżej 50 prawie zawsze wynika z bardzo niskiego zysku w ostatnich 12 miesiącach (niedawna strata, odpis lub inne zdarzenie jednorazowe), a nie tylko z ceny akcji. W takich przypadkach różne źródła często podają bardzo różne wartości. Porównaj z medianą spółki i sprawdź zysk z poprzednich lat, zanim wyciągniesz wnioski." } },
     "medianTitle": "Mediana samej spółki z ostatnich lat obrotowych",
     "medianNote": "„Med.” to mediana (wartość środkowa) wskaźnika samej spółki z ostatnich czterech lat obrotowych; dla DY do dziesięciu lat. Zielony i czerwony pokazują tylko, po której stronie własnej mediany jest dzisiejsza liczba: to porównanie z przeszłością, nie rekomendacja.",
     "helpAbout": "Co to jest {column}?",

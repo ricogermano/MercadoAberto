@@ -28,3 +28,9 @@ export function medianSide(key: string, value: number | null | undefined, med: n
     if (HIGHER_IS_BETTER.has(key)) return value > med ? 'better' : 'worse';
     return null;
 }
+
+// A P/E this high usually means the last twelve months' profit was unusually small, not that the share is that expensive;
+// the tables put a short note beside it so the figure is not read at face value.
+export const EXTREME_PE = 50;
+export const isExtreme = (key: string, value: number | null | undefined): boolean =>
+    key === 'pe' && typeof value === 'number' && Number.isFinite(value) && value >= EXTREME_PE;

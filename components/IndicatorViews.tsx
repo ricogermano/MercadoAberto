@@ -7,7 +7,8 @@ import { formatCompact, formatDecimal, formatPercent } from '@/lib/format';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { SortHelp } from '@/components/SortableTable';
 import { MEDIAN_KEYS, type MedianKey, type YahooFundamentals, type YahooMedians } from '@/lib/yahoo';
-import { medianSide } from '@/lib/medians';
+import { isExtreme, medianSide } from '@/lib/medians';
+import HelpPopover from '@/components/HelpPopover';
 
 // Shared by the Yahoo quotes table and the watchlist table: eleven indicators are too many columns to show at once, so the
 // tables show one "view" (a themed handful of them) at a time, or the reader's own pick, remembered in the browser.
@@ -33,6 +34,18 @@ export function formatIndicator(key: IndicatorKey, value: number | null | undefi
     if (key === 'liquidity') return formatCompact(value, locale);
     if (PERCENT.has(key)) return formatPercent(value, locale, 1);
     return formatDecimal(value, locale);
+}
+
+// What goes inside an indicator cell: the figure and, before an out-of-scale one (a P/E like 70), a caution mark that explains it
+export function IndicatorValue({ k, value, locale }: { k: IndicatorKey; value: number | null | undefined; locale?: string }) {
+    const t = useTranslations('YahooQuotes');
+    if (!isExtreme(k, value)) return <>{formatIndicator(k, value, locale)}</>;
+    return (
+        <span className="inline-flex items-center justify-end gap-1">
+            <HelpPopover warn label={t('extreme.pe.label')} title={t('extreme.pe.title')} body={t('extreme.pe.body')} />
+            {formatIndicator(k, value, locale)}
+        </span>
+    );
 }
 
 // Indicators whose column is followed by the company's own median of past years

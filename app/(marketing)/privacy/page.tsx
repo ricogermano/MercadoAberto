@@ -26,7 +26,19 @@ export default function PrivacyPage() {
         ? <a href={`mailto:${contactEmail}`} className={linkClass}>{contactEmail}</a>
         : <a href={`${SOURCE_URL}/issues`} target="_blank" rel="noreferrer" className={linkClass}>{`${SOURCE_URL.replace('https://', '')}/issues`}</a>;
 
+    // Who answers for the data (LGPD controller): an individual, named through LEGAL_OWNER_NAME.
+    const ownerName = process.env.LEGAL_OWNER_NAME?.trim();
+
     const sections: { title: string; body: React.ReactNode }[] = [
+        {
+            title: 'Quem é o responsável',
+            body: (
+                <>
+                    O {APP_NAME} é mantido por {ownerName ? `${ownerName}, pessoa física` : 'uma pessoa física'}, sem empresa constituída para o projeto.
+                    É quem decide como os dados são usados (o “controlador”, na LGPD) e quem responde aos pedidos sobre eles, pelo contato {contact}.
+                </>
+            ),
+        },
         {
             title: 'Quais dados guardamos',
             body: (

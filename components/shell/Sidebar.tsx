@@ -89,8 +89,9 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
                     </Link>
                 ))}
                 <DonateDialog labels={donate}>
-                    <button type="button" className="side-item h-8 w-full text-start">
-                        <Heart /> {donate.button}
+                    {/* The one tinted row of the list: a soft brand wash and a filled heart, quiet enough to sit among the plain links */}
+                    <button type="button" className="side-item my-0.5 h-8 w-full bg-brand-soft/45 text-start text-brand-ink ring-1 ring-inset ring-brand/20 hover:bg-brand-soft/80 hover:text-brand-ink">
+                        <Heart className="fill-brand text-brand" /> {donate.button}
                     </button>
                 </DonateDialog>
                 <ThemeSwitcher labels={{ label: tTheme('label'), auto: tTheme('auto'), light: tTheme('light'), dark: tTheme('dark') }} />

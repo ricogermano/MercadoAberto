@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { toast } from 'sonner';
+import { MailWarning } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { resendVerificationEmail } from '@/lib/actions/auth.actions';
@@ -29,6 +30,11 @@ const VerifyEmailNotice = ({ email, onBack }: { email: string; onBack: () => voi
             <h1 className="form-title mb-2">{t('title')}</h1>
             <p className="mb-3 leading-relaxed text-foreground/85">
                 {t('bodyBefore')} <strong className="text-foreground [overflow-wrap:anywhere]">{email}</strong>{t('bodyAfter')}
+            </p>
+            {/* The confirmation often lands in spam, so this is a boxed notice and not small print */}
+            <p className="mb-3 flex items-start gap-2.5 rounded-[11px] border border-warn/45 bg-warn/10 px-3.5 py-3 text-sm leading-relaxed text-foreground">
+                <MailWarning aria-hidden="true" className="mt-0.5 size-[18px] shrink-0 text-warn" />
+                <span>{t('spam')}</span>
             </p>
             <p className="mb-8 text-[13px] leading-relaxed text-faint">{t('hint')}</p>
             <div className="flex flex-col gap-4">

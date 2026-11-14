@@ -2,6 +2,8 @@
 
 import { Fragment, useState } from 'react';
 import Link from 'next/link';
+import { ChevronDown, ListFilter } from 'lucide-react';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import ChangePill from '@/components/ChangePill';
 import WatchlistButton from '@/components/WatchlistButton';
 import { useLocale, useTranslations } from 'next-intl';
@@ -29,6 +31,7 @@ export type QuoteLabels = {
     change: string;
     changePercent: string;
     clearSort: string;
+    filter: string;
     combinedHint: string;
 };
 
@@ -58,8 +61,14 @@ export default function YahooQuotesSortable({
     const { expanded, toggle: toggleFullScreen, close } = useFullScreen();
     // Stars toggled here, so they survive re-sorting (rows remount) until the server data catches up
     const [watch, setWatch] = useState<Record<string, boolean>>({});
-    const allRows = groups.flatMap((g) => g.rows);
-    const showFundamentals = allRows.some((r) => INDICATORS.some((k) => r[k] != null));
+    // Sector filter: the ticked groups are the only ones listed, and the only ones ranked when a sort is on
+    const [sectors, setSectors] = useState<string[]>([]);
+    const filtering = sectors.length > 0;
+    const shownGroups = filtering ? groups.filter((g) => sectors.includes(g.title)) : groups;
+    const toggleSector = (title: string) => setSectors((cur) => (cur.includes(title) ? cur.filter((s) => s !== title) : [...cur, title]));
+    const allRows = shownGroups.flatMap((g) => g.rows);
+    // Decided on the whole table, so the columns don't change with the filter
+    const showFundamentals = groups.some((g) => g.rows.some((r) => INDICATORS.some((k) => r[k] != null)));
     // Day change in currency only where there is room for it: the summary view, or a table without indicators (commodities)
     const showChange = !showFundamentals || view === 'summary';
     const shownIndicators = showFundamentals ? keys : [];
@@ -120,6 +129,47 @@ export default function YahooQuotesSortable({
         </tr>
     );
 
+    // Sits beside the first heading of the table body, in the company column
+    const sectorMenu = groups.length > 1 && (
+        <span className="inline-flex items-center gap-2.5">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <button type="button" className={`pill h-6 cursor-pointer gap-1 px-2.5 font-semibold transition-colors hover:text-foreground ${filtering ? 'is-brand' : ''}`}>
+                        <ListFilter aria-hidden />
+                        {labels.filter}
+                        {filtering && <span className="num">({sectors.length})</span>}
+                        <ChevronDown aria-hidden />
+                    </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="text-[13px]">
+                    {/* Ticking keeps the menu open, so several groups can be picked in one go */}
+                    <DropdownMenuCheckboxItem checked={!filtering} onSelect={(e) => { e.preventDefault(); setSectors([]); }}>{t('filterAll')}</DropdownMenuCheckboxItem>
+                    <DropdownMenuSeparator />
+                    {groups.map((g) => (
+                        <DropdownMenuCheckboxItem key={g.title} checked={sectors.includes(g.title)} onSelect={(e) => { e.preventDefault(); toggleSector(g.title); }}>
+                            {g.title}
+                        </DropdownMenuCheckboxItem>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+            {filtering && (
+                <button type="button" onClick={() => setSectors([])} className="cursor-pointer text-[12px] text-faint hover:text-brand-ink">
+                    {t('clearFilter')}
+                </button>
+            )}
+        </span>
+    );
+    const headingRow = (title: string, withMenu: boolean) => (
+        <tr>
+            <td colSpan={colCount} className="px-3 pt-3 pb-1">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    {title && <span className="kicker">{title}</span>}
+                    {withMenu && sectorMenu}
+                </div>
+            </td>
+        </tr>
+    );
+
     return (
         <>
         {expanded && <FullScreenBackdrop onClose={close} />}
@@ -162,13 +212,15 @@ export default function YahooQuotesSortable({
                     </tr>
                 </thead>
                 {sorted ? (
-                    <tbody>{sorted.map(({ row, position }) => renderRow(row, position))}</tbody>
+                    <tbody>
+                        {/* A ranking has no group headings: this row names the groups being ranked and keeps the filter at hand */}
+                        {sectorMenu && headingRow(filtering ? shownGroups.map((g) => g.title).join(' · ') : '', true)}
+                        {sorted.map(({ row, position }) => renderRow(row, position))}
+                    </tbody>
                 ) : (
-                    groups.map((group) => (
+                    shownGroups.map((group, i) => (
                         <tbody key={group.title}>
-                            <tr>
-                                <td colSpan={colCount} className="kicker px-3 pt-3 pb-1">{group.title}</td>
-                            </tr>
+                            {headingRow(group.title, i === 0)}
                             {group.rows.map((r) => renderRow(r))}
                         </tbody>
                     ))

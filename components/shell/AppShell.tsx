@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import Sidebar from "@/components/shell/Sidebar";
 import TabBar from "@/components/shell/TabBar";
+import BackToTop from "@/components/shell/BackToTop";
 import { useDrawerDrag } from "@/components/shell/useDrawerDrag";
 import SearchCommand from "@/components/SearchCommand";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ type AppShellProps = {
 const AppShell = ({ user, watchlist, initialStocks, children }: AppShellProps) => {
     const t = useTranslations('UpdateBanner');
     const tDonate = useTranslations('Donate');
+    const tCommon = useTranslations('Common');
     const pathname = usePathname();
     const [navOpen, setNavOpen] = useState(false);
     const workspaceRef = useRef<HTMLElement>(null);
@@ -69,6 +71,7 @@ const AppShell = ({ user, watchlist, initialStocks, children }: AppShellProps) =
                             <LegalFooter labels={{ disclaimer: t('disclaimer'), sourceCode: t('sourceCode'), basedOn: t('basedOn'), donate: donateLabels(tDonate) }} />
                         </div>
                     </main>
+                    <BackToTop target={workspaceRef} label={tCommon('backToTop')} />
                 </div>
             </div>
 

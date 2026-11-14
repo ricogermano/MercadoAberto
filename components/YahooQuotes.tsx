@@ -64,6 +64,8 @@ export default async function YahooQuotesTable({ market }: { market: Market }) {
         change: th('change'),
         changePercent: t('changePercent'),
         clearSort: t('clearSort'),
+        // The groups of the table are sectors for stocks and plain groups for commodities
+        filter: market.units ? t('filterGroups') : t('filterSectors'),
         combinedHint: t('combinedHint'),
     };
     const hasFundamentals = Object.keys(fundamentals).length > 0;

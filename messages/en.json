@@ -1,5 +1,6 @@
 {
   "Common": {
+    "backToTop": "Back to top",
     "notAvailable": "N/A",
     "close": "Close",
     "cancel": "Cancel",
@@ -374,6 +375,10 @@
     "payout": "Payout",
     "liquidity": "Liquidity",
     "clearSort": "Clear sorting",
+    "filterSectors": "Sectors",
+    "filterGroups": "Groups",
+    "filterAll": "All",
+    "clearFilter": "Clear filter",
     "removeSort": "Remove {column} from sorting",
     "views": {
       "label": "Table views",

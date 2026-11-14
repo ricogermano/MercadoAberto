@@ -1,5 +1,6 @@
 {
   "Common": {
+    "backToTop": "العودة إلى الأعلى",
     "notAvailable": "غير متاح",
     "close": "إغلاق",
     "cancel": "إلغاء",
@@ -374,6 +375,10 @@
     "payout": "نسبة التوزيع",
     "liquidity": "السيولة",
     "clearSort": "إلغاء الترتيب",
+    "filterSectors": "القطاعات",
+    "filterGroups": "المجموعات",
+    "filterAll": "الكل",
+    "clearFilter": "إلغاء التصفية",
     "removeSort": "إزالة {column} من الترتيب",
     "views": {
       "label": "طرق عرض الجدول",

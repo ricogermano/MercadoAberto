@@ -391,7 +391,7 @@
       "medians": "Pokaż mediany",
       "columnsHint": "Zaznacz wskaźniki, które chcesz widzieć. Wybór staje się „Moim widokiem” i jest zapisywany w tej przeglądarce."
     },
-    "combinedHint": "Ranking łączony: pozycje spółki w wybranych kolumnach są sumowane, najniższa suma jest pierwsza. Spółki bez wartości trafiają na koniec.",
+    "combinedHint": "Ranking łączony: pozycje spółki w wybranych kolumnach są sumowane, najniższa suma jest pierwsza. Spółki bez wartości trafiają na koniec. To tylko sortowanie wskaźników, a nie rekomendacja kupna lub sprzedaży.",
     "sortBy": "Sortuj według: {column}",
     "fundamentalsNote": "Wskaźniki z Yahoo Finance, ostatnie dwanaście miesięcy; stuknij ? przy kolumnie, aby zobaczyć sposób obliczenia.",
     "medianShort": "Med.",

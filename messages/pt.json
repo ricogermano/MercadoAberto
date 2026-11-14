@@ -391,7 +391,7 @@
       "medians": "Mostrar medianas",
       "columnsHint": "Marque os indicadores que quer ver. A escolha vira a “Minha visão” e fica guardada neste navegador."
     },
-    "combinedHint": "Ranking combinado: as posições de cada empresa nas colunas escolhidas são somadas, com o menor total primeiro. Empresas sem algum valor ficam por último.",
+    "combinedHint": "Ranking combinado: as posições de cada empresa nas colunas escolhidas são somadas, com o menor total primeiro. Empresas sem algum valor ficam por último. É só uma ordenação de indicadores, não uma recomendação de compra ou venda.",
     "sortBy": "Ordenar por {column}",
     "fundamentalsNote": "Indicadores do Yahoo Finance, últimos doze meses; toque em ? numa coluna para ver como é calculado.",
     "medianShort": "Med.",

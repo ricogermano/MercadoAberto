@@ -391,7 +391,7 @@
       "medians": "Show medians",
       "columnsHint": "Tick the indicators you want to see. Your pick becomes “My view” and is kept in this browser."
     },
-    "combinedHint": "Combined ranking: each company's positions in the selected columns are added up, lowest total first. Companies missing a value go last.",
+    "combinedHint": "Combined ranking: each company's positions in the selected columns are added up, lowest total first. Companies missing a value go last. It only sorts indicators; it is not a recommendation to buy or sell.",
     "sortBy": "Sort by {column}",
     "fundamentalsNote": "Indicators from Yahoo Finance, trailing twelve months; tap ? on a column for how it is computed.",
     "medianShort": "Med.",

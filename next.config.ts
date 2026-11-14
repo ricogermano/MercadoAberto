@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         return ['/about', '/help', '/api-docs', '/sponsor', '/love', '/changelog', '/whats-new', '/compare', '/compare/:slug', '/s', '/s/:ticker']
             .map((source) => ({ source, destination: '/', permanent: false }));
     },
+    // Short links for sharing: the landing page under a second address, so Vercel Analytics counts those visits by path
+    async rewrites() {
+        return [{ source: '/grupo', destination: '/' }];
+    },
     turbopack: {
         root: process.cwd(),
     },

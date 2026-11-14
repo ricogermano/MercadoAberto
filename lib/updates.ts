@@ -12,6 +12,17 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-13',
+        title: 'Números no padrão brasileiro e telas mais fáceis de ler e tocar',
+        items: [
+            'Preços, variações e indicadores aparecem no padrão brasileiro: vírgula nos centavos e ponto no milhar (172.457,77). Valores grandes vêm abreviados como “mi”, “bi” e “tri”. Em inglês o app segue o padrão americano.',
+            'Os textos pequenos (cabeçalhos das tabelas, notas e legendas) ficaram um pouco maiores.',
+            'No celular, os botões pequenos (estrela, ajuda “?”, fechar aba, tela cheia) respondem a uma área maior de toque.',
+            'Quem navega pelo teclado vê sempre um contorno verde no item selecionado.',
+            'Nos quadros de índice, a variação em pontos aparece inteira (“+1.133,45 no dia”), sem ser cortada.',
+        ],
+    },
+    {
+        date: '2026-11-13',
         title: 'Mapa de calor e cotações em tela cheia',
         items: [
             'O mapa de calor do Brasil e a tabela de cotações ganharam o botão de tela cheia, no canto superior direito (Esc ou o mesmo botão fecham). A visão escolhida, a ordenação e as estrelas continuam como estavam.',

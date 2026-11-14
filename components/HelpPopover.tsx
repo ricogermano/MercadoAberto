@@ -8,7 +8,7 @@ export default function HelpPopover({ label, title, body }: { label: string; tit
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <button type="button" aria-label={label} className="text-faint opacity-60 hover:text-brand-ink hover:opacity-100">
+                <button type="button" aria-label={label} className="hit text-faint opacity-75 hover:text-brand-ink hover:opacity-100">
                     <CircleHelp className="size-3.5" aria-hidden />
                 </button>
             </PopoverTrigger>

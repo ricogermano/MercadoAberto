@@ -54,7 +54,7 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
                     <LayoutDashboard /> {t('overview')}
                 </Link>
                 <Link href="/watchlist" className={cn('side-item', pathname === '/watchlist' && 'is-active')}>
-                    <Star /> <span className="flex-1">{t('watchlist')}</span>
+                    <Star /> <span className="min-w-0 flex-1 truncate" title={t('watchlist')}>{t('watchlist')}</span>
                     <span className="num text-xs text-faint">{watchlist.length}</span>
                 </Link>
             </nav>

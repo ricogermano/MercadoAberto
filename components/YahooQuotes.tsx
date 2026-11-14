@@ -103,7 +103,7 @@ export async function YahooMovers({ market, count = 8 }: { market: Market; count
                             </span>
                             <span className="min-w-0 flex-1">
                                 <span className="block truncate text-[13.5px] font-semibold">{displayName(tm, symbol, name)}</span>
-                                <span className="mono block text-[11.5px] text-faint">{market.units?.[symbol] ?? symbol.split(':').pop()}</span>
+                                <span className="mono block text-[12px] text-faint">{market.units?.[symbol] ?? symbol.split(':').pop()}</span>
                             </span>
                             <span className="relative h-1.5 w-20 overflow-hidden rounded-full bg-hover">
                                 <span

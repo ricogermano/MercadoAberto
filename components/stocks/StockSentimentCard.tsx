@@ -1,23 +1,13 @@
-import { useTranslations, type Messages } from 'next-intl';
+import { useLocale, useTranslations, type Messages } from 'next-intl';
 import type { StockSentimentInsights } from '@/lib/actions/adanos.helpers';
 import { cn } from '@/lib/utils';
+import { formatCompact, formatDecimal } from '@/lib/format';
 import { toMessageKey } from '@/i18n/config';
 
 interface StockSentimentCardProps {
     insight: StockSentimentInsights | null;
 }
 
-function formatScore(value: number | null, suffix: string): string {
-    if (value === null) return '—';
-    return `${value.toFixed(1)}${suffix}`;
-}
-
-function formatCompactNumber(value: number): string {
-    return new Intl.NumberFormat('en-US', {
-        notation: 'compact',
-        maximumFractionDigits: 1,
-    }).format(value);
-}
 
 type AlignmentKey = keyof Messages['StockSentiment']['alignment'];
 type MetricKey = keyof Messages['StockSentiment']['metric'];
@@ -37,6 +27,9 @@ function getAlignmentClass(alignment: string): string {
 
 export default function StockSentimentCard({ insight }: StockSentimentCardProps) {
     const t = useTranslations('StockSentiment');
+    const locale = useLocale();
+    const formatScore = (value: number | null, suffix: string) => (value === null ? '—' : `${formatDecimal(value, locale, 1, 1)}${suffix}`);
+    const formatCompactNumber = (value: number) => formatCompact(value, locale);
     if (!insight) {
         return null;
     }

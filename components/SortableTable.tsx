@@ -104,7 +104,7 @@ export function SortBar<K extends string>({
                                 {criteria.length > 1 && <span className="num text-[10.5px]">{i + 1}</span>}
                                 {labelOf(c.key)}
                                 <Icon aria-hidden />
-                                <button type="button" onClick={() => onRemove(c.key)} aria-label={removeLabel(labelOf(c.key))} className="grid size-4 cursor-pointer place-items-center rounded-full hover:bg-hover">
+                                <button type="button" onClick={() => onRemove(c.key)} aria-label={removeLabel(labelOf(c.key))} className="hit grid size-4 cursor-pointer place-items-center rounded-full hover:bg-hover">
                                     <X aria-hidden />
                                 </button>
                             </span>
@@ -114,14 +114,14 @@ export function SortBar<K extends string>({
                 <button
                     type="button"
                     onClick={onClear}
-                    className={`shrink-0 cursor-pointer pt-1 text-[11.5px] text-faint hover:text-brand-ink ${active ? '' : 'invisible'}`}
+                    className={`shrink-0 cursor-pointer pt-1 text-[12px] text-faint hover:text-brand-ink ${active ? '' : 'invisible'}`}
                     tabIndex={active ? 0 : -1}
                     aria-hidden={!active}
                 >
                     {clearLabel}
                 </button>
             </div>
-            {hint && <p className="pt-1 text-[11.5px] text-faint">{hint}</p>}
+            {hint && <p className="pt-1 text-[12px] text-faint">{hint}</p>}
         </div>
     );
 }

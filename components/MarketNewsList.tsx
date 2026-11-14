@@ -56,7 +56,7 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
                 <button
                     type="button"
                     onClick={clear}
-                    className={`ms-auto text-[11.5px] text-faint hover:text-brand-ink ${filtering ? '' : 'invisible'}`}
+                    className={`ms-auto text-[12px] text-faint hover:text-brand-ink ${filtering ? '' : 'invisible'}`}
                     tabIndex={filtering ? 0 : -1}
                     aria-hidden={!filtering}
                 >
@@ -78,12 +78,12 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
                                 <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-[13.5px] font-semibold hover:text-brand-ink">
                                     {item.title}
                                 </a>
-                                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11.5px] text-faint">
+                                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-faint">
                                     <span>{item.source}</span>
                                     {now !== null && <span aria-hidden>·</span>}
                                     {now !== null && <span>{ago(item.publishedAt, now, locale)}</span>}
                                     {item.tickers.map((symbol) => (
-                                        <Link key={symbol} href={`/stocks/${symbol}`} className="pill mono h-5 px-2 text-[11px] hover:bg-hover hover:text-foreground">
+                                        <Link key={symbol} href={`/stocks/${symbol}`} className="pill mono h-5 px-2 text-[12px] hover:bg-hover hover:text-foreground">
                                             {symbol.replace(/\.SA$/, '')}
                                         </Link>
                                     ))}
@@ -93,7 +93,7 @@ export default function MarketNewsList({ items, sources, unavailable }: { items:
                     </ul>
                 )}
             </div>
-            <p className="border-t border-line/60 px-3 py-2 text-[11.5px] text-faint">
+            <p className="border-t border-line/60 px-3 py-2 text-[12px] text-faint">
                 {t('count', { count: filtered.length })} <span aria-hidden>·</span> {t('footnote', { sources: sources.join(', ') })}
             </p>
         </div>

@@ -208,6 +208,11 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+    /* Keyboard focus is always visible, in the brand colour. :where() keeps it weak, so a component can still restyle it. */
+    :where(a, button, summary, [role="button"], [role="tab"], [role="menuitem"], [tabindex]:not([tabindex="-1"])):focus-visible {
+        outline: 2px solid var(--brand);
+        outline-offset: 2px;
+    }
     h1, h2, h3 {
         text-wrap: balance;
         letter-spacing: -0.02em;
@@ -300,7 +305,7 @@
 
     .side-label {
         padding: 0 10px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.06em;
         text-transform: uppercase;
@@ -525,7 +530,7 @@
     }
 
     .kicker {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.06em;
         text-transform: uppercase;
@@ -695,7 +700,7 @@
         padding: 0 14px;
         background: var(--card);
         border-bottom: 1px solid var(--line);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.06em;
         text-transform: uppercase;
@@ -948,4 +953,13 @@ html[dir="rtl"] .mono {
    every screen then looks cut off on the right. Our base size is 14px, so fields get 16px on touch screens. */
 @media (pointer: coarse) {
     input, textarea, select { font-size: 16px !important; }
+}
+
+/* Touch screens: small controls keep their look but answer to a finger-sized area (about 44px). */
+@media (pointer: coarse) {
+    .icon-btn, .tab-close, .hit { position: relative; }
+    .icon-btn::after, .tab-close::after, .hit::after { content: ""; position: absolute; }
+    .icon-btn::after { inset: -6px; }
+    .tab-close::after { inset: -10px -6px; }
+    .hit::after { inset: -12px; }
 }

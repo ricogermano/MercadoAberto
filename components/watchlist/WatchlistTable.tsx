@@ -3,7 +3,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell, Search, Star } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import CreateAlertModal from "./CreateAlertModal";
 import AddToListMenu from "./AddToListMenu";
 import WatchlistButton from "@/components/WatchlistButton";
@@ -14,6 +14,7 @@ import { SearchButton } from "@/components/SearchCommand";
 import { SortBar, SortableTh, useSortCriteria } from "@/components/SortableTable";
 import { INDICATORS, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from "@/components/IndicatorViews";
 import { formatNumber, formatPrice } from "@/lib/utils";
+import { formatSigned } from "@/lib/format";
 import { hasFinnhubQuotes } from "@/lib/markets";
 import { EMPTY_FUNDAMENTALS, rankByCriteria, type YahooFundamentals } from "@/lib/yahoo";
 import type { getWatchlistData } from "@/lib/actions/finnhub.actions";
@@ -24,6 +25,7 @@ type SortKey = BaseKey | IndicatorKey;
 const SUGGESTIONS = ['AAPL', 'NVDA', 'MSFT', 'TSLA', 'AMZN'];
 
 export default function WatchlistTable({ initialRows, lists = [], fundamentals = {} }: { initialRows: Row[]; lists?: { id: string; name: string }[]; fundamentals?: Record<string, YahooFundamentals> }) {
+    const locale = useLocale();
     const t = useTranslations('WatchlistTableRow');
     const th = useTranslations('WatchlistTable.headers');
     const ty = useTranslations('YahooQuotes');
@@ -115,7 +117,7 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                                 help={indicatorText.help(key)}
                                 className={numeric ? 'is-num' : undefined}
                             />
-                            {withMedian(key) && <th className="is-num !ps-0 text-[11.5px] !font-normal" title={ty('medianTitle')}>{ty('medianShort')}</th>}
+                            {withMedian(key) && <th className="is-num !ps-0 text-[12px] !font-normal" title={ty('medianTitle')}>{ty('medianShort')}</th>}
                             </Fragment>
                         ))}
                         <th className="w-[88px]"><span className="sr-only">{th('action')}</span></th>
@@ -139,19 +141,19 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                                 </Link>
                             </td>
                             <td className="is-num font-semibold text-foreground">
-                                <PriceFlash value={row.price} className="px-1">{row.price ? formatPrice(row.price, row.currency) : '—'}</PriceFlash>
+                                <PriceFlash value={row.price} className="px-1">{row.price ? formatPrice(row.price, row.currency, locale) : '—'}</PriceFlash>
                             </td>
                             <td className="is-num"><ChangePill value={row.price ? row.changePercent : null} /></td>
                             {showExtras && (
                                 <>
-                                    <td className="is-num text-muted-foreground">{row.price ? `${row.change > 0 ? '+' : ''}${row.change.toFixed(2)}` : '—'}</td>
-                                    <td className="is-num text-muted-foreground">{row.marketCap ? formatNumber(row.marketCap) : '—'}</td>
+                                    <td className="is-num text-muted-foreground">{row.price ? formatSigned(row.change, locale) : '—'}</td>
+                                    <td className="is-num text-muted-foreground">{row.marketCap ? formatNumber(row.marketCap, undefined, locale) : '—'}</td>
                                 </>
                             )}
                             {shownIndicators.map((k) => (
                                 <Fragment key={k}>
-                                    <td className={`is-num ${(medians && medianTone(k, f[k], f.medians)) || 'text-muted-foreground'}`}>{formatIndicator(k, f[k])}</td>
-                                    {withMedian(k) && <td className="is-num !ps-0 text-[12px] text-faint">{formatIndicator(k, medianValue(k, f.medians))}</td>}
+                                    <td className={`is-num ${(medians && medianTone(k, f[k], f.medians)) || 'text-muted-foreground'}`}>{formatIndicator(k, f[k], locale)}</td>
+                                    {withMedian(k) && <td className="is-num !ps-0 text-[12px] text-faint">{formatIndicator(k, medianValue(k, f.medians), locale)}</td>}
                                 </Fragment>
                             ))}
                             <td>

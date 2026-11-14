@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { formatCompact, numberLocale } from '@/lib/format';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -111,8 +112,8 @@ export const getChangeColorClass = (changePercent?: number) => {
     return changePercent > 0 ? 'text-green-500' : 'text-red-500';
 };
 
-export const formatPrice = (price: number, currency = 'USD') => {
-    return new Intl.NumberFormat('en-US', {
+export const formatPrice = (price: number, currency = 'USD', locale?: string) => {
+    return new Intl.NumberFormat(numberLocale(locale), {
         style: 'currency',
         currency,
         minimumFractionDigits: 2,
@@ -122,7 +123,7 @@ export const formatPrice = (price: number, currency = 'USD') => {
 // Alias for consistency
 export const formatCurrency = formatPrice;
 
-export function formatNumber(num?: number | null, notAvailable = 'N/A'): string {
+export function formatNumber(num?: number | null, notAvailable = 'N/A', locale?: string): string {
     // Guard against missing/invalid market caps (Finnhub omits this field for many
     // symbols, e.g. ETFs). Without this, `num * 1e6` yields NaN and renders "NaN".
     if (num === undefined || num === null || !Number.isFinite(num)) return notAvailable;
@@ -131,6 +132,9 @@ export function formatNumber(num?: number | null, notAvailable = 'N/A'): string 
     // Typical mega-cap is > 100B. 100B in millions is 100,000.
     // If we assume typical market cap input IS millions:
     const value = num * 1000000;
+
+    // Outside English the short forms are the language's own: "3,45 tri", "120,5 bi"
+    if (numberLocale(locale) !== 'en-US') return formatCompact(value, locale, 2);
 
     if (value >= 1e12) return (value / 1e12).toFixed(2) + 'T';
     if (value >= 1e9) return (value / 1e9).toFixed(2) + 'B';

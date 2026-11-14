@@ -1,5 +1,7 @@
 'use client';
 
+import { useLocale } from 'next-intl';
+import { formatPercent } from '@/lib/format';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { squarify } from '@/lib/treemap';
@@ -29,9 +31,10 @@ export function heatColor(changePercent: number): string {
     return `color-mix(in oklab, ${high} ${Math.round(strength ** 0.65 * 100)}%, ${low})`;
 }
 
-const signed = (value: number, digits = 2) => `${value > 0 ? '+' : value < 0 ? '−' : ''}${Math.abs(value).toFixed(digits)}%`;
 
 export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSector[]; note: string }) {
+    const locale = useLocale();
+    const signed = (value: number, digits = 2) => `${value > 0 ? '+' : value < 0 ? '−' : ''}${formatPercent(Math.abs(value), locale, digits)}`;
     const box = useRef<HTMLDivElement>(null);
     // Full screen only resizes the box: the size observer below lays the blocks out again
     const { expanded, toggle, close } = useFullScreen();
@@ -82,8 +85,8 @@ export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSect
                         <section key={sector.title} aria-label={sector.title} className="contents">
                             {labelled && (
                                 <h3
-                                    className="absolute truncate px-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
-                                    style={{ ...place(rect.x, rect.y, rect.w, SECTOR_LABEL), lineHeight: `${SECTOR_LABEL}px` }}
+                                    className="absolute truncate px-1.5 text-[12px] font-semibold uppercase tracking-wide text-muted-foreground"
+                                    style={{ ...place(rect.x, rect.y, rect.w, SECTOR_LABEL), lineHeight: `${SECTOR_LABEL}px`, paddingInlineEnd: rect.y < 30 && rect.x + rect.w > size.w - 44 ? 40 : undefined }}
                                 >
                                     {sector.title}
                                 </h3>
@@ -113,7 +116,7 @@ export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSect
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-1">
-                <p className="min-w-0 flex-1 basis-64 text-[11.5px] text-muted-foreground">{note}</p>
+                <p className="min-w-0 flex-1 basis-64 text-[12px] text-muted-foreground">{note}</p>
                 <ul className="flex gap-0.5" dir="ltr" aria-hidden="true">
                     {LEGEND.map((step) => (
                         <li key={step} className="mono rounded-[3px] px-1.5 py-0.5 text-[10.5px] font-medium text-white" style={{ background: heatColor(step) }}>

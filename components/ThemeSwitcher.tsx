@@ -28,11 +28,11 @@ export default function ThemeSwitcher({ labels, compact = false, className }: { 
     return (
         <DropdownMenu>
             {compact ? (
-                <DropdownMenuTrigger className={cn('icon-btn outline-none', className)} title={`${labels.label}: ${labels[pref]}`} aria-label={`${labels.label}: ${labels[pref]}`}>
+                <DropdownMenuTrigger className={cn('icon-btn', className)} title={`${labels.label}: ${labels[pref]}`} aria-label={`${labels.label}: ${labels[pref]}`}>
                     <Icon />
                 </DropdownMenuTrigger>
             ) : (
-                <DropdownMenuTrigger className={cn('side-item h-8 w-full text-start outline-none', className)}>
+                <DropdownMenuTrigger className={cn('side-item h-8 w-full text-start', className)}>
                     <Icon />
                     <span className="flex-1">{labels.label}</span>
                     <span className="text-xs text-faint" suppressHydrationWarning>{labels[pref]}</span>

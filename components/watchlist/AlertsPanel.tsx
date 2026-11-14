@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { BellRing, Trash2 } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { deleteAlert } from "@/lib/actions/alert.actions";
 import { alertsEnabled } from "@/lib/market-data";
@@ -28,6 +28,7 @@ const statusOf = (alert: AlertRow) => {
 };
 
 export default function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
+    const locale = useLocale();
     const t = useTranslations('AlertsPanel');
     const format = useFormatter();
     const router = useRouter();
@@ -81,7 +82,7 @@ export default function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
                             <div className="min-w-0 flex-1">
                                 <p className="mono font-semibold text-foreground">{alert.symbol}</p>
                                 <p className="num truncate text-[12.5px] text-faint">
-                                    {t(alert.condition === 'ABOVE' ? 'above' : 'below', { price: formatPrice(alert.targetPrice) })}
+                                    {t(alert.condition === 'ABOVE' ? 'above' : 'below', { price: formatPrice(alert.targetPrice, undefined, locale) })}
                                     {alert.expiresAt && !alert.triggered && ` · ${t('until', { date: format.dateTime(new Date(alert.expiresAt), { month: 'short', day: 'numeric' }) })}`}
                                 </p>
                             </div>

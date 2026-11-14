@@ -40,7 +40,7 @@ const DonateDialog = ({ labels, children }: { labels: DonateLabels; children: Re
                     {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
                     {copied ? labels.copied : labels.copy}
                 </button>
-                <p className="mono select-all break-all rounded-lg border border-line p-2 text-[11.5px] leading-snug text-foreground/80">{PIX_PAYLOAD}</p>
+                <p className="mono select-all break-all rounded-lg border border-line p-2 text-[12px] leading-snug text-foreground/80">{PIX_PAYLOAD}</p>
 
                 <p className="text-center text-[13px] text-foreground/85">
                     {labels.recipient}: <span className="font-semibold text-foreground">{PIX_RECIPIENT}</span>

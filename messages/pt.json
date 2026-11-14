@@ -321,7 +321,7 @@
     "closedNow": "Fechado agora"
   },
   "PulseTile": {
-    "vsPrevClose": "{change} vs fechamento anterior",
+    "vsPrevClose": "{change} no dia",
     "unavailable": "Cotação indisponível"
   },
   "IndexHelp": {

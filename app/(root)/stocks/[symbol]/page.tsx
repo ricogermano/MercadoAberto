@@ -14,6 +14,7 @@ import {
 import { getStockSentimentInsights } from '@/lib/actions/adanos.actions';
 import { getStockMetrics } from '@/lib/actions/finnhub.actions';
 import { hasFinnhubCompanyData } from '@/lib/markets';
+import { formatPercent } from '@/lib/format';
 import { formatSymbolForTradingView, isChartEmbeddable, tradingViewSymbolUrl } from '@/lib/utils';
 
 const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
@@ -31,11 +32,11 @@ async function Sentiment({ symbol }: { symbol: string }) {
 async function DividendYield({ symbol }: { symbol: string }) {
     // Outside the US we can't tell "no dividend" from "no data", so show nothing rather than a misleading dash
     if (!hasFinnhubCompanyData(symbol)) return null;
-    const [dividendYield, t] = await Promise.all([getStockMetrics(symbol), getTranslations('StockPage')]);
+    const [dividendYield, t, locale] = await Promise.all([getStockMetrics(symbol), getTranslations('StockPage'), getLocale()]);
     return (
         <Panel title={t('dividendYieldTitle')}>
             <p className="text-2xl font-semibold text-foreground">
-                {dividendYield !== null ? `${dividendYield.toFixed(2)}%` : "—"}
+                {dividendYield !== null ? formatPercent(dividendYield, locale) : "—"}
             </p>
         </Panel>
     );

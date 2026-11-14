@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { LineChart } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import ChangePill from "@/components/ChangePill";
 import PriceFlash from "@/components/PriceFlash";
 import { useLiveQuotes, type LiveQuote } from "@/hooks/useLiveQuotes";
+import { formatDecimal } from "@/lib/format";
 
-const formatAmount = (value: number) =>
-    value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: value < 1 ? 4 : 2 });
+const amount = (value: number, locale: string) => formatDecimal(value, locale, 2, Math.abs(value) < 1 ? 4 : 2);
 
 type PulseTileProps = { symbol: string; label: string; initial: LiveQuote | null };
 type PulseTileLabels = { vsPrevClose: (change: string) => string; unavailable: string };
@@ -19,6 +19,8 @@ const ENGLISH: PulseTileLabels = { vsPrevClose: (change) => `${change} vs prev c
 // A pulse tile priced from our own quote cache. In realtime mode it refreshes on screen,
 // so the "Live · 15s" label is true; in cached mode it shows the server-rendered quote.
 export default function PulseTile({ symbol, label, initial, labels = ENGLISH }: PulseTileProps & { labels?: PulseTileLabels }) {
+    const locale = useLocale();
+    const formatAmount = (value: number) => amount(value, locale);
     const live = useLiveQuotes([symbol]);
     const quote = live[symbol] ?? initial;
     const isCrypto = symbol.startsWith('BINANCE:');

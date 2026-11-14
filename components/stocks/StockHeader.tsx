@@ -39,7 +39,7 @@ async function TradingViewHeader({ symbol }: { symbol: string }) {
                 </div>
                 {quote && (
                     <div className="flex items-center gap-3">
-                        <p className="num text-2xl font-bold tracking-[-0.03em]">{formatPrice(quote.price, quote.currency)}</p>
+                        <p className="num text-2xl font-bold tracking-[-0.03em]">{formatPrice(quote.price, quote.currency, locale)}</p>
                         <ChangePill value={quote.changePercent} />
                     </div>
                 )}
@@ -62,23 +62,24 @@ async function TradingViewHeader({ symbol }: { symbol: string }) {
 export default async function StockHeader({ symbol }: { symbol: string }) {
     if (!hasFinnhubQuotes(symbol)) return <TradingViewHeader symbol={symbol} />;
 
-    const [isInWatchlist, quotes, profile, t] = await Promise.all([
+    const [isInWatchlist, quotes, profile, t, locale] = await Promise.all([
         isStockInWatchlist(symbol),
         getLiveQuotes([symbol]),
         getCompanyProfile(symbol),
         getTranslations('StockHeader'),
+        getLocale(),
     ]);
     const quote = quotes[symbol];
 
     const currency = profile?.currency || 'USD';
     const company = profile?.name || symbol;
-    const money = (value?: number) => (value ? formatPrice(value, currency) : '—');
+    const money = (value?: number) => (value ? formatPrice(value, currency, locale) : '—');
 
     const stats = [
         { label: t('open'), icon: CalendarClock, value: money(quote?.o), hint: t('openHint') },
         { label: t('dayRange'), icon: MoveVertical, value: quote?.l && quote?.h ? `${money(quote.l)} – ${money(quote.h)}` : '—', hint: t('dayRangeHint') },
         { label: t('prevClose'), icon: Gauge, value: money(quote?.pc), hint: t('prevCloseHint') },
-        { label: t('marketCap'), icon: Landmark, value: profile?.marketCapitalization ? formatNumber(profile.marketCapitalization) : '—', hint: currency },
+        { label: t('marketCap'), icon: Landmark, value: profile?.marketCapitalization ? formatNumber(profile.marketCapitalization, undefined, locale) : '—', hint: currency },
     ];
 
     return (

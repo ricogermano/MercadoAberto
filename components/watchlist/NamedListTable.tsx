@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { Star } from 'lucide-react';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import ChangePill from '@/components/ChangePill';
 import { getWatchlistData } from '@/lib/actions/finnhub.actions';
 import { formatNumber, formatPrice } from '@/lib/utils';
+import { formatSigned } from '@/lib/format';
 import RemoveFromListButton from './RemoveFromListButton';
 
 // The stocks inside one named list. Rendered on the server, so the quotes come from the same
@@ -17,7 +18,8 @@ export default async function NamedListTable({
     listName: string;
     symbols: { symbol: string; company: string }[];
 }) {
-    const [t, th, tr] = await Promise.all([
+    const [locale, t, th, tr] = await Promise.all([
+        getLocale(),
         getTranslations('NamedLists'),
         getTranslations('WatchlistTable.headers'),
         getTranslations('WatchlistTableRow'),
@@ -71,12 +73,12 @@ export default async function NamedListTable({
                                     </span>
                                 </Link>
                             </td>
-                            <td className="is-num font-semibold text-foreground">{row.price ? formatPrice(row.price, row.currency) : '—'}</td>
+                            <td className="is-num font-semibold text-foreground">{row.price ? formatPrice(row.price, row.currency, locale) : '—'}</td>
                             <td className="is-num"><ChangePill value={row.price ? row.changePercent : null} /></td>
                             <td className="is-num text-muted-foreground">
-                                {row.price ? `${row.change > 0 ? '+' : ''}${row.change.toFixed(2)}` : '—'}
+                                {row.price ? formatSigned(row.change, locale) : '—'}
                             </td>
-                            <td className="is-num text-muted-foreground">{row.marketCap ? formatNumber(row.marketCap) : '—'}</td>
+                            <td className="is-num text-muted-foreground">{row.marketCap ? formatNumber(row.marketCap, undefined, locale) : '—'}</td>
                             <td>
                                 <div className="flex items-center justify-end gap-1">
                                     <RemoveFromListButton listId={listId} listName={listName} symbol={row.symbol} />

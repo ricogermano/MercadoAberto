@@ -1,11 +1,11 @@
+import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { LineChart } from 'lucide-react';
 import ChangePill from '@/components/ChangePill';
 import HelpPopover from '@/components/HelpPopover';
+import { formatDecimal } from '@/lib/format';
 import { yahooAppSymbol, type YahooDailyQuote } from '@/lib/yahoo';
 
-const formatAmount = (value: number) =>
-    value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export type PulseTileHelp = { label: string; title: string; body: string };
 
@@ -17,6 +17,8 @@ const ENGLISH: PulseTileLabels = { vsPrevClose: (change) => `${change} vs prev c
 // and Warsaw, whose embeds are end of day only.
 export default function YahooPulseTile({ tvSymbol, label, quote, labels = ENGLISH, help, unit }: { tvSymbol: string; label: string; quote: YahooDailyQuote | null; labels?: PulseTileLabels; help?: PulseTileHelp; unit?: string }) {
     const appSymbol = yahooAppSymbol(tvSymbol);
+    const locale = useLocale();
+    const formatAmount = (value: number) => formatDecimal(value, locale);
     const body = (
         <>
             <div className="bento-head">

@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { createAlert } from "@/lib/actions/alert.actions";
 import { alertsEnabled } from "@/lib/market-data";
 import { formatPrice } from "@/lib/utils";
+import { formatSigned } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -23,6 +24,7 @@ const CONDITIONS = [
 ] as const;
 
 export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD', children, onAlertCreated }: CreateAlertModalProps) {
+    const locale = useLocale();
     const t = useTranslations('CreateAlertModal');
     const [open, setOpen] = useState(false);
     const [condition, setCondition] = useState<'ABOVE' | 'BELOW'>('ABOVE');
@@ -44,7 +46,7 @@ export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD
         setLoading(true);
         try {
             await createAlert({ symbol, targetPrice: target, condition });
-            toast.success(t('created', { symbol, condition, price: formatPrice(target, currency) }));
+            toast.success(t('created', { symbol, condition, price: formatPrice(target, currency, locale) }));
             setOpen(false);
             onAlertCreated?.();
         } catch (error) {
@@ -110,8 +112,8 @@ export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD
                                         : alreadyMet
                                             ? t('alreadyMet', { condition })
                                             : distance === null
-                                                ? t('now', { price: formatPrice(currentPrice!, currency) })
-                                                : t('nowWithDistance', { price: formatPrice(currentPrice!, currency), distance: `${distance > 0 ? '+' : ''}${distance.toFixed(2)}` })}
+                                                ? t('now', { price: formatPrice(currentPrice!, currency, locale) })
+                                                : t('nowWithDistance', { price: formatPrice(currentPrice!, currency, locale), distance: formatSigned(distance, locale) })}
                                 </span>
                             </label>
 

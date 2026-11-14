@@ -53,7 +53,7 @@ export default function NewsList({ items }: { items: WatchNewsItem[] }) {
                     <button
                         type="button"
                         onClick={clear}
-                        className={`ms-auto text-[11.5px] text-faint hover:text-brand-ink ${filtering ? '' : 'invisible'}`}
+                        className={`ms-auto text-[12px] text-faint hover:text-brand-ink ${filtering ? '' : 'invisible'}`}
                         tabIndex={filtering ? 0 : -1}
                         aria-hidden={!filtering}
                     >

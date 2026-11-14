@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { formatCompact, formatDecimal, formatPercent } from '@/lib/format';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { SortHelp } from '@/components/SortableTable';
 import { MEDIAN_KEYS, type MedianKey, type YahooFundamentals, type YahooMedians } from '@/lib/yahoo';
@@ -26,13 +27,12 @@ const PRESET_NAMES = Object.keys(PRESETS) as Preset[];
 export type IndicatorView = Preset | 'custom';
 
 const PERCENT = new Set<IndicatorKey>(['dy', 'payout', 'roe', 'roce', 'netMargin', 'profitGrowth']);
-const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
 
-export function formatIndicator(key: IndicatorKey, value: number | null | undefined): string {
+export function formatIndicator(key: IndicatorKey, value: number | null | undefined, locale?: string): string {
     if (value == null || !Number.isFinite(value)) return '—';
-    if (key === 'liquidity') return compact.format(value);
-    if (PERCENT.has(key)) return `${value.toFixed(1)}%`;
-    return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (key === 'liquidity') return formatCompact(value, locale);
+    if (PERCENT.has(key)) return formatPercent(value, locale, 1);
+    return formatDecimal(value, locale);
 }
 
 // Indicators whose column is followed by the company's own median of past years
@@ -135,7 +135,7 @@ export function IndicatorViewBar({
                     </button>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-64 p-3 text-[13px]">
-                    <p className="mb-2 text-[11.5px] text-faint">{t('views.columnsHint')}</p>
+                    <p className="mb-2 text-[12px] text-faint">{t('views.columnsHint')}</p>
                     <ul className="flex flex-col gap-1.5">
                         {INDICATORS.map((key) => (
                             <li key={key}>

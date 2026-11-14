@@ -4,7 +4,8 @@ import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import ChangePill from '@/components/ChangePill';
 import WatchlistButton from '@/components/WatchlistButton';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { formatDecimal } from '@/lib/format';
 import { SortBar, SortableTh, useSortCriteria } from '@/components/SortableTable';
 import { INDICATORS, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from '@/components/IndicatorViews';
 import { rankByCriteria, type YahooFundamentals } from '@/lib/yahoo';
@@ -34,8 +35,6 @@ export type QuoteLabels = {
 type BaseKey = 'name' | 'price' | 'change' | 'changePercent';
 type SortKey = BaseKey | IndicatorKey;
 
-const fmt = (v: number) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const fmtOrDash = (v: number | null) => (v == null ? '—' : fmt(v));
 
 export default function YahooQuotesSortable({
     groups,
@@ -49,6 +48,9 @@ export default function YahooQuotesSortable({
     watchLabel: string;
 }) {
     const t = useTranslations('YahooQuotes');
+    const locale = useLocale();
+    const fmt = (v: number) => formatDecimal(v, locale);
+    const fmtOrDash = (v: number | null) => (v == null ? '—' : fmt(v));
     const { criteria, onSort, remove, clear, combined } = useSortCriteria<SortKey>();
     const { view, keys, select, toggle, medians, toggleMedians } = useIndicatorView('quotes-indicator-view');
     const indicatorText = useIndicatorText();
@@ -93,11 +95,12 @@ export default function YahooQuotesSortable({
             <td className="px-3 py-2">
                 {r.appSymbol ? (
                     <Link href={`/stocks/${r.appSymbol}`} className="font-semibold hover:text-brand-ink">
-                        {r.name} <span className="mono text-[11px] text-faint">{r.appSymbol}</span>
+                        <span className="block max-w-[10.5rem] truncate sm:inline sm:max-w-none">{r.name}</span>{' '}
+                        <span className="mono text-[12px] text-faint">{r.appSymbol.replace(/\.SA$/, '')}</span>
                     </Link>
                 ) : (
                     <span className="font-semibold">
-                        {r.name} <span className="mono text-[11px] font-normal text-faint">{r.unit}</span>
+                        {r.name} <span className="mono text-[12px] font-normal text-faint">{r.unit}</span>
                     </span>
                 )}
             </td>
@@ -110,8 +113,8 @@ export default function YahooQuotesSortable({
             <td className="whitespace-nowrap px-3 py-2 text-end"><ChangePill value={r.changePercent} /></td>
             {shownIndicators.map((key) => (
                 <Fragment key={key}>
-                    <td className={`num whitespace-nowrap px-3 py-2 text-end ${medians ? medianTone(key, r[key], r.medians) : ''}`}>{formatIndicator(key, r[key])}</td>
-                    {withMedian(key) && <td className="num whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] text-faint">{formatIndicator(key, medianValue(key, r.medians))}</td>}
+                    <td className={`num whitespace-nowrap px-3 py-2 text-end ${medians ? medianTone(key, r[key], r.medians) : ''}`}>{formatIndicator(key, r[key], locale)}</td>
+                    {withMedian(key) && <td className="num whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] text-faint">{formatIndicator(key, medianValue(key, r.medians), locale)}</td>}
                 </Fragment>
             ))}
         </tr>
@@ -153,7 +156,7 @@ export default function YahooQuotesSortable({
                                 help={indicatorText.help(c.key)}
                                 className={`px-3 py-2 font-medium ${c.numeric ? 'whitespace-nowrap text-end' : ''}`}
                             />
-                            {withMedian(c.key) && <th className="whitespace-nowrap py-2 ps-0 pe-3 text-end text-[11.5px] font-normal" title={t('medianTitle')}>{t('medianShort')}</th>}
+                            {withMedian(c.key) && <th className="whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] font-normal" title={t('medianTitle')}>{t('medianShort')}</th>}
                             </Fragment>
                         ))}
                     </tr>
@@ -171,7 +174,7 @@ export default function YahooQuotesSortable({
                     ))
                 )}
             </table>
-            <p className="px-3 py-2 text-[11.5px] text-faint">{note}</p>
+            <p className="px-3 py-2 text-[12px] text-faint">{note}</p>
         </div>
         </>
     );

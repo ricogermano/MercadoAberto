@@ -12,6 +12,14 @@ export type UpdateEntry = {
 export const UPDATES: UpdateEntry[] = [
     {
         date: '2026-11-14',
+        title: 'Página inicial nova',
+        items: [
+            'A página de entrada do site agora mostra o painel de verdade: o mapa de calor da B3 e a tabela de indicadores com os números do dia, em vez de só texto.',
+            'No celular, o cabeçalho da página inicial não corta mais o botão “Criar conta”.',
+        ],
+    },
+    {
+        date: '2026-11-14',
         title: 'Confirmação de e-mail no cadastro',
         items: [
             'Ao criar a conta, você recebe um e-mail com um link de confirmação. A conta só entra no painel depois de abrir esse link, que vale por 24 horas.',

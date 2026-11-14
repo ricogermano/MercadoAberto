@@ -1013,3 +1013,38 @@ html[dir="rtl"] .mono {
     }
     .scrim { background: color-mix(in oklab, var(--page) 92%, transparent) !important; }
 }
+
+/* ============ Landing page ============ */
+
+/* The hero comes in once on load: text first, then the product frame */
+@keyframes lp-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.lp-enter { animation: lp-rise 600ms var(--tab-ease) both; animation-delay: calc(var(--lp-step, 0) * 80ms); }
+
+.lp-frame { box-shadow: 0 0 0 1px color-mix(in oklab, var(--tint) 6%, transparent), 0 30px 70px color-mix(in oklab, var(--shade) 45%, transparent); }
+
+/* Heatmap preview: every block is its own container, so its text shows only where it fits, at any screen size */
+.lp-map { container-type: size; }
+.lp-sector { font-size: clamp(9px, 3cqh, 12px); line-height: 5cqh; }
+.lp-cell { container: lp-cell / size; }
+.lp-cell-text {
+    display: none;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: clamp(10px, min(19cqw, 30cqh), 18px);
+    line-height: 1.2;
+    text-shadow: 0 1px 2px oklch(0 0 0 / 0.45);
+}
+.lp-cell-change { display: none; font-size: 0.78em; }
+@container lp-cell (min-width: 42px) and (min-height: 20px) {
+    .lp-cell-text { display: flex; }
+}
+@container lp-cell (min-width: 42px) and (min-height: 38px) {
+    .lp-cell-change { display: block; }
+}
+
+/* Cards answer the pointer */
+.lp-lift { transition: transform 200ms var(--ui-ease), box-shadow 200ms var(--ui-ease); }
+@media (hover: hover) { .lp-lift:hover { transform: translateY(-2px); } }

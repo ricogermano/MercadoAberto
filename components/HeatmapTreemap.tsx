@@ -5,32 +5,14 @@ import { formatPercent } from '@/lib/format';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { squarify } from '@/lib/treemap';
+import { heatColor } from '@/lib/heat';
 import { FULL_SCREEN_FRAME, FullScreenBackdrop, FullScreenButton, useFullScreen } from '@/components/FullScreen';
 
 export type HeatmapCell = { ticker: string; href: string; name: string; cap: number; changePercent: number; detail: string };
 export type HeatmapSector = { title: string; cells: HeatmapCell[] };
 
-// The colour scale is full at a 3% move either way, like TradingView's heatmaps
-const FULL_SCALE = 3;
 const SECTOR_LABEL = 18; // px
 const LEGEND = [-3, -2, -1, 0, 1, 2, 3];
-
-// Diverging scale: a neutral grey at 0%, then a saturated green for gains and red for losses that brightens with the
-// move. The scale has its own endpoints (not --up/--down mixed into grey, which looked washed out); the brightest
-// step stays dark enough for the white label text.
-const HEAT = {
-    up: ['oklch(0.43 0.13 150)', 'oklch(0.66 0.23 146)'],
-    down: ['oklch(0.43 0.15 25)', 'oklch(0.60 0.245 27)'],
-} as const;
-
-export function heatColor(changePercent: number): string {
-    const strength = Math.min(1, Math.abs(changePercent) / FULL_SCALE);
-    if (!Number.isFinite(changePercent) || strength < 0.02) return 'oklch(0.32 0.008 95)';
-    const [low, high] = HEAT[changePercent > 0 ? 'up' : 'down'];
-    // Eased, so an ordinary 0.5%–1% day already shows clear colour instead of sitting near the dark end
-    return `color-mix(in oklab, ${high} ${Math.round(strength ** 0.65 * 100)}%, ${low})`;
-}
-
 
 export default function HeatmapTreemap({ sectors, note }: { sectors: HeatmapSector[]; note: string }) {
     const locale = useLocale();

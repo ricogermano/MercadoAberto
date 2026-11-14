@@ -23,14 +23,15 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
                     <Link href="/" aria-label={`${APP_NAME}: página inicial`} className="shrink-0">
                         <BrandLogo />
                     </Link>
-                    <nav className="hidden items-center gap-1 md:flex">
+                    <nav className="hidden items-center gap-1 lg:flex">
                         {[['/#recursos', 'Recursos'], ['/#dados', 'Dados'], ['/#codigo-aberto', 'Código aberto'], ['/terms', 'Termos'], ['/privacy', 'Privacidade']].map(([href, label]) => (
                             <Link key={href} href={href} className="side-item h-8 font-semibold">{label}</Link>
                         ))}
                     </nav>
                     <div className="ml-auto flex items-center gap-2">
                         <ThemeSwitcher compact labels={THEME_LABELS_PT} />
-                        <Link href="/sign-in" className="btn h-9 px-3 text-muted-foreground hover:text-foreground">Entrar</Link>
+                        {/* Narrow phones have no room for both: the hero and the footer still offer "Entrar" */}
+                        <Link href="/sign-in" className="btn h-9 px-3 text-muted-foreground hover:text-foreground max-[420px]:hidden">Entrar</Link>
                         <Link href="/sign-up" className="btn btn-primary h-9">Criar conta</Link>
                     </div>
                 </div>

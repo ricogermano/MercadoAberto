@@ -201,7 +201,17 @@ export const MARKETS: Market[] = [
             { title: 'Softs', symbols: [['CMD:KC', 'Coffee (arabica)'], ['CMD:SB', 'Sugar'], ['CMD:CT', 'Cotton'], ['CMD:CC', 'Cocoa'], ['CMD:OJ', 'Orange juice'], ['CMD:LBR', 'Lumber']] },
             { title: 'Livestock', symbols: [['CMD:LE', 'Live cattle (US)'], ['CMD:GF', 'Feeder cattle (US)'], ['CMD:HE', 'Lean hogs'], ['CMD:DC', 'Milk (class III)']] },
         ],
+        // TradingView's futures timeline is almost all gold, so Brazilian headlines on the other commodities sit beside it
         news: 'futures',
+        newsFeeds: BR_NEWS_FEEDS,
+        newsKeywords: [
+            'commodity', 'commodities', 'petróleo', 'Brent', 'WTI', 'Opep', 'gás natural', 'gasolina', 'diesel',
+            'ouro', 'prata', 'cobre', 'platina', 'paládio', 'alumínio', 'aço', 'minério', 'minério de ferro',
+            'soja', 'milho', 'trigo', 'arroz', 'aveia', 'café', 'açúcar', 'algodão', 'cacau', 'suco de laranja', 'laranja',
+            'boi', 'boi gordo', 'arroba', 'gado', 'pecuária', 'suínos', 'leite', 'agronegócio', 'safra', 'Conab',
+            'agro', 'grãos', 'carne', 'frigorífico', 'frigoríficos', 'etanol', 'combustível', 'combustíveis', 'metais',
+            'mineração', 'mineradora', 'siderurgia', 'siderúrgica', 'fertilizantes',
+        ],
         units: {
             'CMD:BZ': 'US$/bbl', 'CMD:CL': 'US$/bbl', 'CMD:NG': 'US$/MMBtu', 'CMD:RB': 'US$/gal', 'CMD:HO': 'US$/gal',
             'CMD:GC': 'US$/oz', 'CMD:SI': 'US$/oz', 'CMD:HG': 'US$/lb', 'CMD:PL': 'US$/oz', 'CMD:PA': 'US$/oz', 'CMD:ALI': 'US$/t', 'CMD:HRC': 'US$/st',

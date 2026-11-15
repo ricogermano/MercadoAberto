@@ -35,11 +35,17 @@ export type Market = {
     // What each price is quoted in, per symbol, shown where a stock would show its ticker (commodities)
     units?: Record<string, string>;
     // Local news portals (RSS): when set, the dashboard lists their headlines instead of TradingView's news timeline
-    newsFeeds?: { name: string; url: string }[];
+    newsFeeds?: NewsFeed[];
     // With newsFeeds: keep only the headlines that mention one of these words (accents and case ignored), and show them
     // beside TradingView's timeline instead of replacing it
     newsKeywords?: string[];
+    // With newsKeywords: these feeds fill the second ("international") panel instead of TradingView's timeline
+    newsWorldFeeds?: NewsFeed[];
 };
+
+// all: every headline counts, even with Market.newsKeywords (a feed already on the theme).
+// naiveOffset: the zone of a date sent without one ("2026-11-14 15:07:03"); Brasília when left out.
+export type NewsFeed = { name: string; url: string; all?: true; naiveOffset?: string };
 
 const hm = (h: number, m = 0) => h * 60 + m;
 
@@ -201,9 +207,11 @@ export const MARKETS: Market[] = [
             { title: 'Softs', symbols: [['CMD:KC', 'Coffee (arabica)'], ['CMD:SB', 'Sugar'], ['CMD:CT', 'Cotton'], ['CMD:CC', 'Cocoa'], ['CMD:OJ', 'Orange juice'], ['CMD:LBR', 'Lumber']] },
             { title: 'Livestock', symbols: [['CMD:LE', 'Live cattle (US)'], ['CMD:GF', 'Feeder cattle (US)'], ['CMD:HE', 'Lean hogs'], ['CMD:DC', 'Milk (class III)']] },
         ],
-        // TradingView's futures timeline is almost all gold, so Brazilian headlines on the other commodities sit beside it
+        // TradingView's futures timeline is a frozen list of 2023 gold stories, so both news panels come from RSS
         news: 'futures',
-        newsFeeds: BR_NEWS_FEEDS,
+        newsFeeds: [...BR_NEWS_FEEDS, { name: 'Canal Rural', url: 'https://www.canalrural.com.br/feed/' }],
+        // Investing.com sends its times in GMT with no zone
+        newsWorldFeeds: [{ name: 'Investing.com', url: 'https://br.investing.com/rss/news_11.rss', all: true, naiveOffset: 'Z' }],
         newsKeywords: [
             'commodity', 'commodities', 'petróleo', 'Brent', 'WTI', 'Opep', 'gás natural', 'gasolina', 'diesel',
             'ouro', 'prata', 'cobre', 'platina', 'paládio', 'alumínio', 'aço', 'minério', 'minério de ferro',

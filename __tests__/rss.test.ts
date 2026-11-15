@@ -21,6 +21,11 @@ describe('parseRss', () => {
         expect(item.publishedAt).toBe(Date.parse('2026-11-12T23:03:07Z'));
     });
 
+    it("reads Investing.com's spaced date in the zone it is given", () => {
+        const [item] = parseRss('<item><title>T</title><link>https://a.com/x</link><pubDate>2026-11-14 15:07:03</pubDate></item>', 'Z');
+        expect(item.publishedAt).toBe(Date.parse('2026-11-14T15:07:03Z'));
+    });
+
     it('reads Atom entries', () => {
         const xml = `<feed><entry><title type="html">Dólar sobe</title><link rel="self" href="https://a.com/self"/><link rel="alternate" href="https://a.com/dolar"/><updated>2026-11-12T10:00:00-03:00</updated></entry></feed>`;
         expect(parseRss(xml)).toEqual([{ title: 'Dólar sobe', link: 'https://a.com/dolar', publishedAt: Date.parse('2026-11-12T13:00:00Z') }]);

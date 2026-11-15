@@ -145,8 +145,8 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                         </Panel>
                     )}
                     <Panel id={market.newsKeywords ? undefined : 'noticias'} title={t(market.newsKeywords ? 'storiesWorldTitle' : 'storiesTitle')} sub={t('storiesSub')} className={heatmap || market.newsKeywords ? '' : 'xl:col-span-2'}>
-                        {market.newsFeeds && !market.newsKeywords
-                            ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} /></Suspense>
+                        {market.newsFeeds && (!market.newsKeywords || market.newsWorldFeeds)
+                            ? <Suspense fallback={<div className="h-[560px] animate-pulse" aria-busy="true" />}><MarketNews market={market} feeds={market.newsKeywords ? market.newsWorldFeeds : undefined} /></Suspense>
                             : <TradingViewWidget scriptUrl={`${scriptUrl}timeline.js`} config={timelineConfig(market.news, locale)} height={560} />}
                     </Panel>
                 </div>

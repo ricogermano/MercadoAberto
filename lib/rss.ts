@@ -49,7 +49,8 @@ function dateOf(block: string, naiveOffset: string): number | null {
     for (const tag of ['pubDate', 'dc:date', 'published', 'updated']) {
         let value = tagContent(block, tag);
         if (!value) continue;
-        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/.test(value)) value += naiveOffset;
+        // Investing.com writes a space for the T
+        if (/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/.test(value)) value = value.replace(' ', 'T') + naiveOffset;
         const time = Date.parse(value);
         if (Number.isFinite(time)) return time;
     }

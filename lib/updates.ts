@@ -11,6 +11,16 @@ export type UpdateEntry = {
 
 export const UPDATES: UpdateEntry[] = [
     {
+        date: '2026-11-15',
+        title: 'Notícias de commodities atualizadas e ajuda na coluna “Med.”',
+        items: [
+            'Na aba Commodities, os dois quadros de notícias agora trazem manchetes do dia: um com notícias brasileiras sobre petróleo, minério, grãos, café, boi, açúcar e outras matérias-primas (inclusive do Canal Rural) e outro com as notícias de commodities do Investing.com. Antes, o segundo quadro mostrava notícias antigas, quase todas sobre ouro.',
+            'Ao lado da coluna “Med.” da tabela de indicadores há um “?” que explica a mediana: é o valor do meio do indicador da própria empresa nos anos anteriores. Verde quando o número de hoje está do lado melhor, vermelho do lado pior. Compara a empresa com o próprio passado, não com o setor.',
+            'A caixa de busca da tabela ficou alinhada ao título “Empresa”.',
+            'Quem usa teclado consegue rolar as tabelas largas para ver as colunas escondidas, e leitores de tela anunciam o nome de cada tabela.',
+        ],
+    },
+    {
         date: '2026-11-14',
         title: 'Busca na tabela e aviso de P/L fora do comum',
         items: [

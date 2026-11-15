@@ -39,8 +39,9 @@ export default async function NamedListTable({
     const storedCompany = new Map(symbols.map((s) => [s.symbol, s.company]));
 
     return (
-        <div className="overflow-x-auto rounded-[14px]">
+        <div className="overflow-x-auto rounded-[14px]" tabIndex={0} role="region" aria-labelledby={`list-${listId}-caption`}>
             <table className="data-table">
+                <caption id={`list-${listId}-caption`} className="sr-only">{listName}</caption>
                 <thead>
                     <tr>
                         <th>{th('company')}</th>

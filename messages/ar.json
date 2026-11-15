@@ -359,6 +359,7 @@
     "delayed": "متأخر · يُحدَّث كل ساعة"
   },
   "YahooQuotes": {
+    "tableLabel": "الأسعار",
     "changePercent": "٪ التغير",
     "unavailable": "الأسعار غير متاحة الآن.",
     "source": "الأسعار بعملة {currency} عبر Yahoo Finance، متأخرة نحو ١٥ دقيقة.",

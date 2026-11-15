@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import ThemeWatcher from "@/components/ThemeWatcher";
 import { THEME_SCRIPT } from "@/lib/theme";
 import { Plus_Jakarta_Sans, IBM_Plex_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
@@ -25,6 +25,9 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
 });
+
+// Tells the browser both themes exist before CSS loads, so a dark page does not flash white
+export const viewport: Viewport = { colorScheme: "light dark" };
 
 export const metadata: Metadata = {
   title: "MercadoAberto",

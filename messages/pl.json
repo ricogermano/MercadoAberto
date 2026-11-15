@@ -359,6 +359,7 @@
     "delayed": "Opóźnione · odświeżane co godzinę"
   },
   "YahooQuotes": {
+    "tableLabel": "Notowania",
     "changePercent": "Zmiana %",
     "unavailable": "Notowania są obecnie niedostępne.",
     "source": "Ceny w {currency} z Yahoo Finance, opóźnione o około 15 minut.",

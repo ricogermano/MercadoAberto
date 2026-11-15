@@ -359,6 +359,7 @@
     "delayed": "Delayed · refreshed hourly"
   },
   "YahooQuotes": {
+    "tableLabel": "Quotes",
     "changePercent": "Change %",
     "unavailable": "Quotes unavailable right now.",
     "source": "Prices in {currency} via Yahoo Finance, delayed about 15 minutes.",

@@ -359,6 +359,7 @@
     "delayed": "Com atraso · atualizado a cada hora"
   },
   "YahooQuotes": {
+    "tableLabel": "Cotações",
     "changePercent": "Var. %",
     "unavailable": "Cotações indisponíveis no momento.",
     "source": "Preços em {currency} via Yahoo Finance, com atraso de cerca de 15 minutos.",

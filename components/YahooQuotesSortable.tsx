@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useId, useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ListFilter, Search, X } from 'lucide-react';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -55,6 +55,7 @@ export default function YahooQuotesSortable({
     watchLabel: string;
 }) {
     const t = useTranslations('YahooQuotes');
+    const captionId = useId();
     const locale = useLocale();
     const fmt = (v: number) => formatDecimal(v, locale);
     const fmtOrDash = (v: number | null) => (v == null ? '—' : fmt(v));
@@ -211,7 +212,7 @@ export default function YahooQuotesSortable({
     return (
         <>
         {expanded && <FullScreenBackdrop onClose={close} />}
-        <div className={expanded ? `${FULL_SCREEN_FRAME} overflow-auto` : 'overflow-x-auto'}>
+        <div className={expanded ? `${FULL_SCREEN_FRAME} overflow-auto` : 'overflow-x-auto'} tabIndex={0} role="region" aria-labelledby={captionId}>
             <div className="flex items-start">
             <div className="min-w-0 flex-1">
             {showFundamentals && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} medians={medians} onToggleMedians={toggleMedians} />}
@@ -228,6 +229,7 @@ export default function YahooQuotesSortable({
             <FullScreenButton expanded={expanded} onToggle={toggleFullScreen} className="me-2 mt-1.5" />
             </div>
             <table className="w-full text-[13px]">
+                <caption id={captionId} className="sr-only">{t('tableLabel')}</caption>
                 {/* With the whole screen to scroll, the header row stays in view */}
                 <thead className={expanded ? '[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card' : ''}>
                     <tr className="text-start text-faint">

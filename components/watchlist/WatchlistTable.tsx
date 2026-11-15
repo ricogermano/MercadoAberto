@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useId, useState } from "react";
 import Link from "next/link";
 import { Bell, Search, Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -30,6 +30,8 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
     const t = useTranslations('WatchlistTableRow');
     const th = useTranslations('WatchlistTable.headers');
     const ty = useTranslations('YahooQuotes');
+    const tp = useTranslations('WatchlistPage');
+    const captionId = useId();
     const { criteria, onSort, remove, clear, combined } = useSortCriteria<SortKey>();
     const { view, keys, select, toggle, medians, toggleMedians } = useIndicatorView('watchlist-indicator-view');
     const indicatorText = useIndicatorText();
@@ -92,7 +94,7 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
     const withMedian = (key: SortKey): key is IndicatorKey => medians && showIndicators && (INDICATORS as readonly string[]).includes(key) && hasMedian(key as IndicatorKey);
 
     return (
-        <div className="overflow-x-auto rounded-[14px]">
+        <div className="overflow-x-auto rounded-[14px]" tabIndex={0} role="region" aria-labelledby={captionId}>
             {showIndicators && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} medians={medians} onToggleMedians={toggleMedians} />}
             <SortBar
                 hint={combined ? ty('combinedHint') : null}
@@ -104,6 +106,7 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                 onClear={clear}
             />
             <table className="data-table">
+                <caption id={captionId} className="sr-only">{tp('title')}</caption>
                 <thead>
                     <tr>
                         {combined && <th>#</th>}

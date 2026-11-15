@@ -402,6 +402,7 @@
     "extreme": { "pe": { "label": "Aviso sobre este P/L", "title": "P/L fora do comum", "body": "Um P/L acima de 50 quase sempre vem de lucro muito baixo nos últimos 12 meses (prejuízo recente, baixa contábil ou outro evento pontual), e não só do preço da ação. Nesses casos as fontes costumam mostrar números bem diferentes entre si. Compare com a mediana da empresa e olhe o lucro dos últimos anos antes de tirar conclusões." } },
     "medianTitle": "Mediana da própria empresa nos últimos exercícios",
     "medianNote": "“Med.” é a mediana (valor do meio) do indicador da própria empresa nos últimos quatro exercícios; no DY, em até dez anos. Verde e vermelho indicam só de que lado da própria mediana o número de hoje está: é uma comparação com o passado, não uma recomendação.",
+    "medianHelp": {"label": "Sobre a mediana", "title": "Med. (mediana da própria empresa)", "body": "É o valor do meio do indicador da própria empresa nos anos anteriores, com dados do Yahoo Finance. Para P/L, P/VP, EV/EBITDA, ROE, ROCE, margem líquida, dívida líquida/EBITDA e payout, usa os últimos quatro exercícios fiscais; para o DY, até dez anos-calendário (dividendos pagos no ano ÷ preço de fechamento do ano). Com menos de três anos de dados, fica em branco. O número de hoje fica verde quando está do lado melhor da mediana e vermelho do lado pior; payout não ganha cor. Compara a empresa com o próprio passado, não com o setor, e não é recomendação."},
     "helpAbout": "O que é {column}?",
     "help": {
       "dy": {

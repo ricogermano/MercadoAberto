@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import ChangePill from '@/components/ChangePill';
 import WatchlistButton from '@/components/WatchlistButton';
 import { useLocale, useTranslations } from 'next-intl';
+import HelpPopover from '@/components/HelpPopover';
 import { formatDecimal } from '@/lib/format';
 import { SortBar, SortableTh, useSortCriteria } from '@/components/SortableTable';
 import { INDICATORS, IndicatorValue, IndicatorViewBar, formatIndicator, hasMedian, medianTone, medianValue, useIndicatorText, useIndicatorView, type IndicatorKey } from '@/components/IndicatorViews';
@@ -243,7 +244,7 @@ export default function YahooQuotesSortable({
                                 colSpan={c.key === 'name' ? (combined ? 3 : 2) : undefined}
                                 className={`${c.key === 'name' ? 'ps-2 pe-3 text-start' : 'px-3'} py-2 font-medium ${c.numeric ? 'whitespace-nowrap text-end' : ''}`}
                             />
-                            {withMedian(c.key) && <th className="whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] font-normal" title={t('medianTitle')}>{t('medianShort')}</th>}
+                            {withMedian(c.key) && <th className="whitespace-nowrap py-2 ps-0 pe-3 text-end text-[12px] font-normal" title={t('medianTitle')}><span className="inline-flex items-center gap-1">{t('medianShort')}<HelpPopover label={t('medianHelp.label')} title={t('medianHelp.title')} body={t('medianHelp.body')} /></span></th>}
                             </Fragment>
                         ))}
                     </tr>

@@ -4,6 +4,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell, Search, Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import HelpPopover from "@/components/HelpPopover";
 import CreateAlertModal from "./CreateAlertModal";
 import AddToListMenu from "./AddToListMenu";
 import WatchlistButton from "@/components/WatchlistButton";
@@ -117,7 +118,7 @@ export default function WatchlistTable({ initialRows, lists = [], fundamentals =
                                 help={indicatorText.help(key)}
                                 className={numeric ? 'is-num' : undefined}
                             />
-                            {withMedian(key) && <th className="is-num !ps-0 text-[12px] !font-normal" title={ty('medianTitle')}>{ty('medianShort')}</th>}
+                            {withMedian(key) && <th className="is-num !ps-0 text-[12px] !font-normal" title={ty('medianTitle')}><span className="inline-flex items-center gap-1">{ty('medianShort')}<HelpPopover label={ty('medianHelp.label')} title={ty('medianHelp.title')} body={ty('medianHelp.body')} /></span></th>}
                             </Fragment>
                         ))}
                         <th className="w-[88px]"><span className="sr-only">{th('action')}</span></th>

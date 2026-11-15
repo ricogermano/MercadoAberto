@@ -402,6 +402,7 @@
     "extreme": { "pe": { "label": "Note about this P/E", "title": "Unusual P/E", "body": "A P/E above 50 almost always comes from a very small profit over the last 12 months (a recent loss, a write-down or another one-off), not only from the share price. In these cases sources often show quite different figures. Compare it with the company's own median and look at the profit of past years before drawing conclusions." } },
     "medianTitle": "The company's own median over its past fiscal years",
     "medianNote": "“Med.” is the median (middle value) of the company's own indicator over its last four fiscal years; for DY, up to ten years. Green and red only show which side of its own median today's number is on: a comparison with the past, not a recommendation.",
+    "medianHelp": {"label": "About the median", "title": "Med. (the company's own median)", "body": "The middle value of the company's own indicator in past years, from Yahoo Finance data. For P/E, P/B, EV/EBITDA, ROE, ROCE, net margin, net debt/EBITDA and payout it uses the last four fiscal years; for the dividend yield, up to ten calendar years (dividends paid in the year ÷ the year's closing price). With fewer than three years of data it stays blank. Today's figure turns green when it sits on the better side of the median and red on the worse side; payout is not coloured. It compares the company with its own past, not with its sector, and is not a recommendation."},
     "helpAbout": "What is {column}?",
     "help": {
       "dy": {

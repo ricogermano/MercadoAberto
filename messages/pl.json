@@ -402,6 +402,7 @@
     "extreme": { "pe": { "label": "Uwaga do tego C/Z", "title": "Nietypowe C/Z", "body": "C/Z powyżej 50 prawie zawsze wynika z bardzo niskiego zysku w ostatnich 12 miesiącach (niedawna strata, odpis lub inne zdarzenie jednorazowe), a nie tylko z ceny akcji. W takich przypadkach różne źródła często podają bardzo różne wartości. Porównaj z medianą spółki i sprawdź zysk z poprzednich lat, zanim wyciągniesz wnioski." } },
     "medianTitle": "Mediana samej spółki z ostatnich lat obrotowych",
     "medianNote": "„Med.” to mediana (wartość środkowa) wskaźnika samej spółki z ostatnich czterech lat obrotowych; dla DY do dziesięciu lat. Zielony i czerwony pokazują tylko, po której stronie własnej mediany jest dzisiejsza liczba: to porównanie z przeszłością, nie rekomendacja.",
+    "medianHelp": {"label": "O medianie", "title": "Med. (mediana samej spółki)", "body": "Środkowa wartość wskaźnika samej spółki z poprzednich lat, na danych Yahoo Finance. Dla C/Z, C/WK, EV/EBITDA, ROE, ROCE, marży netto, długu netto/EBITDA i wskaźnika wypłaty to cztery ostatnie lata obrotowe; dla stopy dywidendy do dziesięciu lat kalendarzowych (dywidendy wypłacone w roku ÷ cena zamknięcia roku). Przy mniej niż trzech latach danych pole jest puste. Dzisiejsza wartość jest zielona po lepszej stronie mediany i czerwona po gorszej; wskaźnik wypłaty nie ma koloru. To porównanie spółki z jej własną przeszłością, nie z sektorem, i nie jest to rekomendacja."},
     "helpAbout": "Co to jest {column}?",
     "help": {
       "dy": {

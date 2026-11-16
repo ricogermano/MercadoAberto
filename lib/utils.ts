@@ -6,35 +6,8 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export const formatTimeAgo = (timestamp: number) => {
-    const now = Date.now();
-    const diffInMs = now - timestamp * 1000; // Convert to milliseconds
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-
-    if (diffInHours > 24) {
-        const days = Math.floor(diffInHours / 24);
-        return `${days} day${days > 1 ? 's' : ''} ago`;
-    } else if (diffInHours >= 1) {
-        return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
-    } else {
-        return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
-    }
-};
-
 export function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-// Formatted string like "$3.10T", "$900.00B", "$25.00M" or "$999999.99"
-// notAvailable: pass the translated Common.notAvailable from a component
-export function formatMarketCapValue(marketCapUsd: number, notAvailable = 'N/A'): string {
-    if (!Number.isFinite(marketCapUsd) || marketCapUsd <= 0) return notAvailable;
-
-    if (marketCapUsd >= 1e12) return `$${(marketCapUsd / 1e12).toFixed(2)}T`; // Trillions
-    if (marketCapUsd >= 1e9) return `$${(marketCapUsd / 1e9).toFixed(2)}B`; // Billions
-    if (marketCapUsd >= 1e6) return `$${(marketCapUsd / 1e6).toFixed(2)}M`; // Millions
-    return `$${marketCapUsd.toFixed(2)}`; // Below one million, show full USD amount
 }
 
 export const getDateRange = (days: number) => {
@@ -47,39 +20,9 @@ export const getDateRange = (days: number) => {
     };
 };
 
-// Get today's date range (from today to today)
-export const getTodayDateRange = () => {
-    const today = new Date();
-    const todayString = today.toISOString().split('T')[0];
-    return {
-        to: todayString,
-        from: todayString,
-    };
-};
-
-// Calculate news per symbol based on watchlist size
-export const calculateNewsDistribution = (symbolsCount: number) => {
-    let itemsPerSymbol: number;
-    let targetNewsCount = 6;
-
-    if (symbolsCount < 3) {
-        itemsPerSymbol = 3; // Fewer symbols, more news each
-    } else if (symbolsCount === 3) {
-        itemsPerSymbol = 2; // Exactly 3 symbols, 2 news each = 6 total
-    } else {
-        itemsPerSymbol = 1; // Many symbols, 1 news each
-        targetNewsCount = 6; // Don't exceed 6 total
-    }
-
-    return { itemsPerSymbol, targetNewsCount };
-};
-
 // Check for required article fields
 export const validateArticle = (article: RawNewsArticle) =>
     article.headline && article.summary && article.url && article.datetime;
-
-// Get today's date string in YYYY-MM-DD format
-export const getTodayString = () => new Date().toISOString().split('T')[0];
 
 export const formatArticle = (
     article: RawNewsArticle,
@@ -101,17 +44,6 @@ export const formatArticle = (
     related: isCompanyNews ? symbol! : article.related || '',
 });
 
-export const formatChangePercent = (changePercent?: number) => {
-    if (changePercent === undefined || changePercent === null) return '';
-    const sign = changePercent > 0 ? '+' : '';
-    return `${sign}${changePercent.toFixed(2)}%`;
-};
-
-export const getChangeColorClass = (changePercent?: number) => {
-    if (!changePercent) return 'text-gray-400';
-    return changePercent > 0 ? 'text-green-500' : 'text-red-500';
-};
-
 export const formatPrice = (price: number, currency = 'USD', locale?: string) => {
     return new Intl.NumberFormat(numberLocale(locale), {
         style: 'currency',
@@ -119,9 +51,6 @@ export const formatPrice = (price: number, currency = 'USD', locale?: string) =>
         minimumFractionDigits: 2,
     }).format(price);
 };
-
-// Alias for consistency
-export const formatCurrency = formatPrice;
 
 export function formatNumber(num?: number | null, notAvailable = 'N/A', locale?: string): string {
     // Guard against missing/invalid market caps (Finnhub omits this field for many
@@ -143,20 +72,6 @@ export function formatNumber(num?: number | null, notAvailable = 'N/A', locale?:
     return value.toString();
 }
 
-export const formatDateToday = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
-});
-
-
-// label: pass a translated "Price" from a component
-export const getAlertText = (alert: Alert, label = 'Price') => {
-    const condition = alert.alertType === 'upper' ? '>' : '<';
-    return `${label} ${condition} ${formatPrice(alert.threshold)}`;
-};
 
 export const getFormattedTodayDate = () => new Date().toLocaleDateString('en-US', {
     weekday: 'long',

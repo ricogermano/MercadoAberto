@@ -34,31 +34,10 @@ declare global {
         value?: string;
     };
 
-    type Option = {
-        value: string;
-        label: string;
-    };
-
-    type SelectFieldProps = {
-        name: string;
-        label: string;
-        placeholder: string;
-        options: readonly Option[];
-        control: Control;
-        error?: FieldError;
-        required?: boolean;
-    };
-
     type FooterLinkProps = {
         text: string;
         linkText: string;
         href: string;
-    };
-
-    type SearchCommandProps = {
-        renderAs?: 'button' | 'text';
-        label?: string;
-        initialStocks: StockWithWatchlistStatus[];
     };
 
     type WelcomeEmailData = {
@@ -111,47 +90,6 @@ declare global {
         onWatchlistChange?: (symbol: string, isAdded: boolean) => void;
     };
 
-    type QuoteData = {
-        c?: number;
-        dp?: number;
-    };
-
-    type ProfileData = {
-        name?: string;
-        marketCapitalization?: number;
-    };
-
-    type FinancialsData = {
-        metric?: { [key: string]: number };
-    };
-
-    type SelectedStock = {
-        symbol: string;
-        company: string;
-        currentPrice?: number;
-    };
-
-    type WatchlistTableProps = {
-        watchlist: StockWithData[];
-    };
-
-    type StockWithData = {
-        userId: string;
-        symbol: string;
-        company: string;
-        addedAt: Date;
-        currentPrice?: number;
-        changePercent?: number;
-        priceFormatted?: string;
-        changeFormatted?: string;
-        marketCap?: string;
-        peRatio?: string;
-    };
-
-    type AlertsListProps = {
-        alertData: Alert[] | undefined;
-    };
-
     type MarketNewsArticle = {
         id: number;
         headline: string;
@@ -164,10 +102,6 @@ declare global {
         image?: string;
     };
 
-    type WatchlistNewsProps = {
-        news?: MarketNewsArticle[];
-    };
-
     type SearchCommandProps = {
         open?: boolean;
         setOpen?: (open: boolean) => void;
@@ -175,22 +109,6 @@ declare global {
         buttonLabel?: string;
         buttonVariant?: 'primary' | 'secondary';
         className?: string;
-    };
-
-    type AlertData = {
-        symbol: string;
-        company: string;
-        alertName: string;
-        alertType: 'upper' | 'lower';
-        threshold: string;
-    };
-
-    type AlertModalProps = {
-        alertId?: string;
-        alertData?: AlertData;
-        action?: string;
-        open: boolean;
-        setOpen: (open: boolean) => void;
     };
 
     type RawNewsArticle = {

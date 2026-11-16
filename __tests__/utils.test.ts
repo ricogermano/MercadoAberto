@@ -2,10 +2,6 @@ import { describe, it, expect } from 'vitest';
 import {
     formatSymbolForTradingView,
     isChartEmbeddable,
-    formatMarketCapValue,
-    formatChangePercent,
-    getChangeColorClass,
-    calculateNewsDistribution,
     formatNumber,
 } from '@/lib/utils';
 
@@ -140,65 +136,6 @@ describe('formatSymbolForTradingView', () => {
     });
 });
 
-describe('formatMarketCapValue', () => {
-    it('returns N/A for invalid inputs', () => {
-        expect(formatMarketCapValue(0)).toBe('N/A');
-        expect(formatMarketCapValue(-100)).toBe('N/A');
-        expect(formatMarketCapValue(NaN)).toBe('N/A');
-        expect(formatMarketCapValue(Infinity)).toBe('N/A');
-    });
-
-    it('formats trillions', () => {
-        expect(formatMarketCapValue(3.1e12)).toBe('$3.10T');
-    });
-
-    it('formats billions', () => {
-        expect(formatMarketCapValue(900e9)).toBe('$900.00B');
-    });
-
-    it('formats millions', () => {
-        expect(formatMarketCapValue(25e6)).toBe('$25.00M');
-    });
-
-    it('formats sub-million values', () => {
-        expect(formatMarketCapValue(999999.99)).toBe('$999999.99');
-    });
-});
-
-describe('formatChangePercent', () => {
-    it('returns empty string for undefined/null', () => {
-        expect(formatChangePercent(undefined)).toBe('');
-        expect(formatChangePercent(null as any)).toBe('');
-    });
-
-    it('formats positive change with + sign', () => {
-        expect(formatChangePercent(2.5)).toBe('+2.50%');
-    });
-
-    it('formats negative change', () => {
-        expect(formatChangePercent(-1.23)).toBe('-1.23%');
-    });
-
-    it('formats zero change', () => {
-        expect(formatChangePercent(0)).toBe('0.00%');
-    });
-});
-
-describe('getChangeColorClass', () => {
-    it('returns gray for zero or undefined', () => {
-        expect(getChangeColorClass(0)).toBe('text-gray-400');
-        expect(getChangeColorClass(undefined)).toBe('text-gray-400');
-    });
-
-    it('returns green for positive', () => {
-        expect(getChangeColorClass(1.5)).toBe('text-green-500');
-    });
-
-    it('returns red for negative', () => {
-        expect(getChangeColorClass(-0.5)).toBe('text-red-500');
-    });
-});
-
 describe('formatNumber', () => {
     // Finnhub's profile2 marketCapitalization is expressed in millions of USD,
     // which formatNumber scales up by 1e6.
@@ -215,22 +152,6 @@ describe('formatNumber', () => {
         expect(formatNumber(null)).toBe('N/A');
         expect(formatNumber(NaN)).toBe('N/A');
         expect(formatNumber(Infinity)).toBe('N/A');
-    });
-});
-
-describe('calculateNewsDistribution', () => {
-    it('returns 3 items per symbol for 1-2 symbols', () => {
-        expect(calculateNewsDistribution(1).itemsPerSymbol).toBe(3);
-        expect(calculateNewsDistribution(2).itemsPerSymbol).toBe(3);
-    });
-
-    it('returns 2 items per symbol for exactly 3', () => {
-        expect(calculateNewsDistribution(3).itemsPerSymbol).toBe(2);
-    });
-
-    it('returns 1 item per symbol for 4+', () => {
-        expect(calculateNewsDistribution(5).itemsPerSymbol).toBe(1);
-        expect(calculateNewsDistribution(10).itemsPerSymbol).toBe(1);
     });
 });
 

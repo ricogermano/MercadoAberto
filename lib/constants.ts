@@ -40,16 +40,6 @@ export const PREFERRED_INDUSTRIES = [
     { value: 'Consumer Goods', label: 'Consumer Goods' },
 ];
 
-export const ALERT_TYPE_OPTIONS = [
-    { value: 'upper', label: 'Upper' },
-    { value: 'lower', label: 'Lower' },
-];
-
-export const CONDITION_OPTIONS = [
-    { value: 'greater', label: 'Greater than (>)' },
-    { value: 'less', label: 'Less than (<)' },
-];
-
 // TradingView widgets, built per market from lib/markets.ts groups. `locale` is the widget UI language
 // (TradingView ships "pl"); callers outside the translated app keep the English default.
 // TradingView spells Arabic "ar_AE" and Brazilian Portuguese "br"; English and Polish are the same code as ours.
@@ -215,20 +205,6 @@ export const POPULAR_STOCKS = [
     { symbol: 'JPM', name: 'JPMorgan Chase & Co', exchange: 'NYSE' },
 ];
 
-export const NO_MARKET_NEWS =
-    '<p class="mobile-text" style="margin:0 0 20px 0;font-size:16px;line-height:1.6;color:#4b5563;">No market news available today. Please check back tomorrow.</p>';
-
-export const WATCHLIST_TABLE_HEADER = [
-    'Company',
-    'Symbol',
-    'Price',
-    'Change',
-    'Market Cap',
-    'P/E Ratio',
-    'Alert',
-    'Action',
-];
-
 // `key` is the message under Password.rules in messages/*.json
 export const PASSWORD_RULES = [
     { key: 'min8', label: 'At least 8 characters', test: (pw: string) => pw.length >= 8 },
@@ -252,5 +228,3 @@ export const passwordValidation = (messages: PasswordMessages = {
         message: messages.pattern,
     },
 });
-
-export const PASSWORD_VALIDATION = passwordValidation();

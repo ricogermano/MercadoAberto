@@ -575,7 +575,8 @@
       "guide": "How to use",
       "updates": "What's new",
       "terms": "Terms",
-      "privacy": "Privacy"
+      "privacy": "Privacy",
+      "admin": "Sign-ups"
     },
     "signOut": "Sign out"
   },
@@ -585,7 +586,8 @@
       "watchlist": "Watchlist",
       "profile": "Profile",
       "guide": "How to use",
-      "updates": "What's new"
+      "updates": "What's new",
+      "admin": "Sign-ups"
     },
     "openMenu": "Open menu",
     "closeTab": "Close {label}",
@@ -831,6 +833,27 @@
     "glossarySub": "What each column of the table measures and how it is calculated",
     "indexesTitle": "B3 indexes",
     "indexesSub": "The four indexes on the tiles at the top of the Brazil dashboard"
+  },
+  "AdminPage": {
+    "title": "Sign-ups",
+    "sub": "Who signed up for MercadoAberto. Only you can see this page.",
+    "total": "Total sign-ups",
+    "verified": "Email confirmed",
+    "last24h": "Last 24 hours",
+    "last7d": "Last 7 days",
+    "last30d": "Last 30 days",
+    "byCountry": "By country",
+    "country": "Country",
+    "signups": "Sign-ups",
+    "share": "Share",
+    "noCountry": "Not given",
+    "latest": "Latest 20 sign-ups",
+    "name": "Name",
+    "email": "Email",
+    "emailStatus": "Confirmation",
+    "confirmed": "Confirmed",
+    "pending": "Pending",
+    "signedUp": "Signed up"
   },
   "UpdatesPage": {
     "metaTitle": "What's new",

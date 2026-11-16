@@ -575,7 +575,8 @@
       "guide": "Como usar",
       "updates": "Novidades",
       "terms": "Termos",
-      "privacy": "Privacidade"
+      "privacy": "Privacidade",
+      "admin": "Cadastros"
     },
     "signOut": "Sair"
   },
@@ -585,7 +586,8 @@
       "watchlist": "Lista de acompanhamento",
       "profile": "Perfil",
       "guide": "Como usar",
-      "updates": "Novidades"
+      "updates": "Novidades",
+      "admin": "Cadastros"
     },
     "openMenu": "Abrir menu",
     "closeTab": "Fechar {label}",
@@ -831,6 +833,27 @@
     "glossarySub": "O que cada coluna da tabela mede e como é calculada",
     "indexesTitle": "Índices da B3",
     "indexesSub": "Os quatro índices dos quadros no topo do painel do Brasil"
+  },
+  "AdminPage": {
+    "title": "Cadastros",
+    "sub": "Quem se cadastrou no MercadoAberto. Só você vê esta tela.",
+    "total": "Total de cadastros",
+    "verified": "E-mail confirmado",
+    "last24h": "Últimas 24 horas",
+    "last7d": "Últimos 7 dias",
+    "last30d": "Últimos 30 dias",
+    "byCountry": "Por país",
+    "country": "País",
+    "signups": "Cadastros",
+    "share": "Parcela",
+    "noCountry": "Não informado",
+    "latest": "Últimos 20 cadastros",
+    "name": "Nome",
+    "email": "E-mail",
+    "emailStatus": "Confirmação",
+    "confirmed": "Confirmado",
+    "pending": "Pendente",
+    "signedUp": "Cadastro em"
   },
   "UpdatesPage": {
     "metaTitle": "Novidades",

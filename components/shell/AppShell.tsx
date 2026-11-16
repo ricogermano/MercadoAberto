@@ -14,12 +14,13 @@ import { donateLabels } from "@/lib/donate";
 
 type AppShellProps = {
     user: User;
+    isAdmin: boolean;
     watchlist: { symbol: string; company: string }[];
     initialStocks: StockWithWatchlistStatus[];
     children: React.ReactNode;
 };
 
-const AppShell = ({ user, watchlist, initialStocks, children }: AppShellProps) => {
+const AppShell = ({ user, isAdmin, watchlist, initialStocks, children }: AppShellProps) => {
     const t = useTranslations('UpdateBanner');
     const tDonate = useTranslations('Donate');
     const tCommon = useTranslations('Common');
@@ -49,7 +50,7 @@ const AppShell = ({ user, watchlist, initialStocks, children }: AppShellProps) =
                     navOpen ? 'max-lg:translate-x-0' : 'max-lg:invisible max-lg:-translate-x-full max-lg:rtl:translate-x-full',
                 )}
             >
-                <Sidebar user={user} watchlist={watchlist} />
+                <Sidebar user={user} isAdmin={isAdmin} watchlist={watchlist} />
             </div>
             {/* Always mounted so it fades both ways, and so it can follow the finger while the drawer is dragged */}
             <div

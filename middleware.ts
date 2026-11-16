@@ -20,5 +20,5 @@ export async function middleware(request: NextRequest) {
 // Only the signed-in app. Running on every public page, prefetch and crawler hit was a paid invocation each,
 // and app/(root)/layout.tsx checks the session anyway. A new private route needs adding here.
 export const config = {
-    matcher: ['/dashboard/:path*', '/watchlist/:path*', '/profile/:path*', '/stocks/:path*', '/guide', '/updates'],
+    matcher: ['/dashboard/:path*', '/watchlist/:path*', '/profile/:path*', '/stocks/:path*', '/guide', '/updates', '/admin'],
 };

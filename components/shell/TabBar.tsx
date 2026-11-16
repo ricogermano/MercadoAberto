@@ -13,7 +13,8 @@ const STORAGE_KEY = 'openstock-tabs';
 const MAX_TABS = 12;
 
 // Message keys under TabBar.pages
-const PAGE_LABELS: Record<string, 'overview' | 'watchlist' | 'profile' | 'guide' | 'updates'> = {
+const PAGE_LABELS: Record<string, 'overview' | 'watchlist' | 'profile' | 'guide' | 'updates' | 'admin'> = {
+    '/admin': 'admin',
     '/dashboard': 'overview',
     '/watchlist': 'watchlist',
     '/profile': 'profile',

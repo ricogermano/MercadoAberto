@@ -575,7 +575,8 @@
       "guide": "Jak korzystać",
       "updates": "Nowości",
       "terms": "Regulamin",
-      "privacy": "Prywatność"
+      "privacy": "Prywatność",
+      "admin": "Rejestracje"
     },
     "signOut": "Wyloguj się"
   },
@@ -585,7 +586,8 @@
       "watchlist": "Obserwowane",
       "profile": "Profil",
       "guide": "Jak korzystać",
-      "updates": "Nowości"
+      "updates": "Nowości",
+      "admin": "Rejestracje"
     },
     "openMenu": "Otwórz menu",
     "closeTab": "Zamknij {label}",
@@ -831,6 +833,27 @@
     "glossarySub": "Co mierzy każda kolumna tabeli i jak jest obliczana",
     "indexesTitle": "Indeksy B3",
     "indexesSub": "Cztery indeksy z kafelków u góry panelu Brazylii"
+  },
+  "AdminPage": {
+    "title": "Rejestracje",
+    "sub": "Kto zarejestrował się w MercadoAberto. Tę stronę widzisz tylko Ty.",
+    "total": "Wszystkie rejestracje",
+    "verified": "E-mail potwierdzony",
+    "last24h": "Ostatnie 24 godziny",
+    "last7d": "Ostatnie 7 dni",
+    "last30d": "Ostatnie 30 dni",
+    "byCountry": "Według kraju",
+    "country": "Kraj",
+    "signups": "Rejestracje",
+    "share": "Udział",
+    "noCountry": "Nie podano",
+    "latest": "Ostatnie 20 rejestracji",
+    "name": "Imię",
+    "email": "E-mail",
+    "emailStatus": "Potwierdzenie",
+    "confirmed": "Potwierdzony",
+    "pending": "Oczekuje",
+    "signedUp": "Data rejestracji"
   },
   "UpdatesPage": {
     "metaTitle": "Nowości",

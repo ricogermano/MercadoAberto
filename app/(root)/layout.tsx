@@ -1,4 +1,5 @@
 import { getSession } from "@/lib/better-auth/auth";
+import { isAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
@@ -29,6 +30,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
             <HtmlLang locale={locale} />
             <AppShell
                 user={user}
+                isAdmin={isAdmin(user.email)}
                 watchlist={watchlist.map(({ symbol, company }: { symbol: string; company: string }) => ({ symbol, company }))}
                 initialStocks={initialStocks}
             >

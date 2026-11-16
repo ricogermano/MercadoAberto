@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { BookOpen, GraduationCap, Heart, LayoutDashboard, LogOut, Search, ShieldCheck, Sparkles, Star } from "lucide-react";
+import { BookOpen, GraduationCap, Heart, LayoutDashboard, LogOut, Search, ShieldCheck, Sparkles, Star, Users } from "lucide-react";
 import { openSearch } from "@/components/SearchCommand";
 import BrandLogo from "@/components/BrandLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 
 type SidebarProps = {
     user: User;
+    isAdmin: boolean;
     watchlist: { symbol: string; company: string }[];
 };
 
@@ -25,7 +26,7 @@ const RESOURCES = [
     { href: '/privacy', label: 'privacy', icon: ShieldCheck },
 ] as const;
 
-const Sidebar = ({ user, watchlist }: SidebarProps) => {
+const Sidebar = ({ user, isAdmin, watchlist }: SidebarProps) => {
     const t = useTranslations('Sidebar');
     const donate = donateLabels(useTranslations('Donate'));
     const tTheme = useTranslations('Theme');
@@ -83,6 +84,11 @@ const Sidebar = ({ user, watchlist }: SidebarProps) => {
             </div>
 
             <div className="mt-auto flex flex-col gap-0.5">
+                {isAdmin && (
+                    <Link href="/admin" className={cn('side-item h-8', pathname === '/admin' && 'is-active')}>
+                        <Users /> {t('resources.admin')}
+                    </Link>
+                )}
                 {RESOURCES.map(({ href, label, icon: Icon }) => (
                     <Link key={href} href={href} className={cn('side-item h-8', pathname === href && 'is-active')}>
                         <Icon /> {t(`resources.${label}`)}

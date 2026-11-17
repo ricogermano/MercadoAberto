@@ -212,7 +212,7 @@ export default function YahooQuotesSortable({
     return (
         <>
         {expanded && <FullScreenBackdrop onClose={close} />}
-        <div className={expanded ? `${FULL_SCREEN_FRAME} overflow-auto` : 'max-h-[640px] overflow-auto'} tabIndex={0} role="region" aria-labelledby={captionId}>
+        <div className={expanded ? `${FULL_SCREEN_FRAME} overflow-auto` : 'relative max-h-[640px] overflow-auto'} tabIndex={0} role="region" aria-labelledby={captionId}>
             <div className="flex items-start">
             <div className="min-w-0 flex-1">
             {showFundamentals && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} medians={medians} onToggleMedians={toggleMedians} />}

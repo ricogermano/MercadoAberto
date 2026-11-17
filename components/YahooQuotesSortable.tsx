@@ -212,7 +212,7 @@ export default function YahooQuotesSortable({
     return (
         <>
         {expanded && <FullScreenBackdrop onClose={close} />}
-        <div className={expanded ? `${FULL_SCREEN_FRAME} overflow-auto` : 'overflow-x-auto'} tabIndex={0} role="region" aria-labelledby={captionId}>
+        <div className={expanded ? `${FULL_SCREEN_FRAME} overflow-auto` : 'max-h-[640px] overflow-auto'} tabIndex={0} role="region" aria-labelledby={captionId}>
             <div className="flex items-start">
             <div className="min-w-0 flex-1">
             {showFundamentals && <IndicatorViewBar view={view} keys={keys} onSelect={select} onToggle={toggle} medians={medians} onToggleMedians={toggleMedians} />}
@@ -230,8 +230,8 @@ export default function YahooQuotesSortable({
             </div>
             <table className="w-full text-[13px]">
                 <caption id={captionId} className="sr-only">{t('tableLabel')}</caption>
-                {/* With the whole screen to scroll, the header row stays in view */}
-                <thead className={expanded ? '[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card' : ''}>
+                {/* The table scrolls inside its own frame, so the header row stays in view */}
+                <thead className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card">
                     <tr className="text-start text-faint">
                         {columns.map((c) => (
                             <Fragment key={c.key}>

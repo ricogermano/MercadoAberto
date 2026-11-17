@@ -11,6 +11,13 @@ export type UpdateEntry = {
 
 export const UPDATES: UpdateEntry[] = [
     {
+        date: '2026-11-17',
+        title: 'Tabela de cotações com rolagem própria',
+        items: [
+            'A tabela de cotações e indicadores agora rola dentro do próprio quadro, sem empurrar o resto do painel para baixo. Os títulos das colunas ficam fixos no topo enquanto você desce pela lista.',
+        ],
+    },
+    {
         date: '2026-11-15',
         title: 'Notícias de commodities atualizadas e ajuda na coluna “Med.”',
         items: [

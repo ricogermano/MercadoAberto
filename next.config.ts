@@ -8,8 +8,17 @@ const nextConfig: NextConfig = {
     // Upstream's English marketing pages (sponsorship, OpenStock Cloud, guides, US ticker directory) are not part of this fork:
     // the files stay for easier upstream merges, the routes go home. Temporary, so a page can come back without stale browser caches.
     async redirects() {
-        return ['/about', '/help', '/api-docs', '/sponsor', '/love', '/changelog', '/whats-new', '/compare', '/compare/:slug', '/s', '/s/:ticker']
-            .map((source) => ({ source, destination: '/', permanent: false }));
+        return [
+            // One public address for search engines and logins: www and the old Vercel addresses go to the domain
+            {
+                source: '/:path*',
+                has: [{ type: 'host' as const, value: '(www\\.mercadoabertobr\\.com\\.br|mercado-aberto-zeta\\.vercel\\.app|mercado-aberto-rico-s\\.vercel\\.app)' }],
+                destination: 'https://mercadoabertobr.com.br/:path*',
+                permanent: true,
+            },
+            ...['/about', '/help', '/api-docs', '/sponsor', '/love', '/changelog', '/whats-new', '/compare', '/compare/:slug', '/s', '/s/:ticker']
+                .map((source) => ({ source, destination: '/', permanent: false })),
+        ];
     },
     // Short links for sharing: the landing page under a second address, so Vercel Analytics counts those visits by path
     async rewrites() {

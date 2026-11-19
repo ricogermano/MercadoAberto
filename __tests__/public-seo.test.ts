@@ -5,6 +5,7 @@ import { config, middleware } from '@/middleware';
 import { isPublicPath, PUBLIC_EXACT_PATHS } from '@/lib/public-paths';
 import { filingUrl, formatFiscalYearEnd, formatFilingDate, parseSubmissions, stateName } from '@/lib/seo/edgar';
 import { sitemapEntries } from '@/lib/seo/sitemap';
+import { B3_STOCKS, b3Path, findB3Stock, sectorPeers } from '@/lib/seo/b3';
 import { siteUrl } from '@/lib/seo/site';
 import { adjacentTickers, findTicker, relatedTickers, tickerIntro, tickerPath, US_TICKERS } from '@/lib/seo/tickers';
 
@@ -123,13 +124,35 @@ describe('edgar helpers', () => {
 });
 
 describe('sitemap', () => {
-    it('lists only the landing page, the terms and the privacy policy', () => {
+    it('lists the public pages and one page per B3 stock, never the signed-in app', () => {
         const entries = sitemapEntries('https://openstock.example/');
         const urls = entries.map((entry) => entry.url);
-        expect(urls).toEqual(PUBLIC_EXACT_PATHS.map((path) => `https://openstock.example${path}`));
+        expect(urls.slice(0, PUBLIC_EXACT_PATHS.length)).toEqual(PUBLIC_EXACT_PATHS.map((path) => `https://openstock.example${path}`));
+        expect(urls).toContain('https://openstock.example/acoes');
+        expect(urls).toContain('https://openstock.example/acoes/petr4');
+        expect(urls.length).toBe(PUBLIC_EXACT_PATHS.length + 1 + B3_STOCKS.length);
         expect(urls.some((url) => url.includes('/stocks'))).toBe(false);
         expect(urls.some((url) => url.includes('/dashboard'))).toBe(false);
         expect(new Set(urls).size).toBe(urls.length);
+    });
+});
+
+describe('B3 stock pages', () => {
+    it('lists each dashboard stock once and finds it in either case', () => {
+        expect(B3_STOCKS.length).toBeGreaterThan(50);
+        expect(new Set(B3_STOCKS.map((s) => s.ticker)).size).toBe(B3_STOCKS.length);
+        expect(findB3Stock('petr4')?.symbol).toBe('BMFBOVESPA:PETR4');
+        expect(findB3Stock('PETR4')?.name).toBe('Petrobras');
+        expect(findB3Stock('AAPL')).toBeUndefined();
+        expect(b3Path('PETR4')).toBe('/acoes/petr4');
+    });
+
+    it('names sectors in Portuguese and links peers of the same sector', () => {
+        const itub = findB3Stock('itub4')!;
+        expect(itub.sector).not.toBe('Banks & insurance');
+        const peers = sectorPeers(itub);
+        expect(peers.length).toBeGreaterThan(0);
+        expect(peers.every((p) => p.sector === itub.sector && p.ticker !== 'ITUB4')).toBe(true);
     });
 });
 
@@ -156,6 +179,9 @@ describe('public pages do not call Finnhub', () => {
             'lib/seo/edgar.ts',
             'lib/seo/tickers.ts',
             'components/seo/TradingViewEmbed.tsx',
+            'app/(marketing)/acoes/[ticker]/page.tsx',
+            'app/(marketing)/acoes/page.tsx',
+            'lib/seo/b3.ts',
         ];
         for (const file of files) {
             const source = readFileSync(file, 'utf8').toLowerCase();

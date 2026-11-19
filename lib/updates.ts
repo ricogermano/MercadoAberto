@@ -11,6 +11,13 @@ export type UpdateEntry = {
 
 export const UPDATES: UpdateEntry[] = [
     {
+        date: '2026-11-18',
+        title: 'Página pública para cada ação da B3',
+        items: [
+            'Cada ação do painel brasileiro ganhou uma página aberta, sem precisar de conta, no endereço /acoes: cotação do dia, os onze indicadores ao lado da mediana da própria empresa, gráfico e as outras empresas do mesmo setor. Dá para mandar o link para alguém que ainda não tem conta.',
+        ],
+    },
+    {
         date: '2026-11-17',
         title: 'Tabela de cotações com rolagem própria',
         items: [
